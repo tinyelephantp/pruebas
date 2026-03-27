@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seriaciones Registradas</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+        body { background-color: #ffffff; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: 0.85rem; margin: 0; padding: 20px 0; }
+        .sistema-container { max-width: 1050px; margin: 0 auto; background-color: white; padding: 30px; box-shadow: 0 0 15px rgba(0,0,0,0.1); min-height: 100vh; border-radius: 8px; }
+        .encabezado-titulo { background-color: #002b5e; color: #ffffff; font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 1.2rem; padding: 10px 0; text-transform: uppercase; }
+        .encabezado-usuario { background-color: #00a680; color: #ffffff; font-family: Arial, Helvetica, sans-serif; font-size: 1rem; padding: 6px 0; text-transform: uppercase; }
+        .tarjeta-registro { background-color: #f8f9fa; border-left: 4px solid #00a680; padding: 15px; margin-bottom: 8px; border-radius: 4px; border: 1px solid #eee; border-left: 4px solid #00a680; display: flex; justify-content: space-between; align-items: center;}
+        .tarjeta-info { flex-grow: 1; }
+        .tarjeta-titulo { font-weight: bold; color: #212529; font-size: 0.95rem; margin-bottom: 4px; }
+        .tarjeta-autor { font-size: 0.8rem; color: #6c757d; font-style: italic; }
+        .accordion-button:not(.collapsed) { background-color: #e8f4f2; color: #008f82; font-weight: bold; }
+        
+        /* Estilos de la gráfica copiados del index para el Modal */
+        .grid-semanas { display: grid; gap: 4px; margin-bottom: 15px; }
+        .header-semana { background-color: #008f82; color: white; font-weight: bold; text-align: center; padding: 6px 0; border-radius: 3px; font-size: 0.8rem; }
+        .fila-materia { display: grid; grid-template-columns: subgrid; grid-column: 1 / -1; margin-bottom: 6px; }
+        .barra-materia { border-radius: 4px; color: white; font-weight: bold; font-size: 0.75rem; display: flex; align-items: center; justify-content: center; padding: 4px 10px; box-shadow: 0 1px 3px rgba(0,0,0,0.2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .bg-virtual { background-color: #8cc63f !important; } 
+        .bg-semi { background-color: #f7931e !important; }
+    </style>
+</head>
+<body>
+
+<div class="sistema-container">
+    <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" class="mb-4">
+        <tr align="center"><td class="encabezado-titulo">HISTORIAL DE SERIACIONES REGISTRADAS</td></tr>
+        <tr align="center"><td class="encabezado-usuario">ANA PAOLA CABELLO VEGA</td></tr>
+    </table>
+
+    <div class="d-flex justify-content-between align-items-center mb-4 mt-3">
+        <h5 class="fw-bold mb-0 text-uppercase" style="color: #002b5e;">Registros por Periodo</h5>
+        <a href="seriacion.html" class="btn btn-sm btn-outline-secondary px-4 fw-bold"> Volver al Registro</a>
+    </div>
+
+    <div class="accordion" id="acordeonPeriodos">
+        <div id="mensajeVacio" class="text-center text-muted py-5" style="display: none;">
+            No hay seriaciones registradas todavía.
+        </div>
+    </div>
+</div> 
+
+<div class="modal fade" id="modalVerGrafica" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #002b5e; color: white;">
+                <h5 class="modal-title fw-bold" id="modalTitulo">Detalle de Seriación</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body bg-light p-4">
+                
+                <div id="modalDetalles"></div>
+
+                <div class="d-flex gap-3 small fw-bold text-muted mb-3 justify-content-end border-top pt-3 mt-2">
+                    <span class="d-flex align-items-center gap-1"><div style="width:12px; height:12px; background:#f7931e;"></div> Asgnaturas Semipresenciales</span>
+                    <span class="d-flex align-items-center gap-1"><div style="width:12px; height:12px; background:#8cc63f;"></div> Asignaturas Virtuales</span>
+                </div>
+                <div id="modalGridHeader" class="grid-semanas"></div>
+                <div id="modalGridBody"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    let modalInstance;
+
+    document.addEventListener('DOMContentLoaded', function() {
+        modalInstance = new bootstrap.Modal(document.getElementById('modalVerGrafica'));
+        renderizarLista();
+    });
+
+    function renderizarLista() {
+        const guardadas = JSON.parse(localStorage.getItem('seriacionesPrototipo')) || [];
+        const contenedorAcordeon = document.getElementById('acordeonPeriodos');
+        const mensajeVacio = document.getElementById('mensajeVacio');
+
+        if (guardadas.length === 0) {
+            contenedorAcordeon.innerHTML = '';
+            mensajeVacio.style.display = 'block';
+            return;
+        }
+        mensajeVacio.style.display = 'none';
+
+        guardadas.forEach((reg, i) => reg.indiceOriginal = i);
+
+        const registrosPorPeriodo = {};
+        guardadas.forEach(registro => {
+            if (!registrosPorPeriodo[registro.periodo]) { registrosPorPeriodo[registro.periodo] = []; }
+            registrosPorPeriodo[registro.periodo].push(registro); 
+        });
+
+        let htmlAcordeon = '';
+        let indexColapso = 0;
+
+        for (const periodo in registrosPorPeriodo) {
+            const registrosDelPeriodo = registrosPorPeriodo[periodo];
+            const idCollapse = `collapse_${indexColapso}`;
+            const idHeading = `heading_${indexColapso}`;
+
+            let htmlTarjetas = '';
+            registrosDelPeriodo.reverse().forEach(registro => {
+                htmlTarjetas += `
+                    <div class="tarjeta-registro">
+                        <div class="tarjeta-info">
+                            <div class="tarjeta-titulo">
+                                ${registro.carrera} <span class="text-muted mx-1">|</span> 
+                                Cuatrimestre ${registro.grado} <span class="text-muted mx-1">|</span>
+                                ${registro.plan}
+                            </div>
+                            <div class="tarjeta-autor">
+                                Actualizó: ${registro.autor} el ${registro.fecha}
+                            </div>
+                        </div>
+                        <div class="d-flex gap-2">
+                            <button class="btn btn-sm text-white shadow-sm" style="background-color: #002b5e;" onclick="verGrafica(${registro.indiceOriginal})">Ver</button>
+                            <button class="btn btn-sm text-dark shadow-sm" style="background-color: #f7931e; border:none;" onclick="editarRegistro(${registro.indiceOriginal})">Editar</button>
+                            <button class="btn btn-sm btn-danger text-white shadow-sm" onclick="eliminarRegistro(${registro.indiceOriginal})">Eliminar</button>
+                        </div>
+                    </div>
+                `;
+            });
+
+            htmlAcordeon += `
+                <div class="d-flex align-items-start mb-3">
+                    
+                    <div class="accordion flex-grow-1 shadow-sm rounded">
+                        <div class="accordion-item border rounded">
+                            <h2 class="accordion-header" id="${idHeading}">
+                                <button class="accordion-button collapsed shadow-none py-3 rounded" type="button" data-bs-toggle="collapse" data-bs-target="#${idCollapse}">
+                                    <strong class="me-2 text-dark">Periodo:</strong> 
+                                    <span class="text-secondary">${periodo}</span>
+                                </button>
+                            </h2>
+                            <div id="${idCollapse}" class="accordion-collapse collapse">
+                                <div class="accordion-body bg-light border-top p-3">
+                                    ${htmlTarjetas}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="ms-3" style="margin-top: 12px;">
+                        <span class="badge shadow-sm" style="background-color: #002b5e; font-size: 0.85rem; padding: 8px 14px; border-radius: 6px; white-space: nowrap;">
+                            ${registrosDelPeriodo.length} Registro(s)
+                        </span>
+                    </div>
+
+                </div>
+            `;
+            indexColapso++;
+        }
+        contenedorAcordeon.innerHTML = htmlAcordeon;
+    }
+
+    window.verGrafica = function(indice) {
+        const guardadas = JSON.parse(localStorage.getItem('seriacionesPrototipo')) || [];
+        const registro = guardadas[indice];
+        if(!registro) return;
+
+     
+        document.getElementById('modalTitulo').innerText = `${registro.carrera} - Cuatrimestre ${registro.grado} (${registro.periodo})`;
+
+        const gridHeader = document.getElementById('modalGridHeader');
+        const gridBody = document.getElementById('modalGridBody');
+        const modalDetalles = document.getElementById('modalDetalles'); 
+        
+        if(!registro.materias || Object.keys(registro.materias).length === 0) {
+            modalDetalles.innerHTML = '';
+            gridHeader.innerHTML = '';
+            gridBody.innerHTML = '<div class="alert alert-warning text-center">No hay materias registradas en esta seriación.</div>';
+            modalInstance.show();
+            return;
+        }
+
+        const arrayMaterias = Object.values(registro.materias);
+
+       
+        let tablaHTML = `
+            <div class="mb-3 text-end">
+                <span class="badge bg-white text-secondary border p-2 shadow-sm" style="font-size:0.8rem;">
+                     Actualizado por: <strong>${registro.autor}</strong> el ${registro.fecha}
+                </span>
+            </div>
+            <div class="table-responsive mb-4">
+                <table class="table table-sm table-bordered align-middle text-center bg-white shadow-sm" style="font-size: 0.85rem;">
+                    <thead style="background-color: #f8f9fa;">
+                        <tr>
+                            <th class="text-start ps-3">Asignatura</th>
+                            <th>Tipo de asignatura</th>
+                            <th>Fecha Inicio</th>
+                            <th>Fecha Fin</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+        `;
+
+        arrayMaterias.forEach(mat => {
+            // NUEVO CÓDIGO (Sin colores, solo negritas):
+const modTexto = mat.mod === 'virtual' ? '<span class="fw-bold text-dark">Virtual</span>' : '<span class="fw-bold text-dark">Semipresencial</span>';
+            const fechaIni = mat.fInicio ? mat.fInicio.split('-').reverse().join('/') : '-';
+            const fechaFin = mat.fFin ? mat.fFin.split('-').reverse().join('/') : '-';
+
+            tablaHTML += `
+                <tr>
+                    <td class="text-start ps-3 fw-bold text-dark">${mat.nombre}</td>
+                    <td>${modTexto}</td>
+                    <td>${fechaIni}</td>
+                    <td>${fechaFin}</td>
+                </tr>
+            `;
+        });
+        tablaHTML += `</tbody></table></div>`;
+        modalDetalles.innerHTML = tablaHTML; 
+        let maxSemana = 0;
+        arrayMaterias.forEach(mat => {
+            const fin = parseInt(mat.fin);
+            if (fin > maxSemana) maxSemana = fin;
+        });
+
+        gridHeader.style.gridTemplateColumns = `repeat(${maxSemana}, 1fr)`;
+        gridHeader.innerHTML = '';
+        for (let i = 1; i <= maxSemana; i++) { gridHeader.innerHTML += `<div class="header-semana">${i}</div>`; }
+
+        gridBody.innerHTML = '';
+        arrayMaterias.forEach(mat => {
+            const colorClass = mat.mod === 'virtual' ? 'bg-virtual' : 'bg-semi';
+            const estiloUbicacion = `grid-column: ${mat.inicio} / ${parseInt(mat.fin) + 1};`;
+            gridBody.innerHTML += `
+                <div class="fila-materia" style="grid-template-columns: repeat(${maxSemana}, 1fr);">
+                    <div class="barra-materia ${colorClass}" style="${estiloUbicacion}">
+                        <span>${mat.nombre}</span>
+                    </div>
+                </div>
+            `;
+        });
+        modalInstance.show();
+    }
+    window.editarRegistro = function(indice) {
+        if(confirm("Se editará esta seriación y se enviará al área de registro \n\n¿Deseas continuar?")) {
+            const guardadas = JSON.parse(localStorage.getItem('seriacionesPrototipo')) || [];
+            const registroAEditar = guardadas[indice];
+            const estadoBorrador = {
+                filtros: registroAEditar.valoresFiltros,
+                materias: registroAEditar.materias
+            };
+
+            localStorage.setItem('borradorPrototipo', JSON.stringify(estadoBorrador));
+
+            
+            guardadas.splice(indice, 1);
+            localStorage.setItem('seriacionesPrototipo', JSON.stringify(guardadas));
+
+          
+            window.location.href = 'seriacion.html';
+        }
+    }
+
+  
+    
+    window.eliminarRegistro = function(indice) {
+        if(confirm("¿Estás completamente seguro de eliminar este registro? Esta acción no se puede deshacer.")) {
+            const guardadas = JSON.parse(localStorage.getItem('seriacionesPrototipo')) || [];
+            guardadas.splice(indice, 1); 
+            localStorage.setItem('seriacionesPrototipo', JSON.stringify(guardadas)); 
+            window.location.reload(); 
+        }
+    }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prototipo Seriacion</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    
+    <style>
+        /* --- Estilos Generales --- */
+        body { 
+            background-color: #f4f7f6; /* Un gris muy tenue de fondo para resaltar la tarjeta principal */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            font-size: 0.85rem;
+            margin: 0;
+            padding: 20px 0;
+        }
+        .sistema-container {
+            max-width: 1050px; 
+            margin: 0 auto;
+            background-color: white;
+            padding: 30px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.05);
+            min-height: 100vh;
+            border-radius: 12px; 
+        }
+
+        /* --- Encabezados --- */
+        .encabezado-titulo {
+            background-color: #002b5e; color: #ffffff; font-family: Arial, Helvetica, sans-serif;
+            font-weight: bold; font-size: 1.2rem; padding: 10px 0; text-transform: uppercase;
+        }
+        .encabezado-usuario {
+            background-color: #00a680; color: #ffffff; font-family: Arial, Helvetica, sans-serif;
+            font-weight: normal; font-size: 1rem; padding: 6px 0; text-transform: uppercase;
+        }
+
+        /* --- Estilos del Filtro Moderno --- */
+        .filtro-card {
+            background-color: #ffffff;
+            border: 1px solid #eef0f2;
+            border-radius: 12px; 
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03); 
+            padding: 1.5rem;
+            transition: box-shadow 0.3s ease;
+        }
+        .filtro-card:hover {
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06); 
+        }
+        .filtro-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #6c757d;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px; 
+        }
+        .filtro-select {
+            background-color: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 6px;
+            transition: all 0.2s ease-in-out;
+            color: #495057;
+        }
+        .filtro-select:focus {
+            background-color: #ffffff;
+            border-color: #008f82; 
+            box-shadow: 0 0 0 0.25rem rgba(0, 143, 130, 0.15); 
+        }
+        .btn-limpiar {
+            color: #dc3545;
+            background-color: #fff5f5; 
+            border: 1px solid transparent;
+            transition: all 0.2s;
+        }
+        .btn-limpiar:hover {
+            background-color: #ffe5e5;
+            color: #c82333;
+            transform: translateY(-1px);
+        }
+
+        /* --- Estilos de la Tabla --- */
+        .tabla-contenedor {
+            background-color: #ffffff;
+            border-radius: 12px; 
+            overflow: hidden; 
+            border: 1px solid #eef0f2;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03); 
+        }
+        .custom-table thead th {
+            background-color: #008f82 !important;
+            color: white !important;
+            border-bottom: none;
+            padding: 12px 8px; 
+            letter-spacing: 0.5px;
+            font-weight: 600;
+        }
+        .custom-table tbody tr td {
+            border-bottom: 1px solid #f0f2f5;
+            color: #495057;
+            padding: 12px 8px;
+            font-size: 0.85rem;
+        }
+        .custom-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* --- Gráfica Gantt y Alertas --- */
+        .grafica-container {
+            border: 1px solid #dee2e6; border-radius: 8px; padding: 20px; background-color: #fafafa;
+        }
+        .grid-semanas { display: grid; gap: 4px; margin-bottom: 15px; transition: all 0.3s ease; }
+        .header-semana {
+            background-color: #008f82; color: white; font-weight: bold; text-align: center;
+            padding: 6px 0; border-radius: 3px; font-size: 0.9rem;
+        }
+        .fila-materia { display: grid; grid-template-columns: subgrid; grid-column: 1 / -1; margin-bottom: 6px; }
+        .barra-materia {
+            border-radius: 4px; color: white; font-weight: bold; font-size: 0.8rem;
+            display: flex; align-items: center; justify-content: center; position: relative; 
+            padding: 4px 30px; box-shadow: 0 1px 3px rgba(0,0,0,0.2); cursor: pointer;
+            overflow: visible; white-space: nowrap;
+        }
+        .barra-materia:hover { opacity: 0.85; }
+        .bg-virtual { background-color: #8cc63f !important; } 
+        .bg-semi { background-color: #f7931e !important; }    
+        .btn-eliminar-barra {
+            position: absolute; right: 6px; top: 50%; transform: translateY(-50%);
+            background: rgba(0,0,0,0.15); border: none; color: white; border-radius: 50%;
+            width: 18px; height: 18px; display: flex; align-items: center; justify-content: center;
+            font-weight: bold; line-height: 1; font-size: 0.75rem;
+        }
+        .btn-eliminar-barra:hover { background: rgba(0,0,0,0.4); }
+        .alerta-nota {
+            background-color: #e8f0fe; color: #5f6368; border-radius: 50px; display: inline-flex;
+            align-items: center; padding: 6px 25px 6px 8px; margin-top: 12px; border: 1px solid #d2e3fc; 
+        }
+        .alerta-icono {
+            width: 26px; height: 26px; border-radius: 50%; border: 2px solid #8ab4f8; color: #1a73e8; 
+            display: flex; align-items: center; justify-content: center; font-weight: bold;
+            font-size: 0.85rem; margin-right: 12px; background-color: transparent;
+        }
+        .alerta-texto { font-size: 0.85rem; border-left: 1.5px solid #d2e3fc; padding-left: 12px; font-weight: 500; }
+        
+        /* Utilidades */
+        .form-control-sm, .form-select-sm { font-size: 0.8rem; padding: 0.25rem 0.5rem; }
+    </style>
+</head>
+<body>
+
+<div class="sistema-container">
+
+    <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" class="mb-4">
+        <tr>
+            <td align="center">
+                <img src="C:\Tomcat 8.5\webapps\p\imagenes\banner.jpg" width="100%" alt="Banner Institucional"/>
+            </td>
+        </tr>
+        <tr> 
+            <td height="29" align="center">
+                <script type="text/javascript" language="JavaScript1.2" src="../../../../jsp/menu/menu.js"></script>
+            </td>
+        </tr>
+        <tr align="center">
+            <td class="encabezado-titulo">SERIACIÓN DE MATERIAS MODALIDAD MIXTA (DD)</td>
+        </tr>
+        <tr align="center">
+            <td class="encabezado-usuario">ANA PAOLA CABELLO VEGA</td>
+        </tr>
+    </table>
+
+    <div class="d-flex justify-content-end mb-3">
+        <a href="registros.html" class="btn btn-sm px-4 fw-bold shadow-sm" style="background-color: #283a74c7; color: #fdfdfd; border: 1px solid #dee2e6;">
+            Ver Registros
+        </a>
+    </div>
+
+    <div class="mb-4 filtro-card">
+        <div class="row g-3">
+            <div class="col-md-6">
+                <label class="filtro-label mb-2">
+                    <i class="bi bi-calendar3"></i> Periodo
+                </label>
+                <select class="form-select form-select-sm filtro-select" id="selPeriodo">
+                    <option value="">-- Seleccionar --</option>
+                </select>
+            </div>
+            <div class="col-md-6">
+                <label class="filtro-label mb-2">
+                    <i class="bi bi-mortarboard"></i> Programa Educativo
+                </label>
+                <select class="form-select form-select-sm filtro-select" id="selCarrera" disabled>
+                    <option value="">-- Seleccionar --</option>
+                </select>
+            </div>
+            <div class="col-md-6">
+                <label class="filtro-label mb-2">
+                    <i class="bi bi-journal-bookmark"></i> Plan de Estudios
+                </label>
+                <select class="form-select form-select-sm filtro-select" id="selPlan" disabled>
+                    <option value="">-- Seleccionar --</option>
+                </select>
+            </div>
+            <div class="col-md-6">
+                <label class="filtro-label mb-2">
+                    <i class="bi bi-layers"></i> Grado (Cuatrimestre)
+                </label>
+                <select class="form-select form-select-sm filtro-select" id="selGrado" disabled>
+                    <option value="">-- Seleccionar --</option>
+                </select>
+            </div>
+             <div class="col-12 text-end mt-4 pt-3" style="border-top: 1px dashed #e9ecef;">
+                <button type="button" id="btnLimpiarFiltros" class="btn btn-sm btn-limpiar px-4 fw-bold">
+                    <i class="bi bi-x-circle"></i> Limpiar filtros
+                </button>
+            </div>
+        </div>
+    </div> 
+
+    <div id="seccionTabla" class="mb-4" style="display: none;">
+        <div class="tabla-contenedor">
+            <div class="table-responsive">
+                <table class="table align-middle mb-0 custom-table" id="tablaMaterias" style="width: 100%;">
+                    <thead class="text-center">
+                        <tr class="small fw-bold">
+                            <th>Asignatura</th>
+                            <th style="width: 130px;">Tipo de Asignatura</th>
+                            <th style="width: 70px;">Semana Inicio</th>
+                            <th style="width: 70px;">Semana Fin</th>
+                            <th style="width: 120px;">Fecha Inicio</th>
+                            <th style="width: 120px;">Fecha Fin</th>
+                        </tr>
+                    </thead>
+                    <tbody id="cuerpoTabla" class="text-center bg-white"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div id="seccionGrafica" class="grafica-container" style="display: none;">
+        <div class="text-center mb-4">
+            <h5 class="fw-bold text-uppercase mb-0" style="color: #008f82;" id="tituloGrafica">PROYECCIÓN DE SEMANAS</h5>
+            <div class="alerta-nota">
+                <div class="alerta-icono">!</div> 
+                <div class="alerta-texto">Revisa la seriación de materias y concluye el registro</div>
+            </div>
+        </div>
+
+        <div id="ganttArea">
+            <div class="grid-semanas" id="gridHeader"></div>
+            <div id="gridBody">
+                <div class="text-center text-muted py-3 small">Llene las semanas de inicio y fin en la tabla para visualizar la gráfica.</div>
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-between align-items-center mt-4 pt-3 border-top">
+            <div class="d-flex gap-3 small fw-bold text-muted">
+                <span class="d-flex align-items-center gap-1"><div style="width:12px; height:12px; background:#f7931e;"></div> Asignaturas Semipresenciales</span>
+                <span class="d-flex align-items-center gap-1"><div style="width:12px; height:12px; background:#8cc63f;"></div> Asignaturas Virtuales</span>
+            </div>
+            <button id="btnGuardar" class="btn btn-sm text-white px-4 fw-bold shadow-sm" style="background-color: #008f82;">Guardar Seriación</button>
+        </div>
+    </div>
+
+</div> 
+
+<script>
+    // Base de datos simulada
+    const baseDatosMaterias = {
+        "Septiembre-Diciembre 2026": {
+            "Ingeniería en TIC": {
+                "Plan 2024": {
+                    "1": ["Comunicación y habilidades digitales", "Inglés I", "Fundamentos de Programación"],
+                    "9": ["Desarrollo Web", "Configuración de Redes Avanzadas", "Gestión de Proyectos TI"]
+                },
+                "Plan 2020": {
+                    "4": ["Bases de Datos", "Redes de Área Local", "Sistemas Operativos"]
+                }
+            },
+            "Ingeniería en Mecatrónica": {
+                "Plan 2024": {
+                    "1": ["Álgebra Lineal", "Dibujo Industrial", "Química Básica"],
+                    "9": ["Robótica Industrial", "Sistemas de Control", "Ingeniería de Manufactura"]
+                }
+            }
+        },
+        "Enero-Abril 2027": {
+            "Ingeniería en TIC": {
+                "Plan 2024": {
+                    "2": ["Programación Orientada a Objetos", "Cálculo Diferencial", "Física"]
+                }
+            },
+            "Licenciatura en Negocios": {
+                "Plan 2021": {
+                    "3": ["Contabilidad", "Administración", "Mercadotecnia"]
+                }
+            }
+        }
+    };
+
+    const USUARIO_ACTUAL = "ANA PAOLA CABELLO VEGA"; 
+
+    // Referencias al DOM
+    const selPeriodo = document.getElementById('selPeriodo');
+    const selCarrera = document.getElementById('selCarrera');
+    const selPlan = document.getElementById('selPlan');
+    const selGrado = document.getElementById('selGrado');
+    const seccionTabla = document.getElementById('seccionTabla');
+    const cuerpoTabla = document.getElementById('cuerpoTabla');
+    const seccionGrafica = document.getElementById('seccionGrafica');
+    
+    let cargandoBorrador = false; 
+
+    // Limpiar campos 
+    document.getElementById('btnLimpiarFiltros').addEventListener('click', function() {
+        selPeriodo.value = '';
+        resetSelect(selCarrera);
+        resetSelect(selPlan);
+        resetSelect(selGrado);
+        verificarFiltros();
+    });
+
+    function resetSelect(selectElement) {
+        selectElement.innerHTML = '<option value="">-- Seleccionar --</option>';
+        selectElement.disabled = true;
+    }
+
+    // Inicializar el primer Select
+    function inicializarSelects() {
+        Object.keys(baseDatosMaterias).forEach(periodo => {
+            selPeriodo.add(new Option(periodo, periodo));
+        });
+    }
+
+    // Eventos de los Selects (Cascada)
+    selPeriodo.addEventListener('change', function() {
+        resetSelect(selCarrera); resetSelect(selPlan); resetSelect(selGrado);
+        if(this.value) {
+            selCarrera.disabled = false;
+            Object.keys(baseDatosMaterias[this.value]).forEach(carrera => selCarrera.add(new Option(carrera, carrera)));
+        }
+        verificarFiltros();
+    });
+
+    selCarrera.addEventListener('change', function() {
+        resetSelect(selPlan); resetSelect(selGrado);
+        if(this.value) {
+            selPlan.disabled = false;
+            Object.keys(baseDatosMaterias[selPeriodo.value][this.value]).forEach(plan => selPlan.add(new Option(plan, plan)));
+        }
+        verificarFiltros();
+    });
+
+    selPlan.addEventListener('change', function() {
+        resetSelect(selGrado);
+        if(this.value) {
+            selGrado.disabled = false;
+            Object.keys(baseDatosMaterias[selPeriodo.value][selCarrera.value][this.value]).forEach(grado => selGrado.add(new Option(grado, grado)));
+        }
+        verificarFiltros();
+    });
+
+    selGrado.addEventListener('change', verificarFiltros);
+
+    // Sistema de Autoguardado
+    function guardarBorrador() {
+        if (cargandoBorrador) return; 
+
+        const estado = {
+            filtros: { periodo: selPeriodo.value, carrera: selCarrera.value, plan: selPlan.value, grado: selGrado.value },
+            materias: {}
+        };
+
+        document.querySelectorAll('#cuerpoTabla tr').forEach(fila => {
+            const id = fila.dataset.id;
+            estado.materias[id] = {
+                mod: fila.querySelector('.mod-select').value,
+                inicio: fila.querySelector('.inicio-input').value,
+                fin: fila.querySelector('.fin-input').value,
+                fInicio: fila.querySelector('.fecha-inicio').value,
+                fFin: fila.querySelector('.fecha-fin').value
+            };
+        });
+        localStorage.setItem('borradorPrototipo', JSON.stringify(estado));
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        inicializarSelects(); 
+        
+        const borradorStr = localStorage.getItem('borradorPrototipo');
+        if (borradorStr) {
+            cargandoBorrador = true; 
+            const borrador = JSON.parse(borradorStr);
+            
+            // Llenar los campos al cargar borrador 
+            if(borrador.filtros.periodo) {
+                selPeriodo.value = borrador.filtros.periodo;
+                selPeriodo.dispatchEvent(new Event('change'));
+                
+                if(borrador.filtros.carrera) {
+                    selCarrera.value = borrador.filtros.carrera;
+                    selCarrera.dispatchEvent(new Event('change'));
+                    
+                    if(borrador.filtros.plan) {
+                        selPlan.value = borrador.filtros.plan;
+                        selPlan.dispatchEvent(new Event('change'));
+                        
+                        if(borrador.filtros.grado) {
+                            selGrado.value = borrador.filtros.grado;
+                            selGrado.dispatchEvent(new Event('change'));
+                        }
+                    }
+                }
+            }
+
+            // Llenar la tabla al cargar borrador 
+            if (borrador.materias && cuerpoTabla.innerHTML !== '') {
+                document.querySelectorAll('#cuerpoTabla tr').forEach(fila => {
+                    const id = fila.dataset.id;
+                    if (borrador.materias[id]) {
+                        fila.querySelector('.mod-select').value = borrador.materias[id].mod || '';
+                        fila.querySelector('.inicio-input').value = borrador.materias[id].inicio || '';
+                        fila.querySelector('.fin-input').value = borrador.materias[id].fin || '';
+                        fila.querySelector('.fecha-inicio').value = borrador.materias[id].fInicio || '';
+                        fila.querySelector('.fecha-fin').value = borrador.materias[id].fFin || '';
+                    }
+                });
+                actualizarGrafica(); 
+            }
+            cargandoBorrador = false; 
+        }
+    });
+
+    // Controladores de UI (Tabla y Gráfica)
+    function verificarFiltros() {
+        const p = selPeriodo.value; const c = selCarrera.value; const pl = selPlan.value; const g = selGrado.value;
+
+        if (p && c && pl && g) {
+            document.getElementById('tituloGrafica').innerText = `Periodo: ${p} - ${c} - Cuatrimestre ${g}`;
+            generarTablaMaterias(p, c, pl, g);
+            seccionGrafica.style.display = 'block';
+        } else {
+            document.getElementById('tituloGrafica').innerText = 'PROYECCIÓN DE SEMANAS';
+            seccionTabla.style.display = 'none';
+            seccionGrafica.style.display = 'none';
+            cuerpoTabla.innerHTML = '';
+            actualizarGrafica(); 
+        }
+        guardarBorrador(); 
+    }
+
+    function generarTablaMaterias(periodo, carrera, plan, grado) {
+        cuerpoTabla.innerHTML = ''; 
+        const materias = baseDatosMaterias[periodo]?.[carrera]?.[plan]?.[grado] || [];
+        
+        if(materias.length === 0) return;
+
+        materias.forEach((materia, index) => {
+            const idMateria = `mat_${index}`;
+            // NOTA: Se eliminó el <td> con el ${USUARIO_ACTUAL} para que coincida con las columnas del Thead
+            const fila = `
+                <tr data-id="${idMateria}" data-nombre="${materia}">
+                    <td class="text-start fw-bold ps-2">${materia}</td>
+                    <td>
+                        <select class="form-select form-select-sm mod-select">
+                            <option value="">-- Elegir --</option>
+                            <option value="virtual">Virtual</option>
+                            <option value="semi">Semipresencial</option>
+                        </select>
+                    </td>
+                    <td><input type="number" class="form-control form-control-sm text-center inicio-input" min="1"></td>
+                    <td><input type="number" class="form-control form-control-sm text-center fin-input" min="1"></td>
+                    <td><input type="date" class="form-control form-control-sm fecha-inicio"></td>
+                    <td><input type="date" class="form-control form-control-sm fecha-fin"></td>
+                </tr>
+            `;
+            cuerpoTabla.insertAdjacentHTML('beforeend', fila);
+        });
+        seccionTabla.style.display = 'block';
+        asignarEventosInputs();
+    }
+
+    function asignarEventosInputs() {
+        const filas = document.querySelectorAll('#cuerpoTabla tr');
+        filas.forEach(fila => {
+            fila.querySelector('.mod-select').addEventListener('change', () => { actualizarGrafica(); guardarBorrador(); });
+            fila.querySelector('.inicio-input').addEventListener('input', () => { actualizarGrafica(); guardarBorrador(); });
+            fila.querySelector('.fin-input').addEventListener('input', () => { actualizarGrafica(); guardarBorrador(); });
+            fila.querySelector('.fecha-inicio').addEventListener('change', guardarBorrador);
+            fila.querySelector('.fecha-fin').addEventListener('change', guardarBorrador);
+        });
+    }
+
+    function actualizarGrafica() {
+        const filas = document.querySelectorAll('#cuerpoTabla tr');
+        const gridHeader = document.getElementById('gridHeader');
+        const gridBody = document.getElementById('gridBody');
+        let maxSemana = 0; let materiasPintar = [];
+
+        filas.forEach(fila => {
+            const mod = fila.querySelector('.mod-select')?.value;
+            const inicio = parseInt(fila.querySelector('.inicio-input')?.value);
+            const fin = parseInt(fila.querySelector('.fin-input')?.value);
+
+            if (mod && inicio > 0 && fin >= inicio) {
+                materiasPintar.push({ id: fila.dataset.id, nombre: fila.dataset.nombre, modalidad: mod, inicio: inicio, fin: fin });
+                if (fin > maxSemana) maxSemana = fin;
+            }
+        });
+
+        if (materiasPintar.length === 0) {
+            gridHeader.innerHTML = '';
+            gridBody.innerHTML = '<div class="text-center text-muted py-3 small">Llene las semanas de inicio y fin en la tabla para visualizar la gráfica.</div>';
+            return;
+        }
+
+        gridHeader.style.gridTemplateColumns = `repeat(${maxSemana}, 1fr)`;
+        gridHeader.innerHTML = '';
+        for (let i = 1; i <= maxSemana; i++) { gridHeader.innerHTML += `<div class="header-semana">${i}</div>`; }
+
+        gridBody.innerHTML = '';
+        materiasPintar.forEach(mat => {
+            const colorClass = mat.modalidad === 'virtual' ? 'bg-virtual' : 'bg-semi';
+            const estiloUbicacion = `grid-column: ${mat.inicio} / ${mat.fin + 1};`;
+            gridBody.innerHTML += `
+                <div class="fila-materia" style="grid-template-columns: repeat(${maxSemana}, 1fr);">
+                    <div class="barra-materia ${colorClass}" style="${estiloUbicacion}" onclick="eliminarMateria('${mat.id}')">
+                        <span>${mat.nombre}</span>
+                        <button class="btn-eliminar-barra">&times;</button>
+                    </div>
+                </div>
+            `;
+        });
+    }
+
+   window.eliminarMateria = function(id) {
+        if(confirm("¿Desea remover esta materia de la gráfica? ")) {
+            const fila = document.querySelector(`tr[data-id="${id}"]`);
+            if (fila) {
+                fila.querySelector('.mod-select').value = ''; fila.querySelector('.inicio-input').value = '';
+                fila.querySelector('.fin-input').value = ''; fila.querySelector('.fecha-inicio').value = '';
+                fila.querySelector('.fecha-fin').value = '';
+                actualizarGrafica(); guardarBorrador(); 
+            }
+        }
+    }
+
+    // Guardado Final
+    document.getElementById('btnGuardar').addEventListener('click', function() {
+        if(!selPeriodo.value || !selPlan.value || !selCarrera.value || !selGrado.value) {
+            alert("Por favor, selecciona Periodo, Programa, Plan y Grado antes de guardar.");
+            return;
+        }
+
+        const materiasGuardadas = {};
+        document.querySelectorAll('#cuerpoTabla tr').forEach(fila => {
+            const id = fila.dataset.id;
+            const mod = fila.querySelector('.mod-select').value;
+            if(mod) { 
+                materiasGuardadas[id] = {
+                    mod: mod, inicio: fila.querySelector('.inicio-input').value,
+                    fin: fila.querySelector('.fin-input').value,
+                    fInicio: fila.querySelector('.fecha-inicio').value, fFin: fila.querySelector('.fecha-fin').value,
+                    nombre: fila.dataset.nombre
+                };
+            }
+        });
+
+        const nuevaSeriacion = {
+            valoresFiltros: { periodo: selPeriodo.value, carrera: selCarrera.value, plan: selPlan.value, grado: selGrado.value },
+            periodo: selPeriodo.value, plan: selPlan.value, carrera: selCarrera.value, grado: selGrado.value,
+            autor: USUARIO_ACTUAL, fecha: new Date().toLocaleDateString(), materias: materiasGuardadas 
+        };
+
+        const historial = JSON.parse(localStorage.getItem('seriacionesPrototipo')) || [];
+        historial.push(nuevaSeriacion);
+        localStorage.setItem('seriacionesPrototipo', JSON.stringify(historial));
+
+        alert("¡Seriación guardada con éxito!");
+        localStorage.removeItem('borradorPrototipo');
+
+        // Limpiar pantalla y bloquear selects
+        selPeriodo.value = ''; 
+        resetSelect(selCarrera); resetSelect(selPlan); resetSelect(selGrado);
+        verificarFiltros(); 
+    });
+    
+</script>
+
+</body>
+</html>
