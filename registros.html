@@ -205,7 +205,6 @@
         `;
 
         arrayMaterias.forEach(mat => {
-            // NUEVO CÓDIGO (Sin colores, solo negritas):
 const modTexto = mat.mod === 'virtual' ? '<span class="fw-bold text-dark">Virtual</span>' : '<span class="fw-bold text-dark">Semipresencial</span>';
             const fechaIni = mat.fInicio ? mat.fInicio.split('-').reverse().join('/') : '-';
             const fechaFin = mat.fFin ? mat.fFin.split('-').reverse().join('/') : '-';
