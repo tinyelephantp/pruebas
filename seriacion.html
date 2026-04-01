@@ -9,7 +9,7 @@
     
     <style>
         body { 
-            background-color: #f4f7f6; 
+            background-color: #ffffff; 
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
             font-size: 0.85rem;
             margin: 0;
@@ -148,11 +148,6 @@
                 <img src="C:\Tomcat 8.5\webapps\p\imagenes\banner.jpg" width="100%" alt="Banner Institucional"/>
             </td>
         </tr>
-        <tr> 
-            <td height="29" align="center">
-                <script type="text/javascript" language="JavaScript1.2" src="../../../../jsp/menu/menu.js"></script>
-            </td>
-        </tr>
         <tr align="center">
             <td class="encabezado-titulo">SERIACIÓN DE MATERIAS MODALIDAD MIXTA (DD)</td>
         </tr>
@@ -163,7 +158,7 @@
 
     <div class="d-flex justify-content-end mb-3">
         <a href="registros.html" class="btn btn-sm px-4 fw-bold shadow-sm" style="background-color: #283a74c7; color: #fdfdfd; border: 1px solid #dee2e6;">
-            Ver Registros
+            Ver Seriaciones Guardadas
         </a>
     </div>
 
@@ -203,7 +198,7 @@
             </div>
              <div class="col-12 text-end mt-4 pt-3" style="border-top: 1px dashed #e9ecef;">
                 <button type="button" id="btnLimpiarFiltros" class="btn btn-sm btn-limpiar px-4 fw-bold">
-                    <i class="bi bi-x-circle"></i> Limpiar filtros
+                    <i class="bi bi-x-circle"></i> Limpiar campos
                 </button>
             </div>
         </div>
@@ -219,6 +214,7 @@
                             <th style="width: 130px;">Tipo de Asignatura</th>
                             <th style="width: 70px;">Semana Inicio</th>
                             <th style="width: 70px;">Semana Fin</th>
+                            <th style="width: 80px;">Semanas de Duración</th>
                             <th style="width: 120px;">Fecha Inicio</th>
                             <th style="width: 120px;">Fecha Fin</th>
                         </tr>
@@ -361,6 +357,7 @@
                 mod: fila.querySelector('.mod-select').value,
                 inicio: fila.querySelector('.inicio-input').value,
                 fin: fila.querySelector('.fin-input').value,
+                duracion: fila.querySelector('.duracion-input').value,
                 fInicio: fila.querySelector('.fecha-inicio').value,
                 fFin: fila.querySelector('.fecha-fin').value
             };
@@ -403,6 +400,13 @@
                         fila.querySelector('.fin-input').value = borrador.materias[id].fin || '';
                         fila.querySelector('.fecha-inicio').value = borrador.materias[id].fInicio || '';
                         fila.querySelector('.fecha-fin').value = borrador.materias[id].fFin || '';
+                        
+                        // Autocalcular duración en la recarga del borrador
+                        const inicio = parseInt(borrador.materias[id].inicio);
+                        const fin = parseInt(borrador.materias[id].fin);
+                        if (!isNaN(inicio) && !isNaN(fin) && fin >= inicio) {
+                            fila.querySelector('.duracion-input').value = (fin - inicio) + 1;
+                        }
                     }
                 });
                 actualizarGrafica(); 
@@ -440,7 +444,7 @@
                 <tr data-id="${idMateria}" data-nombre="${materia}">
                     <td class="text-start fw-bold ps-2">${materia}</td>
                     <td>
-                        <select class="form-select form-select-sm mod-select">
+                        <select class="form-select form-select-sm mod-select" style="min-width: 140px;">
                             <option value="">-- Elegir --</option>
                             <option value="virtual">Virtual</option>
                             <option value="semi">Semipresencial</option>
@@ -448,6 +452,7 @@
                     </td>
                     <td><input type="number" class="form-control form-control-sm text-center inicio-input" min="1"></td>
                     <td><input type="number" class="form-control form-control-sm text-center fin-input" min="1"></td>
+                    <td><input type="text" class="form-control form-control-sm text-center duracion-input fw-bold" readonly style="background-color: #f8f9fa; color: #002b5e;"></td>
                     <td><input type="date" class="form-control form-control-sm fecha-inicio"></td>
                     <td><input type="date" class="form-control form-control-sm fecha-fin"></td>
                 </tr>
@@ -461,11 +466,33 @@
     function asignarEventosInputs() {
         const filas = document.querySelectorAll('#cuerpoTabla tr');
         filas.forEach(fila => {
-            fila.querySelector('.mod-select').addEventListener('change', () => { actualizarGrafica(); guardarBorrador(); });
-            fila.querySelector('.inicio-input').addEventListener('input', () => { actualizarGrafica(); guardarBorrador(); });
-            fila.querySelector('.fin-input').addEventListener('input', () => { actualizarGrafica(); guardarBorrador(); });
-            fila.querySelector('.fecha-inicio').addEventListener('change', guardarBorrador);
-            fila.querySelector('.fecha-fin').addEventListener('change', guardarBorrador);
+            const modSelect = fila.querySelector('.mod-select');
+            const inicioInput = fila.querySelector('.inicio-input');
+            const finInput = fila.querySelector('.fin-input');
+            const duracionInput = fila.querySelector('.duracion-input');
+            const fechaInicio = fila.querySelector('.fecha-inicio');
+            const fechaFin = fila.querySelector('.fecha-fin');
+
+
+            const calcularDuracion = () => {
+                const inicio = parseInt(inicioInput.value);
+                const fin = parseInt(finInput.value);
+                
+                // Si ambos tienen valores válidos y el fin es mayor o igual al inicio
+                if (!isNaN(inicio) && !isNaN(fin) && fin >= inicio) {
+                    duracionInput.value = (fin - inicio) + 1; // +1 porque cuenta la semana inicial y final
+                } else {
+                    duracionInput.value = '';
+                }
+            };
+
+            modSelect.addEventListener('change', () => { actualizarGrafica(); guardarBorrador(); });
+            
+            inicioInput.addEventListener('input', () => { calcularDuracion(); actualizarGrafica(); guardarBorrador(); });
+            finInput.addEventListener('input', () => { calcularDuracion(); actualizarGrafica(); guardarBorrador(); });
+            
+            fechaInicio.addEventListener('change', guardarBorrador);
+            fechaFin.addEventListener('change', guardarBorrador);
         });
     }
 
@@ -515,8 +542,11 @@
         if(confirm("¿Desea remover esta materia de la gráfica? ")) {
             const fila = document.querySelector(`tr[data-id="${id}"]`);
             if (fila) {
-                fila.querySelector('.mod-select').value = ''; fila.querySelector('.inicio-input').value = '';
-                fila.querySelector('.fin-input').value = ''; fila.querySelector('.fecha-inicio').value = '';
+                fila.querySelector('.mod-select').value = ''; 
+                fila.querySelector('.inicio-input').value = '';
+                fila.querySelector('.fin-input').value = ''; 
+                fila.querySelector('.duracion-input').value = ''; // Limpiar duración también
+                fila.querySelector('.fecha-inicio').value = '';
                 fila.querySelector('.fecha-fin').value = '';
                 actualizarGrafica(); guardarBorrador(); 
             }
@@ -535,9 +565,12 @@
             const mod = fila.querySelector('.mod-select').value;
             if(mod) { 
                 materiasGuardadas[id] = {
-                    mod: mod, inicio: fila.querySelector('.inicio-input').value,
+                    mod: mod, 
+                    inicio: fila.querySelector('.inicio-input').value,
                     fin: fila.querySelector('.fin-input').value,
-                    fInicio: fila.querySelector('.fecha-inicio').value, fFin: fila.querySelector('.fecha-fin').value,
+                    duracion: fila.querySelector('.duracion-input').value, // Se guarda la duración final
+                    fInicio: fila.querySelector('.fecha-inicio').value, 
+                    fFin: fila.querySelector('.fecha-fin').value,
                     nombre: fila.dataset.nombre
                 };
             }
@@ -553,7 +586,7 @@
         historial.push(nuevaSeriacion);
         localStorage.setItem('seriacionesPrototipo', JSON.stringify(historial));
 
-        alert("¡Seriación guardada con éxito!");
+        alert("Seriación guardada con éxito");
         localStorage.removeItem('borradorPrototipo');
         selPeriodo.value = ''; 
         resetSelect(selCarrera); resetSelect(selPlan); resetSelect(selGrado);

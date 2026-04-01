@@ -35,7 +35,7 @@
     </table>
 
     <div class="d-flex justify-content-between align-items-center mb-4 mt-3">
-        <h5 class="fw-bold mb-0 text-uppercase" style="color: #002b5e;">Registros por Periodo</h5>
+        <h5 class="fw-bold mb-0 text-uppercase" style="color: #002b5e;">Seriaciones por Periodo</h5>
         <a href="seriacion.html" class="btn btn-sm btn-outline-secondary px-4 fw-bold"> Volver al Registro</a>
     </div>
 
@@ -58,7 +58,7 @@
                 <div id="modalDetalles"></div>
 
                 <div class="d-flex gap-3 small fw-bold text-muted mb-3 justify-content-end border-top pt-3 mt-2">
-                    <span class="d-flex align-items-center gap-1"><div style="width:12px; height:12px; background:#f7931e;"></div> Asgnaturas Semipresenciales</span>
+                    <span class="d-flex align-items-center gap-1"><div style="width:12px; height:12px; background:#f7931e;"></div> Asignaturas Semipresenciales</span>
                     <span class="d-flex align-items-center gap-1"><div style="width:12px; height:12px; background:#8cc63f;"></div> Asignaturas Virtuales</span>
                 </div>
                 <div id="modalGridHeader" class="grid-semanas"></div>
@@ -102,7 +102,31 @@
         let htmlAcordeon = '';
         let indexColapso = 0;
 
-        for (const periodo in registrosPorPeriodo) {
+        // --- NUEVA LÓGICA DE ORDENAMIENTO POR PERIODO CRONOLÓGICO ---
+        const mesesDic = {
+            "enero": 1, "febrero": 2, "marzo": 3, "abril": 4, "mayo": 5, "junio": 6,
+            "julio": 7, "agosto": 8, "septiembre": 9, "octubre": 10, "noviembre": 11, "diciembre": 12
+        };
+
+        const periodosOrdenados = Object.keys(registrosPorPeriodo).sort((a, b) => {
+            const calcularValor = (periodoStr) => {
+                // Asume formato "Mes-Mes Año", ej: "Enero-Abril 2027"
+                const partes = periodoStr.toLowerCase().trim().split(' ');
+                if(partes.length < 2) return 0;
+                
+                const anio = parseInt(partes[1]);
+                const mesInicio = partes[0].split('-')[0]; // Toma "enero" de "enero-abril"
+                const valorMes = mesesDic[mesInicio] || 0;
+                
+                return (anio * 100) + valorMes; // Genera un número ordenable como 202701
+            };
+            // Orden descendente (más reciente primero)
+            return calcularValor(b) - calcularValor(a); 
+        });
+        // -----------------------------------------------------------
+
+        // Usamos la lista ya ordenada matemáticamente
+        for (const periodo of periodosOrdenados) {
             const registrosDelPeriodo = registrosPorPeriodo[periodo];
             const idCollapse = `collapse_${indexColapso}`;
             const idHeading = `heading_${indexColapso}`;
@@ -122,8 +146,8 @@
                             </div>
                         </div>
                         <div class="d-flex gap-2">
-                            <button class="btn btn-sm text-white shadow-sm" style="background-color: #002b5e;" onclick="verGrafica(${registro.indiceOriginal})">Ver</button>
-                            <button class="btn btn-sm text-dark shadow-sm" style="background-color: #f7931e; border:none;" onclick="editarRegistro(${registro.indiceOriginal})">Editar</button>
+                            <button class="btn btn-sm text-white shadow-sm" style="background-color: #008080;" onclick="verGrafica(${registro.indiceOriginal})">Ver</button>
+                            <button class="btn btn-sm text-dark shadow-sm" style="background-color: #64b3f5;" onclick="editarRegistro(${registro.indiceOriginal})">Editar</button>
                             <button class="btn btn-sm btn-danger text-white shadow-sm" onclick="eliminarRegistro(${registro.indiceOriginal})">Eliminar</button>
                         </div>
                     </div>
@@ -167,7 +191,6 @@
         const registro = guardadas[indice];
         if(!registro) return;
 
-     
         document.getElementById('modalTitulo').innerText = `${registro.carrera} - Cuatrimestre ${registro.grado} (${registro.periodo})`;
 
         const gridHeader = document.getElementById('modalGridHeader');
@@ -183,8 +206,6 @@
         }
 
         const arrayMaterias = Object.values(registro.materias);
-
-       
         let tablaHTML = `
             <div class="mb-3 text-end">
                 <span class="badge bg-white text-secondary border p-2 shadow-sm" style="font-size:0.8rem;">
@@ -197,6 +218,9 @@
                         <tr>
                             <th class="text-start ps-3">Asignatura</th>
                             <th>Tipo de asignatura</th>
+                            <th>Sem. Inicio</th>
+                            <th>Sem. Fin</th>
+                            <th>Sem. de Duración</th>
                             <th>Fecha Inicio</th>
                             <th>Fecha Fin</th>
                         </tr>
@@ -205,14 +229,20 @@
         `;
 
         arrayMaterias.forEach(mat => {
-const modTexto = mat.mod === 'virtual' ? '<span class="fw-bold text-dark">Virtual</span>' : '<span class="fw-bold text-dark">Semipresencial</span>';
+            const modTexto = mat.mod === 'virtual' ? '<span class="fw-bold text-dark">Virtual</span>' : '<span class="fw-bold text-dark">Semipresencial</span>';
             const fechaIni = mat.fInicio ? mat.fInicio.split('-').reverse().join('/') : '-';
             const fechaFin = mat.fFin ? mat.fFin.split('-').reverse().join('/') : '-';
+            const semIni = mat.inicio || '-';
+            const semFin = mat.fin || '-';
+            const duracion = mat.duracion || ((parseInt(mat.fin) - parseInt(mat.inicio) + 1) || '-');
 
             tablaHTML += `
                 <tr>
                     <td class="text-start ps-3 fw-bold text-dark">${mat.nombre}</td>
                     <td>${modTexto}</td>
+                    <td>${semIni}</td>
+                    <td>${semFin}</td>
+                    <td class="fw-bold" style="color: #002b5e; background-color: #f1f4f8;">${duracion}</td>
                     <td>${fechaIni}</td>
                     <td>${fechaFin}</td>
                 </tr>
@@ -220,6 +250,7 @@ const modTexto = mat.mod === 'virtual' ? '<span class="fw-bold text-dark">Virtua
         });
         tablaHTML += `</tbody></table></div>`;
         modalDetalles.innerHTML = tablaHTML; 
+
         let maxSemana = 0;
         arrayMaterias.forEach(mat => {
             const fin = parseInt(mat.fin);
@@ -244,6 +275,7 @@ const modTexto = mat.mod === 'virtual' ? '<span class="fw-bold text-dark">Virtua
         });
         modalInstance.show();
     }
+
     window.editarRegistro = function(indice) {
         if(confirm("Se editará esta seriación y se enviará al área de registro \n\n¿Deseas continuar?")) {
             const guardadas = JSON.parse(localStorage.getItem('seriacionesPrototipo')) || [];
@@ -255,16 +287,12 @@ const modTexto = mat.mod === 'virtual' ? '<span class="fw-bold text-dark">Virtua
 
             localStorage.setItem('borradorPrototipo', JSON.stringify(estadoBorrador));
 
-            
             guardadas.splice(indice, 1);
             localStorage.setItem('seriacionesPrototipo', JSON.stringify(guardadas));
 
-          
             window.location.href = 'seriacion.html';
         }
     }
-
-  
     
     window.eliminarRegistro = function(indice) {
         if(confirm("¿Estás completamente seguro de eliminar este registro? Esta acción no se puede deshacer.")) {

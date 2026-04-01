@@ -8,7 +8,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <style>
         body { background-color: #f4f7f6; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: 0.85rem; margin: 0; padding: 20px 0; }
-        .sistema-container{ max-width: 1050px; margin: 0 auto; background-color: white; padding: 30px; box-shadow: 0 0 20px rgba(0,0,0,0.05); min-height: 100vh; border-radius: 8px; }
+        .sistema-container { max-width: 1050px; margin: 0 auto; background-color: white; padding: 30px; box-shadow: 0 0 20px rgba(0,0,0,0.05); min-height: 100vh; border-radius: 8px; }
 
         .encabezado-titulo { background-color: #002b5e; color: #ffffff; font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 1.2rem; padding: 10px 0; text-transform: uppercase; }
         .encabezado-usuario { background-color: #00a680; color: #ffffff; font-family: Arial, Helvetica, sans-serif; font-weight: normal; font-size: 1rem; padding: 6px 0; text-transform: uppercase; }
@@ -46,6 +46,8 @@
         .tabla-evaluaciones th { background-color: #002b5e !important; color: white !important; vertical-align: middle; font-size: 0.75rem; border-color: #001a38; text-transform: uppercase; }
         .tabla-evaluaciones td { vertical-align: middle; font-weight: 500; font-size: 0.8rem; }
         .input-fecha { font-size: 0.75rem; text-align: center; max-width: 120px; margin: 0 auto; padding: 4px; }
+
+        /* Estilos del nuevo Resumen Agrupado */
         .bloque-fecha-autor {
             background-color: #ffffff; border: 1px solid #e0e0e0; border-radius: 8px;
             padding: 15px; min-width: 220px; text-align: center;
@@ -53,6 +55,8 @@
         .fecha-resaltada { color: #1a73e8; font-size: 1.4rem; font-weight: 900; line-height: 1.1; margin: 5px 0; }
         .mes-resaltado { color: #555; font-size: 0.85rem; text-transform: uppercase; font-weight: bold; letter-spacing: 1px; }
         .separador-fecha { width: 100%; height: 1px; background-color: #e0e0e0; margin: 12px 0; }
+        
+        /* Globo Leyenda */
         .globo-leyenda {
             display: inline-block; padding: 12px 25px; border-radius: 50px;
             background-color: #e8f5e9; color: #2e7d32; border: 1px solid #c8e6c9;
@@ -95,7 +99,7 @@
         <div class="grafica-container shadow-sm" id="graficaContenedor">
             <div class="text-center mb-4">
                 <h6 class="fw-bold text-uppercase mb-0" style="color: #008f82;" id="tituloGrafica">SERIACIÓN DE MATERIAS</h6>
-                <small class="text-black">Haz clic en una materia para agendar sus fechas de evaluación. Se seleccionarán automáticamente todas las materias que terminen en la misma semana.</small>
+                <small class="text-muted">Haz clic en una materia para programar sus fechas de evaluación. Se seleccionarán automáticamente todas las materias con la misma duración (semana de inicio y fin).</small>
             </div>
 
             <div id="ganttArea">
@@ -111,7 +115,7 @@
 
         <div id="seccionFechas">
             
-            <h6 class="fw-bold mb-3 mt-4" style="color: #002b5e;">ASIGNANDO FECHAS PARA: (<span id="lblSemanas"></span>)</h6>
+            <h6 class="fw-bold mb-3 mt-4" style="color: #002b5e;">ASIGNANDO FECHAS PARA (<span id="lblSemanas"></span>):</h6>
 
             <div class="shadow-sm d-flex align-items-center gap-3" style="background-color: #fff3cd; border-left: 5px solid #ffc107; padding: 15px; border-radius: 8px; margin-bottom: 25px;">
                 <div class="fs-4 lh-1 fw-bold text-warning" style="background-color: white; border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border: 2px solid #ffc107;">!</div>
@@ -138,7 +142,31 @@
                     </thead>
                     <tbody class="bg-white">
                         <tr>
-                            <td class="text-start ps-3 fw-bold">EVALUACIÓN ORDINARIA</td>
+                            <td class="text-start ps-3 fw-bold">PRIMER CORTE</td>
+                            <td><input type="date" class="form-control input-fecha"></td>
+                            <td><input type="date" class="form-control input-fecha"></td>
+                            <td><button class="btn btn-sm btn-outline-primary fw-bold px-3 btn-guardar">Guardar</button></td>
+                            <td>
+                                <div class="d-flex justify-content-center gap-2">
+                                    <button class="btn btn-sm btn-light border shadow-sm btn-editar" title="Editar" disabled>✏️</button>
+                                    <button class="btn btn-sm btn-light border shadow-sm btn-eliminar" title="Eliminar">🗑️</button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr style="background-color: #f8f9fa;">
+                            <td class="text-start ps-3 fw-bold">SEGUNDO CORTE</td>
+                            <td><input type="date" class="form-control input-fecha"></td>
+                            <td><input type="date" class="form-control input-fecha"></td>
+                            <td><button class="btn btn-sm btn-outline-primary fw-bold px-3 btn-guardar">Guardar</button></td>
+                            <td>
+                                <div class="d-flex justify-content-center gap-2">
+                                    <button class="btn btn-sm btn-light border shadow-sm btn-editar" title="Editar" disabled>✏️</button>
+                                    <button class="btn btn-sm btn-light border shadow-sm btn-eliminar" title="Eliminar">🗑️</button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-start ps-3 fw-bold">TERCER CORTE</td>
                             <td><input type="date" class="form-control input-fecha"></td>
                             <td><input type="date" class="form-control input-fecha"></td>
                             <td><button class="btn btn-sm btn-outline-primary fw-bold px-3 btn-guardar">Guardar</button></td>
@@ -196,7 +224,7 @@
         <div class="text-center mb-5 mt-4">
             <h4 class="fw-bold mb-4 text-uppercase" style="color: #002b5e; letter-spacing: 1px;">RESUMEN DE FECHAS PROGRAMADAS</h4>
             <div class="globo-leyenda">
-                Las siguientes evaluaciones han sido registradas exitosamente.
+                ✓ Las siguientes evaluaciones han sido registradas exitosamente.
             </div>
         </div>
 
@@ -248,7 +276,28 @@
         let htmlAcordeon = '';
         let indexColapso = 0;
 
-        for (const periodo in registrosPorPeriodo) {
+        // DICCIONARIO Y LÓGICA DE ORDENAMIENTO DE PERIODOS
+        const mesesDic = {
+            "enero": 1, "febrero": 2, "marzo": 3, "abril": 4, "mayo": 5, "junio": 6,
+            "julio": 7, "agosto": 8, "septiembre": 9, "octubre": 10, "noviembre": 11, "diciembre": 12
+        };
+
+        const periodosOrdenados = Object.keys(registrosPorPeriodo).sort((a, b) => {
+            const calcularValor = (periodoStr) => {
+                const partes = periodoStr.toLowerCase().trim().split(' ');
+                if(partes.length < 2) return 0;
+                
+                const anio = parseInt(partes[1]);
+                const mesInicio = partes[0].split('-')[0]; 
+                const valorMes = mesesDic[mesInicio] || 0;
+                
+                return (anio * 100) + valorMes; 
+            };
+            return calcularValor(b) - calcularValor(a); // Descendente
+        });
+
+        // RENDERIZADO DEL ACORDEÓN ORDENADO
+        for (const periodo of periodosOrdenados) {
             const registrosDelPeriodo = registrosPorPeriodo[periodo];
             const idCollapse = `collapse_${indexColapso}`;
             const idHeading = `heading_${indexColapso}`;
@@ -261,7 +310,7 @@
                             <div class="tarjeta-titulo">
                                 ${registro.carrera} <span class="text-muted mx-1">|</span> 
                                 Cuatrimestre ${registro.grado} <span class="text-muted mx-1">|</span>
-                                 ${registro.plan}
+                                ${registro.plan}
                             </div>
                             <div class="tarjeta-autor">Actualizó: ${registro.autor} el ${registro.fecha}</div>
                         </div>
@@ -358,15 +407,18 @@
         });
     }
 
+    // --- ACTUALIZADO: SELECCIÓN POR DURACIÓN (Misma semana inicio y fin) ---
     window.seleccionarBloque = function(inicio, fin) {
-        bloqueActualKey = `fin_${fin}`; 
+        bloqueActualKey = `${inicio}_${fin}`; 
         const barras = document.querySelectorAll('.barra-materia');
         const listaMaterias = document.getElementById('listaMateriasAsignar');
         let materiasAfectadas = [];
 
         barras.forEach(barra => {
+            const bInicio = parseInt(barra.dataset.inicio);
             const bFin = parseInt(barra.dataset.fin); 
-            if(bFin === fin) {
+            
+            if(bInicio === inicio && bFin === fin) {
                 barra.classList.add('materia-seleccionada');
                 materiasAfectadas.push(barra.dataset.nombre);
             } else {
@@ -375,7 +427,7 @@
         });
 
         document.getElementById('seccionFechas').style.display = 'block';
-        document.getElementById('lblSemanas').innerText = `MATERIAS QUE TERMINAN EN LA SEMANA ${fin}`;
+        document.getElementById('lblSemanas').innerText = `SEMANAS ${inicio} A ${fin}`;
         
         listaMaterias.innerHTML = '';
         materiasAfectadas.forEach(mat => {
@@ -424,6 +476,8 @@
     }
 
     document.addEventListener('click', function(e) {
+        
+        // 1. Lógica Guardar
         if (e.target.closest('.btn-guardar')) {
             const btn = e.target.closest('.btn-guardar');
             const fila = btn.closest('tr');
@@ -463,6 +517,7 @@
             alert("La fecha fue capturada correctamente.");
         }
 
+        // 2. Lógica Editar
         if (e.target.closest('.btn-editar')) {
             const btn = e.target.closest('.btn-editar');
             const fila = btn.closest('tr');
@@ -475,6 +530,7 @@
             btn.disabled = true;
         }
 
+        // 3. Lógica Eliminar
         if (e.target.closest('.btn-eliminar')) {
             const btn = e.target.closest('.btn-eliminar');
             const fila = btn.closest('tr');
@@ -499,17 +555,21 @@
         }
     });
 
+    // --- LÓGICA DE AGRUPACIÓN Y ORDENAMIENTO EN EL RESUMEN ---
     window.mostrarResumen = function() {
         document.getElementById('vistaCaptura').style.display = 'none';
         document.getElementById('vistaResumen').style.display = 'block';
 
         const guardadas = JSON.parse(localStorage.getItem('seriacionesPrototipo')) || [];
         const registro = guardadas[indiceRegistroActual];
+
+        // Llenar datos de contexto de la seriación
         document.getElementById('resumenContexto').innerHTML = `
-        <span style="color: #000080;">${registro.carrera}</span> <span class="text-muted mx-3">|</span>
-        <span style="color: #000080;">${registro.periodo}</span> <span class="text-muted mx-3">|</span>
-        <span style="color: #000080;">${registro.plan}</span> <span class="text-muted mx-3">|</span>
-        <strong>Grado:</strong> <span style="color: #000080;">${registro.grado}</span> `;
+            <strong>Programa Educativo:</strong> <span class="text-primary">${registro.carrera}</span> <span class="text-muted mx-3">|</span>
+            <strong>Periodo:</strong> <span class="text-primary">${registro.periodo}</span> <span class="text-muted mx-3">|</span>
+            <strong>Plan de Estudios:</strong> <span class="text-primary">${registro.plan}</span> <span class="text-muted mx-3">|</span>
+            <strong>Grado:</strong> <span class="text-primary">${registro.grado}</span>
+        `;
 
         const contenedorResumen = document.getElementById('contenedorResumenFechas');
         contenedorResumen.innerHTML = '';
@@ -519,8 +579,10 @@
 
         if (registro && registro.fechasCaptura) {
             for (const bloqueKey in registro.fechasCaptura) {
-                const finSemana = parseInt(bloqueKey.split('_')[1]); 
-                const materiasDeSemanaArray = Object.values(registro.materias).filter(mat => parseInt(mat.fin) === finSemana);
+                // ACTUALIZADO: Lee el bloqueKey con formato "inicio_fin"
+                const [semInicio, semFin] = bloqueKey.split('_').map(Number); 
+                const materiasDeSemanaArray = Object.values(registro.materias).filter(mat => parseInt(mat.inicio) === semInicio && parseInt(mat.fin) === semFin);
+                
                 const evaluaciones = registro.fechasCaptura[bloqueKey];
 
                 for (const evalName in evaluaciones) {
@@ -556,6 +618,8 @@
         
         let htmlAcordeonResumen = '<div class="accordion" id="acordeonResumenAgrupado">';
         let evalIndex = 0;
+
+        // Renderizar los datos agrupados en Acordeón
         for (const evalName in agrupacion) {
             const collapseId = `collapse_resumen_${evalIndex}`;
             const headingId = `heading_resumen_${evalIndex}`;
@@ -572,8 +636,14 @@
                         <div class="accordion-body d-flex flex-column gap-3 border-top" style="background-color: #fafbfc;">
             `;
 
-            for (const groupKey in agrupacion[evalName]) {
-                const grupo = agrupacion[evalName][groupKey];
+            // ORDENAMIENTO CRONOLÓGICO DE LAS TARJETAS (Por fecha de inicio)
+            const gruposOrdenados = Object.values(agrupacion[evalName]).sort((a, b) => {
+                const fechaA = new Date(a.inicio + 'T00:00:00');
+                const fechaB = new Date(b.inicio + 'T00:00:00');
+                return fechaA - fechaB; 
+            });
+
+            gruposOrdenados.forEach(grupo => {
                 const dInicio = new Date(grupo.inicio + 'T00:00:00');
                 const dFin = new Date(grupo.fin + 'T00:00:00');
                 const mesBox = dInicio.getMonth() === dFin.getMonth() ? nombresMeses[dInicio.getMonth()] : `${nombresMeses[dInicio.getMonth()]} - ${nombresMeses[dFin.getMonth()]}`;
@@ -606,12 +676,12 @@
                         </div>
 
                         <div class="flex-grow-1">
-                            <p class="mb-1 text-muted small fw-bold text-uppercase">Asignaturas:</p>
+                            <p class="mb-1 text-muted small fw-bold text-uppercase">Asignaturas Programadas:</p>
                             ${listaMateriasHTML}
                         </div>
                     </div>
                 `;
-            }
+            });
 
             htmlSeccion += `</div></div></div>`;
             htmlAcordeonResumen += htmlSeccion;
