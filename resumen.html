@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prototipo - Resumen de Cargas Académicas</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <style>
+        .btn-grado {
+            transition: all 0.3s ease;
+        }
+        .dropdown-menu-profesores {
+            max-height: 250px;
+            overflow-y: auto;
+        }
+
+        /* --- ESTILOS PARA LAS CELDAS DE LA TABLA --- */
+        .celda-interactiva {
+            transition: all 0.2s ease-in-out;
+            height: 50px; 
+        }
+        
+        /* Hover solo para la celda individual cuando está vacía */
+        tbody td.celda-interactiva:not(.celda-asignada):hover {
+            background-color: #f1f4f8 !important; 
+        }
+
+        .celda-asignada .icon-borrar {
+            display: none;
+        }
+
+        /* Hover de borrado: SOLO se aplica si la celda tiene la clase 'permitir-borrado' */
+        .celda-asignada.permitir-borrado:hover {
+            background-color: #fee2e2 !important; 
+            color: #dc2626 !important; 
+        }
+
+        .celda-asignada.permitir-borrado:hover .nombre-prof {
+            display: none;
+        }
+        
+        .celda-asignada.permitir-borrado:hover .icon-borrar {
+            display: inline-block;
+        }
+    </style>
+</head>
+<body class="bg-light">
+
+<div class="container py-5">
+    
+    <div class="bg-white p-4 rounded-4 shadow-sm mb-4">
+        <h4 class="mb-4 text-secondary"><i class="bi bi-grid"></i> Resumen de Asignaciones</h4>
+        
+        <div class="row g-3 mb-4">
+            <div class="col-md-4">
+                <label class="form-label text-muted small fw-bold">Periodo</label>
+                <select class="form-select bg-light border-0" id="selPeriodo" onchange="verificarSelects()">
+                    <option value="" selected disabled>Selecciona...</option>
+                    <option value="Mayo - Agosto 2026">Mayo - Agosto 2026</option>
+                    <option value="Septiembre - Diciembre 2026">Septiembre - Diciembre 2026</option>
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label class="form-label text-muted small fw-bold">Carrera</label>
+                <select class="form-select bg-light border-0" id="selCarrera" onchange="verificarSelects()">
+                    <option value="" selected disabled>Selecciona...</option>
+                    <option value="Mercadotecnia (MER)">Mercadotecnia (MER)</option>
+                    <option value="Desarrollo de Software">Desarrollo de Software</option>
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label class="form-label text-muted small fw-bold">Plan</label>
+                <select class="form-select bg-light border-0" id="selPlan" onchange="verificarSelects()">
+                    <option value="" selected disabled>Selecciona...</option>
+                    <option value="Plan 2020">Plan 2020</option>
+                    <option value="Plan 2024">Plan 2024</option>
+                </select>
+            </div>
+        </div>
+
+        <div id="seccionGrados" class="d-none">
+            <p class="text-muted mb-2" id="leyendaDisponibles"></p>
+            <div class="d-flex gap-2 mb-2">
+                <button class="btn btn-outline-primary px-4 rounded-pill btn-grado" onclick="seleccionarGrado(this, '1° Grado')">1° Grado</button>
+                <button class="btn btn-outline-primary px-4 rounded-pill btn-grado" onclick="seleccionarGrado(this, '2° Grado')">2° Grado</button>
+                <button class="btn btn-outline-primary px-4 rounded-pill btn-grado" onclick="seleccionarGrado(this, '3° Grado')">3° Grado</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="bg-white p-4 rounded-4 shadow-sm mb-4 d-none" id="seccionConfiguracion">
+        <h5 class="text-primary mb-4" id="leyendaConfigurando"><i class="bi bi-gear-fill"></i> Configurando resumen para: <span></span></h5>
+
+        <div class="row g-3 align-items-end mb-4">
+            <div class="col-md-4">
+                <label class="form-label text-muted small fw-bold">Grupo</label>
+                <select class="form-select bg-light border-0" id="selGrupoTutor">
+                    <option value="" selected disabled>Selecciona un grupo...</option>
+                    <option value="MER1">MER1</option>
+                    <option value="MER2">MER2</option>
+                    <option value="MER3">MER3</option>
+                    <option value="MER4">MER4</option>
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label class="form-label text-muted small fw-bold">Tutor</label>
+                <select class="form-select bg-light border-0" id="selTutorAsignado">
+                    <option value="" selected disabled>Selecciona un tutor...</option>
+                    <option value="Nuria Alavez Ríos">Nuria Alavez Ríos</option>
+                    <option value="Rocío Gómez Vargas">Rocío Gómez Vargas</option>
+                    <option value="Hugo Sánchez Cruz">Hugo Sánchez Cruz</option>
+                    <option value="Oscar Pérez López">Oscar Pérez López</option>
+                    <option value="Rafael Domínguez Pérez">Rafael Domínguez Pérez</option>
+                    <option value="Jessica Martínez Lugo">Jessica Martínez Lugo</option>
+                </select>
+            </div>
+            <div class="col-md-4 d-flex align-items-center">
+                <button class="btn btn-dark px-4 w-100 rounded-3" onclick="asignarTutor()">Agregar</button>
+            </div>
+        </div>
+
+        <div id="alertaContenedor"></div>
+        <hr class="text-muted opacity-25 my-4">
+
+        <div class="row mb-4">
+            <div class="col-md-9">
+                <label class="form-label text-muted small fw-bold"><i class="bi bi-person-badge"></i> Selecciona un profesor para asignar en tabla:</label>
+                
+                <div class="dropdown w-100">
+                    <button class="form-select form-select-lg bg-light border-0 shadow-none text-start" type="button" id="btnProfesorDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        Selecciona un profesor...
+                    </button>
+                    <ul class="dropdown-menu w-100 p-2 shadow-sm border-0 dropdown-menu-profesores" id="listaOpcionesProfesores">
+                        <li class="px-2 pb-2">
+                            <input type="text" class="form-control" id="buscadorProfesores" placeholder="Escribe para buscar..." onkeyup="filtrarProfesores()" onclick="event.stopPropagation()">
+                        </li>
+                        <li><a class="dropdown-item rounded" href="#" onclick="seleccionarProfesor('Nuria Alavez Ríos', event)">Nuria Alavez Ríos</a></li>
+                        <li><a class="dropdown-item rounded" href="#" onclick="seleccionarProfesor('Rafael Domínguez Pérez', event)">Rafael Domínguez Pérez</a></li>
+                        <li><a class="dropdown-item rounded" href="#" onclick="seleccionarProfesor('Fernando Ortiz Silva', event)">Fernando Ortiz Silva</a></li>
+                        <li><a class="dropdown-item rounded" href="#" onclick="seleccionarProfesor('Hugo Sánchez Cruz', event)">Hugo Sánchez Cruz</a></li>
+                        <li><a class="dropdown-item rounded" href="#" onclick="seleccionarProfesor('Jessica Martínez Lugo', event)">Jessica Martínez Lugo</a></li>
+                        <li><a class="dropdown-item rounded" href="#" onclick="seleccionarProfesor('Sayuri Torres Blanco', event)">Sayuri Torres Blanco</a></li>
+                        <li><a class="dropdown-item rounded" href="#" onclick="seleccionarProfesor('Oscar Pérez López', event)">Oscar Pérez López</a></li>
+                        <li><a class="dropdown-item rounded" href="#" onclick="seleccionarProfesor('Rocío Gómez Vargas', event)">Rocío Gómez Vargas</a></li>
+                    </ul>
+                </div>
+                <input type="hidden" id="profesorActivo" value="">
+            </div>
+        </div>
+
+        <div class="table-responsive rounded-3 border">
+            <table class="table table-bordered align-middle mb-0 text-center">
+                <thead class="table-light">
+                    <tr>
+                        <th id="thGrado" class="text-primary fw-bold">3° Grado</th>
+                        <th colspan="2" id="thCarrera" class="text-muted">Mercadotecnia</th>
+                        <th colspan="2" id="thPeriodo" class="text-muted">Mayo - Agosto 2026</th>
+                    </tr>
+                    <tr>
+                        <th class="text-start w-25">Asignatura / Grupo</th>
+                        <th>MER1 <br><small class="text-muted fw-normal">Tutor: <span id="tutor-MER1">Sin asignar</span></small></th>
+                        <th>MER2 <br><small class="text-muted fw-normal">Tutor: <span id="tutor-MER2">Sin asignar</span></small></th>
+                        <th>MER3 <br><small class="text-muted fw-normal">Tutor: <span id="tutor-MER3">Sin asignar</span></small></th>
+                        <th>MER4 <br><small class="text-muted fw-normal">Tutor: <span id="tutor-MER4">Sin asignar</span></small></th>
+                    </tr>
+                </thead>
+                <tbody id="cuerpoTabla" class="bg-white">
+                </tbody>
+            </table>
+        </div>
+        <div class="text-end mt-2">
+            <small class="text-muted"><i class="bi bi-info-circle"></i> Haz clic en celdas vacías para asignar. Pasa el cursor y haz clic para borrarlas.</small>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    const materiasFalsas = [
+        "Estrategias de producto y precio",
+        "Estadística II",
+        "Legislación comercial",
+        "Sistema de investigación de mercados",
+        "Des. del pensamiento y toma de decisión",
+        "Proyecto integrador"
+    ];
+
+    function verificarSelects() {
+        const periodo = document.getElementById('selPeriodo').value;
+        const carrera = document.getElementById('selCarrera').value;
+        const plan = document.getElementById('selPlan').value;
+        
+        const seccionGrados = document.getElementById('seccionGrados');
+        const seccionConfiguracion = document.getElementById('seccionConfiguracion');
+
+        if (periodo && carrera && plan) {
+            document.getElementById('leyendaDisponibles').innerHTML = `Grados disponibles para: <strong class="text-dark">${periodo}</strong> <strong class="text-dark">${carrera}</strong>:`;
+            seccionGrados.classList.remove('d-none'); 
+        } else {
+            seccionGrados.classList.add('d-none');
+            seccionConfiguracion.classList.add('d-none');
+        }
+    }
+
+    function seleccionarGrado(btnElement, nombreGrado) {
+        const botones = document.querySelectorAll('.btn-grado');
+        botones.forEach(btn => {
+            btn.classList.remove('btn-primary', 'text-white');
+            btn.classList.add('btn-outline-primary');
+        });
+
+        btnElement.classList.remove('btn-outline-primary');
+        btnElement.classList.add('btn-primary', 'text-white');
+
+        document.getElementById('selGrupoTutor').value = "";
+        document.getElementById('selTutorAsignado').value = "";
+
+        document.getElementById('seccionConfiguracion').classList.remove('d-none');
+        document.querySelector('#leyendaConfigurando span').innerText = nombreGrado;
+        document.getElementById('thGrado').innerText = nombreGrado;
+        
+        const comboCarrera = document.getElementById('selCarrera');
+        document.getElementById('thCarrera').innerText = comboCarrera.options[comboCarrera.selectedIndex].text;
+        document.getElementById('thPeriodo').innerText = document.getElementById('selPeriodo').value;
+
+        dibujarTabla();
+    }
+
+    function asignarTutor() {
+        const grupoSeleccionado = document.getElementById('selGrupoTutor').value;
+        const tutorSeleccionado = document.getElementById('selTutorAsignado').value;
+        
+        if(!grupoSeleccionado || !tutorSeleccionado) {
+            alert("¡Espera! Por favor selecciona un grupo y un tutor primero.");
+            return;
+        }
+
+        const partesNombre = tutorSeleccionado.split(' ');
+        let nombreCortoTutor = partesNombre[0]; 
+        if (partesNombre.length > 1) {
+            nombreCortoTutor += ' ' + partesNombre[1]; 
+        }
+        
+        const spanTutor = document.getElementById(`tutor-${grupoSeleccionado}`);
+        
+        if(spanTutor) {
+            spanTutor.innerText = nombreCortoTutor; 
+            spanTutor.classList.add('text-primary', 'fw-bold'); 
+            mostrarAlerta('Tutor asignado correctamente al grupo ' + grupoSeleccionado);
+        }
+    }
+
+    function filtrarProfesores() {
+        const input = document.getElementById('buscadorProfesores');
+        const filtro = input.value.toLowerCase();
+        const items = document.querySelectorAll('#listaOpcionesProfesores a.dropdown-item');
+
+        items.forEach(item => {
+            const texto = item.textContent.toLowerCase();
+            if (texto.includes(filtro)) {
+                item.parentElement.style.display = '';
+            } else {
+                item.parentElement.style.display = 'none';
+            }
+        });
+    }
+
+    function seleccionarProfesor(nombre, event) {
+        event.preventDefault(); 
+        document.getElementById('btnProfesorDropdown').innerText = nombre;
+        document.getElementById('profesorActivo').value = nombre;
+        document.getElementById('buscadorProfesores').value = '';
+        filtrarProfesores(); 
+    }
+
+    function dibujarTabla() {
+        const tbody = document.getElementById('cuerpoTabla');
+        tbody.innerHTML = ''; 
+
+        materiasFalsas.forEach(materia => {
+            const tr = document.createElement('tr');
+            
+            const tdMateria = document.createElement('td');
+            tdMateria.className = 'text-start fw-medium text-secondary';
+            tdMateria.innerText = materia;
+            tr.appendChild(tdMateria);
+
+            for(let i=0; i<4; i++) {
+                const tdInterseccion = document.createElement('td');
+                tdInterseccion.className = 'cursor-pointer text-secondary celda-interactiva';
+                tdInterseccion.style.cursor = 'pointer'; 
+                
+                tdInterseccion.onclick = function() {
+                    asignarMaestroEnCelda(this);
+                };
+                
+                tr.appendChild(tdInterseccion);
+            }
+            tbody.appendChild(tr);
+        });
+    }
+
+    function asignarMaestroEnCelda(celda) {
+        // --- LÓGICA DE BORRADO ---
+        if (celda.classList.contains('celda-asignada')) {
+            // Solo borramos si tiene la clase permitir-borrado (es decir, el mouse salió y volvió a entrar)
+            if(celda.classList.contains('permitir-borrado')) {
+                celda.innerHTML = ''; 
+                celda.classList.remove('bg-primary', 'bg-opacity-10', 'text-primary', 'fw-bold', 'celda-asignada', 'permitir-borrado');
+            }
+            return; // Si no tiene el permiso, simplemente ignoramos el clic
+        }
+
+        // --- LÓGICA DE ASIGNACIÓN ---
+        const inputProfesor = document.getElementById('profesorActivo').value.trim();
+        
+        if (inputProfesor === '') {
+            alert('Por favor, busca y selecciona un profesor en la barra superior primero.');
+            return;
+        }
+
+        const partesNombre = inputProfesor.split(' ');
+        let nombreParaTabla = partesNombre[0]; 
+        
+        if (partesNombre.length > 1) {
+            nombreParaTabla += ' ' + partesNombre[1]; 
+        }
+
+        celda.innerHTML = `
+            <span class="nombre-prof">${nombreParaTabla}</span>
+            <i class="bi bi-trash3-fill icon-borrar fs-5"></i>
+        `;
+        
+        celda.classList.add('bg-primary', 'bg-opacity-10', 'text-primary', 'fw-bold', 'celda-asignada');
+
+        // Escuchador de evento: cuando el cursor SALE de la celda por primera vez, habilita el borrado
+        celda.addEventListener('mouseleave', function() {
+            if (this.classList.contains('celda-asignada')) {
+                this.classList.add('permitir-borrado');
+            }
+        }, { once: true }); // El {once: true} hace que este evento solo se dispare una vez
+    }
+
+    function mostrarAlerta(mensaje) {
+        const contenedor = document.getElementById('alertaContenedor');
+        contenedor.innerHTML = `
+            <div class="alert alert-success alert-dismissible fade show shadow-sm border-0" role="alert">
+                <i class="bi bi-check-circle-fill me-2"></i><strong>¡Agregado!</strong> ${mensaje}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        `;
+        
+        setTimeout(() => {
+            const alerta = contenedor.querySelector('.alert');
+            if(alerta) {
+                const bsAlert = new bootstrap.Alert(alerta);
+                bsAlert.close();
+            }
+        }, 3000);
+    }
+</script>
+
+</body>
+</html>

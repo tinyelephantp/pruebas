@@ -47,7 +47,6 @@
         .tabla-evaluaciones td { vertical-align: middle; font-weight: 500; font-size: 0.8rem; }
         .input-fecha { font-size: 0.75rem; text-align: center; max-width: 120px; margin: 0 auto; padding: 4px; }
 
-        /* Estilos del nuevo Resumen Agrupado */
         .bloque-fecha-autor {
             background-color: #ffffff; border: 1px solid #e0e0e0; border-radius: 8px;
             padding: 15px; min-width: 220px; text-align: center;
@@ -276,7 +275,6 @@
         let htmlAcordeon = '';
         let indexColapso = 0;
 
-        // DICCIONARIO Y LÓGICA DE ORDENAMIENTO DE PERIODOS
         const mesesDic = {
             "enero": 1, "febrero": 2, "marzo": 3, "abril": 4, "mayo": 5, "junio": 6,
             "julio": 7, "agosto": 8, "septiembre": 9, "octubre": 10, "noviembre": 11, "diciembre": 12
@@ -293,10 +291,9 @@
                 
                 return (anio * 100) + valorMes; 
             };
-            return calcularValor(b) - calcularValor(a); // Descendente
+            return calcularValor(b) - calcularValor(a); 
         });
 
-        // RENDERIZADO DEL ACORDEÓN ORDENADO
         for (const periodo of periodosOrdenados) {
             const registrosDelPeriodo = registrosPorPeriodo[periodo];
             const idCollapse = `collapse_${indexColapso}`;
@@ -407,7 +404,6 @@
         });
     }
 
-    // --- ACTUALIZADO: SELECCIÓN POR DURACIÓN (Misma semana inicio y fin) ---
     window.seleccionarBloque = function(inicio, fin) {
         bloqueActualKey = `${inicio}_${fin}`; 
         const barras = document.querySelectorAll('.barra-materia');
@@ -477,7 +473,6 @@
 
     document.addEventListener('click', function(e) {
         
-        // 1. Lógica Guardar
         if (e.target.closest('.btn-guardar')) {
             const btn = e.target.closest('.btn-guardar');
             const fila = btn.closest('tr');
@@ -517,7 +512,6 @@
             alert("La fecha fue capturada correctamente.");
         }
 
-        // 2. Lógica Editar
         if (e.target.closest('.btn-editar')) {
             const btn = e.target.closest('.btn-editar');
             const fila = btn.closest('tr');
@@ -530,7 +524,6 @@
             btn.disabled = true;
         }
 
-        // 3. Lógica Eliminar
         if (e.target.closest('.btn-eliminar')) {
             const btn = e.target.closest('.btn-eliminar');
             const fila = btn.closest('tr');
@@ -555,7 +548,6 @@
         }
     });
 
-    // --- LÓGICA DE AGRUPACIÓN Y ORDENAMIENTO EN EL RESUMEN ---
     window.mostrarResumen = function() {
         document.getElementById('vistaCaptura').style.display = 'none';
         document.getElementById('vistaResumen').style.display = 'block';
@@ -563,7 +555,6 @@
         const guardadas = JSON.parse(localStorage.getItem('seriacionesPrototipo')) || [];
         const registro = guardadas[indiceRegistroActual];
 
-        // Llenar datos de contexto de la seriación
         document.getElementById('resumenContexto').innerHTML = `
             <strong>Programa Educativo:</strong> <span class="text-primary">${registro.carrera}</span> <span class="text-muted mx-3">|</span>
             <strong>Periodo:</strong> <span class="text-primary">${registro.periodo}</span> <span class="text-muted mx-3">|</span>
@@ -579,7 +570,6 @@
 
         if (registro && registro.fechasCaptura) {
             for (const bloqueKey in registro.fechasCaptura) {
-                // ACTUALIZADO: Lee el bloqueKey con formato "inicio_fin"
                 const [semInicio, semFin] = bloqueKey.split('_').map(Number); 
                 const materiasDeSemanaArray = Object.values(registro.materias).filter(mat => parseInt(mat.inicio) === semInicio && parseInt(mat.fin) === semFin);
                 
@@ -619,7 +609,6 @@
         let htmlAcordeonResumen = '<div class="accordion" id="acordeonResumenAgrupado">';
         let evalIndex = 0;
 
-        // Renderizar los datos agrupados en Acordeón
         for (const evalName in agrupacion) {
             const collapseId = `collapse_resumen_${evalIndex}`;
             const headingId = `heading_resumen_${evalIndex}`;
@@ -636,7 +625,6 @@
                         <div class="accordion-body d-flex flex-column gap-3 border-top" style="background-color: #fafbfc;">
             `;
 
-            // ORDENAMIENTO CRONOLÓGICO DE LAS TARJETAS (Por fecha de inicio)
             const gruposOrdenados = Object.values(agrupacion[evalName]).sort((a, b) => {
                 const fechaA = new Date(a.inicio + 'T00:00:00');
                 const fechaB = new Date(b.inicio + 'T00:00:00');
