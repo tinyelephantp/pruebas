@@ -3,116 +3,111 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Prototipo - Resumen de Asignaciones</title>
+    <title>Resumen de Asignaciones — Director</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f8faff; 
-        }
+        body { font-family: 'Inter', sans-serif; background-color: #f8faff; }
 
-        .page-header-blue {
-            color: #004b87; 
-            font-weight: 700;
-            letter-spacing: -0.5px;
-        }
+        .page-header-blue { color: #004b87; font-weight: 700; letter-spacing: -0.5px; }
 
         .nav-pills .nav-link {
-            color: #64748b;
-            font-weight: 600;
-            border-radius: 8px;
-            padding: 10px 20px;
-            transition: all 0.2s;
+            color: #64748b; font-weight: 600; border-radius: 8px;
+            padding: 10px 20px; transition: all 0.2s;
         }
         .nav-pills .nav-link.active {
-            background-color: #004b87;
-            color: white;
-            box-shadow: 0 4px 10px rgba(0, 75, 135, 0.2);
+            background-color: #004b87; color: white;
+            box-shadow: 0 4px 10px rgba(0,75,135,0.2);
         }
         #pills-registros-tab.active {
             background-color: #16a34a !important;
-            box-shadow: 0 4px 10px rgba(22, 163, 74, 0.2);
+            box-shadow: 0 4px 10px rgba(22,163,74,0.2);
         }
         #pills-borradores-tab.active {
             background-color: #f59e0b !important;
             color: #78350f !important;
-            box-shadow: 0 4px 10px rgba(245, 158, 11, 0.2);
+            box-shadow: 0 4px 10px rgba(245,158,11,0.2);
         }
 
-        .btn-crear-nuevo-style {
-            background-color: #009688; 
-            color: white !important;
-            border-radius: 8px; 
-            font-weight: 600;
-            padding: 10px 24px;
-            border: none;
-            transition: all 0.2s ease;
-            box-shadow: 0 4px 6px rgba(0, 150, 136, 0.2);
+        /* Status pill en el header */
+        .division-status-pill {
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 8px 16px; border-radius: 50px;
+            font-size: 0.8rem; font-weight: 600;
+            border: 1.5px solid; transition: all 0.3s;
         }
-        .btn-crear-nuevo-style:hover {
-            background-color: #007d71;
-            transform: translateY(-1px);
+        .division-status-pill.en-proceso {
+            background: #f0fdf4; border-color: #86efac; color: #15803d;
         }
+        .division-status-pill.entregada {
+            background: #eff6ff; border-color: #93c5fd; color: #1d4ed8;
+        }
+        .division-status-pill .status-dot {
+            width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
+        }
+        .division-status-pill.en-proceso .status-dot { background: #16a34a; }
+        .division-status-pill.entregada .status-dot { background: #3b82f6; }
 
-        .btn-guardar {
-            background-color: #0d6efd;
-            color: white;
-            border-radius: 8px;
-            font-weight: 600;
-            padding: 12px 30px;
-            transition: all 0.2s;
-        }
-        .btn-guardar:hover {
-            background-color: #0b5ed7;
-            transform: translateY(-2px);
-        }
-
-        .btn-cerrar-carga {
-            background-color: #0f766e;
-            color: white;
-            border-radius: 10px;
-            font-weight: 700;
-            padding: 13px 32px;
-            border: none;
-            transition: all 0.2s ease;
-            box-shadow: 0 4px 12px rgba(15, 118, 110, 0.3);
-            letter-spacing: 0.2px;
-        }
-        .btn-cerrar-carga:hover {
-            background-color: #0d6460;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 18px rgba(15, 118, 110, 0.4);
-        }
-
-        .banner-division {
-            border-radius: 14px;
-            padding: 16px 24px;
-            border: 1.5px solid;
-            display: flex;
-            align-items: center;
-            gap: 14px;
+        /* Sección de cierre — sobria y profesional */
+        .seccion-envio {
+            background: #f8faff;
+            border: 1.5px solid #c7d9f0;
+            border-radius: 16px;
+            padding: 24px 28px;
             transition: all 0.3s;
         }
-        .banner-division.estado-abierta {
-            background: #f0fdf4;
-            border-color: #86efac;
-            color: #166534;
+        .seccion-envio.bloqueada {
+            background: #fffbeb;
+            border-color: #fde68a;
         }
-        .banner-division.estado-entregada {
-            background: #eff6ff;
-            border-color: #93c5fd;
-            color: #1e40af;
+        .icono-envio {
+            width: 52px; height: 52px; border-radius: 14px;
+            display: flex; align-items: center; justify-content: center;
+            background: #004b87; flex-shrink: 0;
+        }
+        .icono-envio.bloqueado { background: #b45309; }
+
+        .btn-enviar-division {
+            background-color: #004b87; color: white;
+            border-radius: 10px; font-weight: 600;
+            padding: 11px 28px; border: none;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 12px rgba(0,75,135,0.2);
+            white-space: nowrap;
+        }
+        .btn-enviar-division:hover:not(:disabled) {
+            background-color: #003a6b;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 16px rgba(0,75,135,0.3);
+        }
+        .btn-enviar-division:disabled {
+            background-color: #94a3b8; cursor: not-allowed;
+            box-shadow: none; opacity: 1;
         }
 
+        /* Resto de estilos */
+        .btn-crear-nuevo-style {
+            background-color: #009688; color: white !important;
+            border-radius: 8px; font-weight: 600;
+            padding: 10px 24px; border: none;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 6px rgba(0,150,136,0.2);
+        }
+        .btn-crear-nuevo-style:hover { background-color: #007d71; transform: translateY(-1px); }
+
+        .btn-guardar {
+            background-color: #0d6efd; color: white;
+            border-radius: 8px; font-weight: 600;
+            padding: 12px 30px; transition: all 0.2s;
+        }
+        .btn-guardar:hover { background-color: #0b5ed7; transform: translateY(-2px); }
+
         .tabla-contenedor {
-            background-color: white;
-            border-radius: 20px;
+            background-color: white; border-radius: 20px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.03);
-            border: 1px solid #edf2f7;
-            padding: 1.5rem;
+            border: 1px solid #edf2f7; padding: 1.5rem;
         }
         .table-aesthetic { border-collapse: separate; border-spacing: 0 8px; }
         .table-aesthetic thead th {
@@ -129,7 +124,6 @@
         .table-aesthetic tbody td.celda-interactiva:not(.celda-asignada):hover {
             background-color: #f8fafc; border-radius: 8px;
         }
-
         .prof-badge {
             background-color: #eff6ff; color: #1d4ed8; padding: 8px 16px;
             border-radius: 50px; display: inline-flex; align-items: center; justify-content: center;
@@ -145,12 +139,11 @@
 
         .dropdown-menu-profesores { max-height: 250px; overflow-y: auto; border-radius: 12px; }
         .materia-texto { color: #1e293b; font-weight: 600; font-size: 0.9rem; }
-        
+
         .badge-semanas {
             background-color: #f1f5f9; color: #475569; border: 1px solid #e2e8f0;
             padding: 4px 10px; border-radius: 6px; font-size: 0.8rem; font-weight: 600;
         }
-        
         .badge-tutor {
             background-color: #009688; color: white; padding: 4px 10px;
             border-radius: 6px; font-weight: 600; font-size: 0.75rem;
@@ -160,25 +153,18 @@
             background-color: #64748b; color: white; padding: 4px 8px;
             border-radius: 4px; font-size: 0.7rem; font-weight: 600;
         }
-
         .badge-estado-incompleto {
             background-color: #ffc107; color: #212529; border-radius: 6px;
-            padding: 4px 12px; font-size: 0.75rem; font-weight: 700;
-            text-transform: uppercase; box-shadow: 0 2px 4px rgba(247, 246, 246, 0.2);
+            padding: 4px 12px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase;
         }
         .badge-estado-completo {
             background-color: #198754; color: #ffffff; border-radius: 6px;
-            padding: 4px 12px; font-size: 0.75rem; font-weight: 700;
-            text-transform: uppercase;
+            padding: 4px 12px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase;
         }
-
-        .flip-card {
-            background-color: transparent; perspective: 1000px; 
-            height: 300px; cursor: pointer;
-        }
+        .flip-card { background-color: transparent; perspective: 1000px; height: 300px; cursor: pointer; }
         .flip-card-inner {
             position: relative; width: 100%; height: 100%;
-            transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1);
+            transition: transform 0.6s cubic-bezier(0.4,0.2,0.2,1);
             transform-style: preserve-3d;
         }
         .flip-card.flipped .flip-card-inner { transform: rotateY(180deg); }
@@ -191,18 +177,12 @@
             background-color: white; display: flex; flex-direction: column;
             align-items: center; justify-content: center; text-align: center;
         }
-        .flip-card-back {
-            background-color: #ffffff; transform: rotateY(180deg); display: flex; flex-direction: column;
-        }
-        
-        .btn-grado-registro {
-            transition: all 0.2s; border: 1px solid #e2e8f0; background-color: #f8fafc;
-        }
+        .flip-card-back { background-color: #ffffff; transform: rotateY(180deg); display: flex; flex-direction: column; }
+        .btn-grado-registro { transition: all 0.2s; border: 1px solid #e2e8f0; background-color: #f8fafc; }
         .btn-grado-registro:hover {
             border-color: #004b87; background-color: #eff6ff;
             color: #004b87 !important; transform: translateX(4px);
         }
-
         .custom-scrollbar::-webkit-scrollbar { width: 4px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
@@ -215,53 +195,63 @@
             from { opacity: 1; transform: translateX(0); }
             to   { opacity: 0; transform: translateX(30px); }
         }
-
-        #seccionCerrarCarga {
-            animation: slideInToast 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(12px); }
+            to   { opacity: 1; transform: translateY(0); }
         }
+        #seccionCerrarCarga { animation: fadeInUp 0.4s ease; }
     </style>
 </head>
 <body>
 
 <div class="container py-5">
-    <!-- NUEVO ENCABEZADO CON ESTATUS INTEGRADO -->
-    <div class="d-flex justify-content-between align-items-center mb-4 pb-2 border-bottom">
+
+    <!-- HEADER -->
+    <div class="d-flex justify-content-between align-items-center mb-4 pb-2 border-bottom flex-wrap gap-3">
         <div class="d-flex align-items-center">
             <div class="bg-primary bg-opacity-10 p-3 rounded-4 me-4">
                 <i class="bi bi-calendar-range-fill fs-2" style="color: #004b87;"></i>
             </div>
             <div>
                 <h2 class="page-header-blue m-0">Resumen de Asignaciones</h2>
-                <p class="text-muted m-0 mt-1">Asignación de materias a profesores</p>
+                <p class="text-muted m-0 mt-1" style="font-size:0.85rem;">
+                    <i class="bi bi-building me-1"></i>División de Sistemas Productivos y Mantenimiento Industrial
+                </p>
             </div>
         </div>
-        
-        <!-- Card compacta de Estatus -->
+
         <div id="statusBadgeContainer" class="d-none">
-            <div id="bannerDivision" class="d-flex align-items-center gap-2 px-3 py-2 rounded-pill border shadow-sm transition-all">
-                <i id="statusIcon" class="bi fs-5"></i>
-                <div class="fw-bold" style="font-size: 0.85rem; text-transform: uppercase;" id="bannerDivisionTexto"></div>
+            <div id="divisionStatusPill" class="division-status-pill">
+                <span class="status-dot"></span>
+                <span id="statusTexto"></span>
             </div>
         </div>
     </div>
-    <!-- FIN NUEVO ENCABEZADO -->
 
+    <!-- TABS -->
     <ul class="nav nav-pills mb-4" id="pills-tab" role="tablist">
         <li class="nav-item" role="presentation">
-            <button class="nav-link active" id="pills-config-tab" data-bs-toggle="pill" data-bs-target="#pills-config" type="button" role="tab"><i class="bi bi-pencil-square me-2"></i>Configurar Resumen</button>
+            <button class="nav-link active" id="pills-config-tab" data-bs-toggle="pill" data-bs-target="#pills-config" type="button" role="tab">
+                <i class="bi bi-pencil-square me-2"></i>Configurar Resumen
+            </button>
         </li>
         <li class="nav-item" role="presentation">
-            <button class="nav-link" id="pills-registros-tab" data-bs-toggle="pill" data-bs-target="#pills-registros" type="button" role="tab" onclick="inicializarVistaTarjetas('completo')"><i class="bi bi-journal-check me-2"></i>Ver Registros Guardados</button>
+            <button class="nav-link" id="pills-registros-tab" data-bs-toggle="pill" data-bs-target="#pills-registros" type="button" role="tab" onclick="inicializarVistaTarjetas('completo')">
+                <i class="bi bi-journal-check me-2"></i>Ver Registros Guardados
+            </button>
         </li>
         <li class="nav-item" role="presentation">
-            <button class="nav-link" id="pills-borradores-tab" data-bs-toggle="pill" data-bs-target="#pills-borradores" type="button" role="tab" onclick="inicializarVistaTarjetas('borrador')"><i class="bi bi-file-earmark-dashed me-2"></i>Ver Borradores</button>
+            <button class="nav-link" id="pills-borradores-tab" data-bs-toggle="pill" data-bs-target="#pills-borradores" type="button" role="tab" onclick="inicializarVistaTarjetas('borrador')">
+                <i class="bi bi-file-earmark-dashed me-2"></i>Ver Borradores
+            </button>
         </li>
     </ul>
 
     <div class="tab-content" id="pills-tabContent">
-        
+
+        <!-- TAB CONFIGURAR -->
         <div class="tab-pane fade show active" id="pills-config" role="tabpanel">
-            <div class="bg-white p-4 rounded-4 shadow-sm mb-4 border" style="border-color: #edf2f7 !important;">
+            <div class="bg-white p-4 rounded-4 shadow-sm mb-4 border" style="border-color:#edf2f7 !important;">
                 <div class="row g-3">
                     <div class="col-md-4">
                         <label class="form-label text-muted small fw-bold text-uppercase">Periodo</label>
@@ -288,21 +278,20 @@
                         </select>
                     </div>
                 </div>
-
                 <div id="seccionGrados" class="d-none mt-4 pt-3 border-top">
                     <p class="text-muted small fw-bold text-uppercase mb-3" id="leyendaDisponibles"></p>
-                    <div class="d-flex gap-2">
-                        <button class="btn btn-outline-primary px-4 rounded-pill btn-grado fw-semibold" onclick="seleccionarGrado(this, '1° Grado')">1° Grado</button>
-                        <button class="btn btn-outline-primary px-4 rounded-pill btn-grado fw-semibold" onclick="seleccionarGrado(this, '3° Grado')">3° Grado</button>
-                        <button class="btn btn-outline-primary px-4 rounded-pill btn-grado fw-semibold" onclick="seleccionarGrado(this, '5° Grado')">5° Grado</button>
+                    <div class="d-flex gap-2 flex-wrap">
+                        <button class="btn btn-outline-primary px-4 rounded-pill btn-grado fw-semibold" onclick="seleccionarGrado(this,'1° Grado')">1° Grado</button>
+                        <button class="btn btn-outline-primary px-4 rounded-pill btn-grado fw-semibold" onclick="seleccionarGrado(this,'3° Grado')">3° Grado</button>
+                        <button class="btn btn-outline-primary px-4 rounded-pill btn-grado fw-semibold" onclick="seleccionarGrado(this,'5° Grado')">5° Grado</button>
                     </div>
                 </div>
             </div>
 
             <div class="d-none" id="seccionConfiguracion">
                 <div class="row mb-4">
-                    <div class="col-lg-6">
-                        <div class="bg-white p-4 rounded-4 shadow-sm border h-100" style="border-color: #edf2f7 !important;">
+                    <div class="col-lg-6 mb-3 mb-lg-0">
+                        <div class="bg-white p-4 rounded-4 shadow-sm border h-100" style="border-color:#edf2f7 !important;">
                             <h6 class="text-muted text-uppercase fw-bold mb-4 small"><i class="bi bi-people-fill me-2"></i>Asignar Tutores</h6>
                             <div class="row g-2 align-items-end">
                                 <div class="col-md-3">
@@ -317,52 +306,47 @@
                                 <div class="col-md-6">
                                     <label class="form-label text-muted small">Tutor</label>
                                     <div class="dropdown w-100">
-                                        <button class="form-select bg-white text-start shadow-sm text-truncate" type="button" id="btnTutorDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                                            Selecciona...
-                                        </button>
+                                        <button class="form-select bg-white text-start shadow-sm text-truncate" type="button" id="btnTutorDropdown" data-bs-toggle="dropdown" aria-expanded="false">Selecciona...</button>
                                         <ul class="dropdown-menu w-100 p-2 dropdown-menu-profesores" id="listaOpcionesTutores">
                                             <li class="px-2 pb-2">
                                                 <input type="text" class="form-control" id="buscadorTutores" placeholder="Escribe para buscar..." onkeyup="filtrarTutores()" onclick="event.stopPropagation()">
                                             </li>
-                                            <li><a class="dropdown-item rounded py-2" href="#" onclick="seleccionarTutor('Nuria Alavez Ríos', event)">Nuria Alavez Ríos</a></li>
-                                            <li><a class="dropdown-item rounded py-2" href="#" onclick="seleccionarTutor('Rocío Gómez Vargas', event)">Rocío Gómez Vargas</a></li>
-                                            <li><a class="dropdown-item rounded py-2" href="#" onclick="seleccionarTutor('Hugo Sánchez Cruz', event)">Hugo Sánchez Cruz</a></li>
-                                            <li><a class="dropdown-item rounded py-2" href="#" onclick="seleccionarTutor('Oscar Pérez López', event)">Oscar Pérez López</a></li>
-                                            <li><a class="dropdown-item rounded py-2" href="#" onclick="seleccionarTutor('Rafael Domínguez Pérez', event)">Rafael Domínguez Pérez</a></li>
-                                            <li><a class="dropdown-item rounded py-2" href="#" onclick="seleccionarTutor('Jessica Martínez Lugo', event)">Jessica Martínez Lugo</a></li>
+                                            <li><a class="dropdown-item rounded py-2" href="#" onclick="seleccionarTutor('Nuria Alavez Ríos',event)">Nuria Alavez Ríos</a></li>
+                                            <li><a class="dropdown-item rounded py-2" href="#" onclick="seleccionarTutor('Rocío Gómez Vargas',event)">Rocío Gómez Vargas</a></li>
+                                            <li><a class="dropdown-item rounded py-2" href="#" onclick="seleccionarTutor('Hugo Sánchez Cruz',event)">Hugo Sánchez Cruz</a></li>
+                                            <li><a class="dropdown-item rounded py-2" href="#" onclick="seleccionarTutor('Oscar Pérez López',event)">Oscar Pérez López</a></li>
+                                            <li><a class="dropdown-item rounded py-2" href="#" onclick="seleccionarTutor('Rafael Domínguez Pérez',event)">Rafael Domínguez Pérez</a></li>
+                                            <li><a class="dropdown-item rounded py-2" href="#" onclick="seleccionarTutor('Jessica Martínez Lugo',event)">Jessica Martínez Lugo</a></li>
                                         </ul>
                                     </div>
                                     <input type="hidden" id="tutorActivo" value="">
                                 </div>
                                 <div class="col-md-3">
                                     <button class="btn btn-crear-nuevo-style w-100 px-0" onclick="asignarTutor()">
-                                        <i class="bi bi-plus-lg me-1"></i> Agregar
+                                        <i class="bi bi-plus-lg me-1"></i>Agregar
                                     </button>
                                 </div>
                             </div>
                         </div>
                     </div>
-
                     <div class="col-lg-6">
-                        <div class="p-4 rounded-4 shadow-sm h-100" style="background-color: #f1f5f9; border: 1px solid #e2e8f0;">
+                        <div class="p-4 rounded-4 shadow-sm h-100" style="background-color:#f1f5f9; border:1px solid #e2e8f0;">
                             <h6 class="text-muted text-uppercase fw-bold mb-4 small"><i class="bi bi-person-badge-fill me-2"></i>Profesor a impartir</h6>
                             <label class="form-label text-dark small fw-medium">Selecciona el profesor que vas a colocar en la tabla:</label>
                             <div class="dropdown w-100">
-                                <button class="form-select bg-white text-start shadow-sm text-truncate" type="button" id="btnProfesorDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Despliega o busca un profesor...
-                                </button>
+                                <button class="form-select bg-white text-start shadow-sm text-truncate" type="button" id="btnProfesorDropdown" data-bs-toggle="dropdown" aria-expanded="false">Despliega o busca un profesor...</button>
                                 <ul class="dropdown-menu w-100 p-2 dropdown-menu-profesores" id="listaOpcionesProfesores">
                                     <li class="px-2 pb-2">
                                         <input type="text" class="form-control" id="buscadorProfesores" placeholder="Escribe para buscar..." onkeyup="filtrarProfesores()" onclick="event.stopPropagation()">
                                     </li>
-                                    <li><a class="dropdown-item rounded py-2" href="#" onclick="seleccionarProfesor('Nuria Alavez Ríos', event)">Nuria Alavez Ríos</a></li>
-                                    <li><a class="dropdown-item rounded py-2" href="#" onclick="seleccionarProfesor('Rafael Domínguez Pérez', event)">Rafael Domínguez Pérez</a></li>
-                                    <li><a class="dropdown-item rounded py-2" href="#" onclick="seleccionarProfesor('Fernando Ortiz Silva', event)">Fernando Ortiz Silva</a></li>
-                                    <li><a class="dropdown-item rounded py-2" href="#" onclick="seleccionarProfesor('Hugo Sánchez Cruz', event)">Hugo Sánchez Cruz</a></li>
-                                    <li><a class="dropdown-item rounded py-2" href="#" onclick="seleccionarProfesor('Jessica Martínez Lugo', event)">Jessica Martínez Lugo</a></li>
-                                    <li><a class="dropdown-item rounded py-2" href="#" onclick="seleccionarProfesor('Sayuri Torres Blanco', event)">Sayuri Torres Blanco</a></li>
-                                    <li><a class="dropdown-item rounded py-2" href="#" onclick="seleccionarProfesor('Oscar Pérez López', event)">Oscar Pérez López</a></li>
-                                    <li><a class="dropdown-item rounded py-2" href="#" onclick="seleccionarProfesor('Rocío Gómez Vargas', event)">Rocío Gómez Vargas</a></li>
+                                    <li><a class="dropdown-item rounded py-2" href="#" onclick="seleccionarProfesor('Nuria Alavez Ríos',event)">Nuria Alavez Ríos</a></li>
+                                    <li><a class="dropdown-item rounded py-2" href="#" onclick="seleccionarProfesor('Rafael Domínguez Pérez',event)">Rafael Domínguez Pérez</a></li>
+                                    <li><a class="dropdown-item rounded py-2" href="#" onclick="seleccionarProfesor('Fernando Ortiz Silva',event)">Fernando Ortiz Silva</a></li>
+                                    <li><a class="dropdown-item rounded py-2" href="#" onclick="seleccionarProfesor('Hugo Sánchez Cruz',event)">Hugo Sánchez Cruz</a></li>
+                                    <li><a class="dropdown-item rounded py-2" href="#" onclick="seleccionarProfesor('Jessica Martínez Lugo',event)">Jessica Martínez Lugo</a></li>
+                                    <li><a class="dropdown-item rounded py-2" href="#" onclick="seleccionarProfesor('Sayuri Torres Blanco',event)">Sayuri Torres Blanco</a></li>
+                                    <li><a class="dropdown-item rounded py-2" href="#" onclick="seleccionarProfesor('Oscar Pérez López',event)">Oscar Pérez López</a></li>
+                                    <li><a class="dropdown-item rounded py-2" href="#" onclick="seleccionarProfesor('Rocío Gómez Vargas',event)">Rocío Gómez Vargas</a></li>
                                 </ul>
                             </div>
                             <input type="hidden" id="profesorActivo" value="">
@@ -373,9 +357,9 @@
                 <div class="tabla-contenedor">
                     <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
                         <div class="d-flex align-items-center flex-wrap gap-3">
-                            <h5 class="m-0 fw-bold" style="color: #004b87;" id="tituloTablaGrado">1° Grado</h5>
-                            <span class="badge bg-primary bg-opacity-10 text-primary border border-primary-subtle rounded-pill fw-medium px-3 py-2 shadow-sm" style="font-size: 0.8rem;">
-                                <i class="bi bi-info-circle-fill me-1"></i> Haz clic en vacías para asignar. Pasa el cursor sobre asignado para borrar.
+                            <h5 class="m-0 fw-bold" style="color:#004b87;" id="tituloTablaGrado">1° Grado</h5>
+                            <span class="badge bg-primary bg-opacity-10 text-primary border border-primary-subtle rounded-pill fw-medium px-3 py-2 shadow-sm" style="font-size:0.8rem;">
+                                <i class="bi bi-info-circle-fill me-1"></i>Haz clic en vacías para asignar · Pasa el cursor para borrar
                             </span>
                         </div>
                         <div class="text-end">
@@ -383,15 +367,13 @@
                             <span class="badge bg-light text-dark border py-2 px-3" id="badgePeriodo">Periodo</span>
                         </div>
                     </div>
-
                     <div class="table-responsive border rounded-3">
                         <table class="table table-aesthetic text-center mb-0" id="tablaAsignaciones">
                             <thead id="cabeceraTabla"></thead>
                             <tbody id="cuerpoTabla"></tbody>
                         </table>
                     </div>
-                    
-                    <div class="mt-4 d-flex justify-content-end align-items-center">
+                    <div class="mt-4 d-flex justify-content-end">
                         <button class="btn btn-guardar border-0 shadow-sm" onclick="validarGuardado()">
                             <i class="bi bi-floppy-fill me-2"></i>Guardar Resumen
                         </button>
@@ -400,26 +382,27 @@
             </div>
         </div>
 
+        <!-- TAB REGISTROS -->
         <div class="tab-pane fade" id="pills-registros" role="tabpanel">
             <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
                 <h5 class="m-0 text-secondary fw-bold"><i class="bi bi-grid-fill me-2 text-primary"></i>Carreras Guardadas</h5>
-                <div>
-                    <button class="btn btn-outline-warning btn-sm rounded-pill px-3 fw-medium me-2" onclick="resetearStatusPruebas()">
-                        <i class="bi bi-arrow-counterclockwise me-1"></i> Reset Status
+                <div class="d-flex gap-2">
+                    <button class="btn btn-outline-warning btn-sm rounded-pill px-3 fw-medium" onclick="resetearStatusPruebas()">
+                        <i class="bi bi-arrow-counterclockwise me-1"></i>Reset
                     </button>
                     <button class="btn btn-outline-danger btn-sm rounded-pill px-3 fw-medium" onclick="limpiarMemoria('completo')">
-                        <i class="bi bi-trash3 me-1"></i> Borrar Todo
+                        <i class="bi bi-trash3 me-1"></i>Borrar todo
                     </button>
                 </div>
             </div>
-        <div class="row mb-4">
+            <div class="row mb-4">
                 <div class="col-md-5">
-                    <label class="form-label text-muted small fw-bold"><i class="bi bi-funnel-fill me-1 text-primary"></i> Selecciona el Periodo para ver registros:</label>
+                    <label class="form-label text-muted small fw-bold"><i class="bi bi-funnel-fill me-1 text-primary"></i>Selecciona el Periodo para ver registros:</label>
                     <div class="d-flex gap-2">
                         <select class="form-select border-0 shadow-sm bg-white flex-grow-1" id="filtroPeriodo_completo" onchange="cargarTarjetas('completo')">
                             <option value="" selected disabled>Selecciona un periodo...</option>
                         </select>
-                        <button class="btn btn-white border shadow-sm d-none bg-white btnLimpiarFiltro" id="btnLimpiarFiltro_completo" onclick="limpiarFiltroPeriodo('completo')" title="Limpiar filtro">
+                        <button class="btn btn-white border shadow-sm d-none bg-white" id="btnLimpiarFiltro_completo" onclick="limpiarFiltroPeriodo('completo')" title="Limpiar filtro">
                             <i class="bi bi-eraser-fill text-muted"></i>
                         </button>
                     </div>
@@ -428,21 +411,22 @@
             <div class="row" id="contenedorTarjetas_completo"></div>
         </div>
 
+        <!-- TAB BORRADORES -->
         <div class="tab-pane fade" id="pills-borradores" role="tabpanel">
             <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
                 <h5 class="m-0 text-secondary fw-bold"><i class="bi bi-file-earmark-dashed me-2 text-warning"></i>Borradores Incompletos</h5>
                 <button class="btn btn-outline-danger btn-sm rounded-pill px-3 fw-medium" onclick="limpiarMemoria('borrador')">
-                    <i class="bi bi-trash3 me-1"></i> Borrar Borradores
+                    <i class="bi bi-trash3 me-1"></i>Borrar borradores
                 </button>
             </div>
             <div class="row mb-4">
                 <div class="col-md-5">
-                    <label class="form-label text-muted small fw-bold"><i class="bi bi-funnel-fill me-1 text-warning"></i> Selecciona el Periodo de los borradores:</label>
+                    <label class="form-label text-muted small fw-bold"><i class="bi bi-funnel-fill me-1 text-warning"></i>Selecciona el Periodo de los borradores:</label>
                     <div class="d-flex gap-2">
                         <select class="form-select border-0 shadow-sm bg-white flex-grow-1" id="filtroPeriodo_borrador" onchange="cargarTarjetas('borrador')">
                             <option value="" selected disabled>Selecciona un periodo...</option>
                         </select>
-                        <button class="btn btn-white border shadow-sm d-none bg-white btnLimpiarFiltro" id="btnLimpiarFiltro_borrador" onclick="limpiarFiltroPeriodo('borrador')" title="Limpiar filtro">
+                        <button class="btn btn-white border shadow-sm d-none bg-white" id="btnLimpiarFiltro_borrador" onclick="limpiarFiltroPeriodo('borrador')" title="Limpiar filtro">
                             <i class="bi bi-eraser-fill text-muted"></i>
                         </button>
                     </div>
@@ -452,151 +436,99 @@
         </div>
 
     </div>
-</div>
-            <!-- NUEVA ZONA ROJA PARA CERRAR CARGA (AL FINAL) -->
-            <div id="seccionCerrarCarga" class="d-none mt-5 mb-3">
-                <div class="rounded-4 border shadow-sm p-4 position-relative overflow-hidden" 
-                     style="background-color: #fff5f5; border: 2px solid #fecaca !important;">
-                    
-                    <!-- Decoración de peligro de fondo -->
-                    <i class="bi bi-exclamation-octagon position-absolute" style="font-size: 8rem; color: #fee2e2; right: -20px; top: -30px; transform: rotate(15deg); z-index: 0;"></i>
 
-                    <div class="d-flex align-items-center justify-content-between flex-wrap gap-3 position-relative" style="z-index: 1;">
-                        <div class="d-flex align-items-center gap-3">
-                            <div class="rounded-3 d-flex align-items-center justify-content-center flex-shrink-0 shadow-sm"
-                                 style="width:55px; height:55px; background: #dc2626; border: 2px solid #b91c1c;">
-                                <i class="bi bi-exclamation-triangle-fill fs-4 text-white"></i>
-                            </div>
-                            <div>
-                                <div class="fw-bold text-danger" style="font-size: 1.1rem; letter-spacing: -0.5px;">ZONA DE PELIGRO: Cerrar Carga de la División</div>
-                                <div class="text-danger small mt-1 fw-medium" id="textoCerrarCarga" style="opacity: 0.85;">
-                                    Al cerrar la carga, se bloquearán todas las ediciones y se enviará a Secretaría.
-                                </div>
-                            </div>
+    <!-- SECCIÓN ENVÍO A SECRETARÍA -->
+    <div id="seccionCerrarCarga" class="d-none mt-5">
+        <div class="seccion-envio" id="panelEnvio">
+            <div class="d-flex align-items-center justify-content-between flex-wrap gap-4">
+                <div class="d-flex align-items-center gap-4">
+                    <div class="icono-envio" id="iconoEnvio">
+                        <i class="bi bi-send-fill text-white" style="font-size:1.3rem;"></i>
+                    </div>
+                    <div>
+                        <div class="fw-bold text-dark mb-1" style="font-size:1rem;" id="tituloEnvio">
+                            Enviar división a Secretaría Académica
                         </div>
-                        <button class="btn btn-danger fw-bold px-4 py-2 rounded-pill shadow" onclick="cerrarCargaDivision()" id="btnCerrarCarga" style="transition: transform 0.2s;">
-                            <i class="bi bi-lock-fill me-2"></i>Cerrar Carga Definitiva
-                        </button>
+                        <div class="text-muted small" id="textoEnvio" style="max-width:480px; line-height:1.5;">
+                            Cuando hayas confirmado todas las carreras de tu división, usa este botón para marcarla como entregada. Secretaría Académica podrá iniciar el proceso de carga académica a partir de ese momento.
+                        </div>
                     </div>
                 </div>
+                <button class="btn btn-enviar-division" onclick="cerrarCargaDivision()" id="btnEnviarDivision">
+                    <i class="bi bi-send-fill me-2"></i>Enviar a Secretaría
+                </button>
             </div>
-            <!-- FIN ZONA ROJA -->
+        </div>
+    </div>
 
+</div>
+
+<!-- MODAL BORRADOR -->
 <div class="modal fade" id="modalConfirmarBorrador" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
-    <div class="modal-dialog modal-dialog-centered" style="max-width: 440px;">
+    <div class="modal-dialog modal-dialog-centered" style="max-width:440px;">
         <div class="modal-content border-0 rounded-4 shadow-lg overflow-hidden">
-            <div class="modal-header border-0 flex-column align-items-center text-center pt-4 pb-3 px-4 position-relative"
-                 style="background-color: #d97706;">
-                <div class="rounded-circle d-flex align-items-center justify-content-center mb-3"
-                     style="width:52px; height:52px; background: rgba(255,255,255,0.15);">
+            <div class="modal-header border-0 flex-column align-items-center text-center pt-4 pb-3 px-4 position-relative" style="background-color:#d97706;">
+                <div class="rounded-circle d-flex align-items-center justify-content-center mb-3" style="width:52px;height:52px;background:rgba(255,255,255,0.15);">
                     <i class="bi bi-exclamation-triangle-fill fs-4 text-white"></i>
                 </div>
-                <h5 class="modal-title fw-bold text-white m-0" style="font-size: 1.05rem;">
-                    Asignaciones Incompletas
-                </h5>
-                <button type="button"
-                        class="position-absolute border-0 d-flex align-items-center justify-content-center"
-                        data-bs-dismiss="modal"
-                        aria-label="Cerrar"
-                        style="top: 14px; right: 14px; width: 30px; height: 30px; border-radius: 50%; background: rgba(255,255,255,0.15); color: white; font-size: 1rem; cursor: pointer; transition: background 0.2s;"
-                        onmouseover="this.style.background='rgba(220,38,38,0.75)'"
-                        onmouseout="this.style.background='rgba(255,255,255,0.15)'">✕</button>
+                <h5 class="modal-title fw-bold text-white m-0" style="font-size:1.05rem;">Asignaciones Incompletas</h5>
+                <button type="button" class="position-absolute border-0 d-flex align-items-center justify-content-center" data-bs-dismiss="modal" aria-label="Cerrar"
+                    style="top:14px;right:14px;width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,0.15);color:white;font-size:1rem;cursor:pointer;transition:background 0.2s;"
+                    onmouseover="this.style.background='rgba(220,38,38,0.75)'" onmouseout="this.style.background='rgba(255,255,255,0.15)'">✕</button>
             </div>
             <div class="modal-body px-4 pt-4 pb-3 text-center">
-                <p class="fw-semibold text-dark mb-2" style="font-size: 0.95rem;">
-                    Aún faltan profesores por asignar.
-                </p>
-                <p class="text-secondary mb-4" style="font-size: 0.875rem; line-height: 1.6;">
-                    Algunas celdas de la tabla siguen vacías.
-                </p>
-                <div class="d-flex align-items-start gap-2 text-start rounded-3 p-3"
-                     style="background: #fffbeb; border: 1px solid #fcd34d;">
-                    <i class="bi bi-info-circle-fill mt-1 flex-shrink-0" style="color: #b45309;"></i>
-                    <p class="mb-0 small" style="color: #92400e; line-height: 1.5;">
-                        ¿Deseas <strong>regresar a completarlo</strong> o prefieres guardarlo como borrador por ahora?
-                    </p>
+                <p class="fw-semibold text-dark mb-2" style="font-size:0.95rem;">Aún faltan profesores por asignar.</p>
+                <p class="text-secondary mb-4" style="font-size:0.875rem;line-height:1.6;">Algunas celdas de la tabla siguen vacías.</p>
+                <div class="d-flex align-items-start gap-2 text-start rounded-3 p-3" style="background:#fffbeb;border:1px solid #fcd34d;">
+                    <i class="bi bi-info-circle-fill mt-1 flex-shrink-0" style="color:#b45309;"></i>
+                    <p class="mb-0 small" style="color:#92400e;line-height:1.5;">¿Deseas <strong>regresar a completarlo</strong> o prefieres guardarlo como borrador por ahora?</p>
                 </div>
             </div>
             <div class="modal-footer border-0 px-4 pb-4 pt-2 d-flex gap-2 justify-content-center">
-                <button type="button"
-                        class="btn fw-semibold flex-fill"
-                        style="border: 1.5px solid #e2e8f0; border-radius: 10px; padding: 11px; color: #64748b; background: white;"
-                        data-bs-dismiss="modal">
-                    Completar
-                </button>
-                <button type="button"
-                        class="btn fw-bold flex-fill"
-                        style="border-radius: 10px; padding: 11px; background: #f59e0b; border: none; color: #78350f;"
-                        onclick="ejecutarGuardado('borrador')">
-                    Guardar Borrador
-                </button>
+                <button type="button" class="btn fw-semibold flex-fill" style="border:1.5px solid #e2e8f0;border-radius:10px;padding:11px;color:#64748b;background:white;" data-bs-dismiss="modal">Completar</button>
+                <button type="button" class="btn fw-bold flex-fill" style="border-radius:10px;padding:11px;background:#f59e0b;border:none;color:#78350f;" onclick="ejecutarGuardado('borrador')">Guardar borrador</button>
             </div>
         </div>
     </div>
 </div>
 
+<!-- MODAL COMPLETO -->
 <div class="modal fade" id="modalConfirmarCompleto" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
-    <div class="modal-dialog modal-dialog-centered" style="max-width: 440px;">
+    <div class="modal-dialog modal-dialog-centered" style="max-width:440px;">
         <div class="modal-content border-0 rounded-4 shadow-lg overflow-hidden">
-            <div class="modal-header border-0 flex-column align-items-center text-center pt-4 pb-3 px-4 position-relative"
-                 style="background-color: #004b87;">
-                <div class="rounded-circle d-flex align-items-center justify-content-center mb-3"
-                     style="width:52px; height:52px; background: rgba(255,255,255,0.15);">
+            <div class="modal-header border-0 flex-column align-items-center text-center pt-4 pb-3 px-4 position-relative" style="background-color:#004b87;">
+                <div class="rounded-circle d-flex align-items-center justify-content-center mb-3" style="width:52px;height:52px;background:rgba(255,255,255,0.15);">
                     <i class="bi bi-check-circle-fill fs-4 text-white"></i>
                 </div>
-                <h5 class="modal-title fw-bold text-white m-0" style="font-size: 1.05rem;">
-                    Confirmar Resumen de Grado
-                </h5>
-                <button type="button"
-                        class="position-absolute border-0 d-flex align-items-center justify-content-center"
-                        data-bs-dismiss="modal"
-                        aria-label="Cerrar"
-                        style="top: 14px; right: 14px; width: 30px; height: 30px; border-radius: 50%; background: rgba(255,255,255,0.15); color: white; font-size: 1rem; cursor: pointer; transition: background 0.2s;"
-                        onmouseover="this.style.background='rgba(220,38,38,0.75)'"
-                        onmouseout="this.style.background='rgba(255,255,255,0.15)'">✕</button>
+                <h5 class="modal-title fw-bold text-white m-0" style="font-size:1.05rem;">Confirmar Resumen de Grado</h5>
+                <button type="button" class="position-absolute border-0 d-flex align-items-center justify-content-center" data-bs-dismiss="modal" aria-label="Cerrar"
+                    style="top:14px;right:14px;width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,0.15);color:white;font-size:1rem;cursor:pointer;transition:background 0.2s;"
+                    onmouseover="this.style.background='rgba(220,38,38,0.75)'" onmouseout="this.style.background='rgba(255,255,255,0.15)'">✕</button>
             </div>
             <div class="modal-body px-4 pt-4 pb-3 text-center">
-                <p class="fw-semibold text-dark mb-2" style="font-size: 0.95rem;">
-                    El resumen de este grado está completo.
-                </p>
-                <p class="text-secondary mb-4" style="font-size: 0.875rem; line-height: 1.6;">
-                    Una vez confirmado, este grado quedará <strong>bloqueado para edición</strong>. Podrás seguir configurando otros grados de la división.
-                </p>
-                <div class="d-flex align-items-start gap-2 text-start rounded-3 p-3"
-                     style="background: #eff6ff; border: 1px solid #bfdbfe;">
-                    <i class="bi bi-info-circle-fill mt-1 flex-shrink-0" style="color: #1d4ed8;"></i>
-                    <p class="mb-0 small" style="color: #1e40af; line-height: 1.5;">
-                        Cuando termines <strong>todos los grados</strong> de tu división, podrás cerrar la carga completa con el botón que aparecerá abajo.
-                    </p>
+                <p class="fw-semibold text-dark mb-2" style="font-size:0.95rem;">El resumen de este grado está completo.</p>
+                <p class="text-secondary mb-4" style="font-size:0.875rem;line-height:1.6;">Una vez confirmado, este grado quedará <strong>bloqueado para edición</strong>. Podrás seguir configurando otros grados de tu división.</p>
+                <div class="d-flex align-items-start gap-2 text-start rounded-3 p-3" style="background:#eff6ff;border:1px solid #bfdbfe;">
+                    <i class="bi bi-info-circle-fill mt-1 flex-shrink-0" style="color:#1d4ed8;"></i>
+                    <p class="mb-0 small" style="color:#1e40af;line-height:1.5;">Cuando termines <strong>todos los grados</strong> de tu división, podrás enviarla a Secretaría con el botón que aparece al final de la página.</p>
                 </div>
             </div>
             <div class="modal-footer border-0 px-4 pb-4 pt-2 d-flex gap-2 justify-content-center">
-                <button type="button"
-                        class="btn fw-semibold flex-fill"
-                        style="border-radius: 10px; padding: 11px; background: #f59e0b; border: none; color: #78350f;"
-                        onclick="ejecutarGuardado('borrador')">
-                    Guardar Borrador
-                </button>
-                <button type="button"
-                        class="btn fw-bold flex-fill text-white"
-                        style="border-radius: 10px; padding: 11px; background: #16a34a; border: none;"
-                        onclick="ejecutarGuardado('completo')">
-                    Confirmar Grado <i class="bi bi-check-lg ms-1"></i>
-                </button>
+                <button type="button" class="btn fw-semibold flex-fill" style="border-radius:10px;padding:11px;background:#f59e0b;border:none;color:#78350f;" onclick="ejecutarGuardado('borrador')">Guardar borrador</button>
+                <button type="button" class="btn fw-bold flex-fill text-white" style="border-radius:10px;padding:11px;background:#16a34a;border:none;" onclick="ejecutarGuardado('completo')">Confirmar grado <i class="bi bi-check-lg ms-1"></i></button>
             </div>
         </div>
     </div>
 </div>
 
+<!-- MODAL DETALLE -->
 <div class="modal fade" id="modalTablaRegistro" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-xl modal-dialog-centered">
         <div class="modal-content border-0 rounded-4 shadow-lg">
             <div class="modal-header border-bottom-0 pb-0 pt-4 px-4">
                 <div class="d-flex align-items-center w-100">
-                    <div class="bg-primary bg-opacity-10 text-primary p-2 rounded-3 me-3">
-                        <i class="bi bi-table fs-5"></i>
-                    </div>
-                    <h5 class="modal-title fw-bold mb-0 me-3" style="color: #004b87;" id="modalTituloGral">Detalle de Asignación</h5>
+                    <div class="bg-primary bg-opacity-10 text-primary p-2 rounded-3 me-3"><i class="bi bi-table fs-5"></i></div>
+                    <h5 class="modal-title fw-bold mb-0 me-3" style="color:#004b87;" id="modalTituloGral">Detalle de Asignación</h5>
                     <div id="modalBadgeEstado"></div>
                 </div>
                 <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -624,56 +556,33 @@
     </div>
 </div>
 
+<!-- MODAL CIERRE DIVISIÓN -->
 <div class="modal fade" id="modalCerrarCarga" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
-    <div class="modal-dialog modal-dialog-centered" style="max-width: 460px;">
+    <div class="modal-dialog modal-dialog-centered" style="max-width:460px;">
         <div class="modal-content border-0 rounded-4 shadow-lg overflow-hidden">
-            <div class="modal-header border-0 flex-column align-items-center text-center pt-4 pb-3 px-4 position-relative"
-                 style="background: linear-gradient(135deg, #0f766e 0%, #0d9488 100%);">
-                <div class="rounded-circle d-flex align-items-center justify-content-center mb-3"
-                     style="width:56px; height:56px; background: rgba(255,255,255,0.15);">
-                    <i class="bi bi-building-lock-fill fs-4 text-white"></i>
+            <div class="modal-header border-0 flex-column align-items-center text-center pt-4 pb-3 px-4 position-relative" style="background-color:#004b87;">
+                <div class="rounded-circle d-flex align-items-center justify-content-center mb-3" style="width:56px;height:56px;background:rgba(255,255,255,0.15);">
+                    <i class="bi bi-send-fill fs-4 text-white"></i>
                 </div>
-                <h5 class="modal-title fw-bold text-white m-0" style="font-size: 1.1rem;">
-                    Cerrar Carga de la División
-                </h5>
-                <p class="text-white opacity-75 small mt-1 mb-0">División de Sistemas Productivos y Mantenimiento Industrial</p>
-                <button type="button"
-                        class="position-absolute border-0 d-flex align-items-center justify-content-center"
-                        data-bs-dismiss="modal"
-                        aria-label="Cerrar"
-                        style="top: 14px; right: 14px; width: 30px; height: 30px; border-radius: 50%; background: rgba(255,255,255,0.15); color: white; font-size: 1rem; cursor: pointer; transition: background 0.2s;"
-                        onmouseover="this.style.background='rgba(220,38,38,0.75)'"
-                        onmouseout="this.style.background='rgba(255,255,255,0.15)'">✕</button>
+                <h5 class="modal-title fw-bold text-white m-0" style="font-size:1.05rem;">Enviar División a Secretaría</h5>
+                <p class="text-white small mt-1 mb-0" style="opacity:0.8;">División de Sistemas Productivos y Mantenimiento Industrial</p>
+                <button type="button" class="position-absolute border-0 d-flex align-items-center justify-content-center" data-bs-dismiss="modal" aria-label="Cerrar"
+                    style="top:14px;right:14px;width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,0.15);color:white;font-size:1rem;cursor:pointer;transition:background 0.2s;"
+                    onmouseover="this.style.background='rgba(220,38,38,0.75)'" onmouseout="this.style.background='rgba(255,255,255,0.15)'">✕</button>
             </div>
             <div class="modal-body px-4 pt-4 pb-3 text-center">
-                <p class="fw-semibold text-dark mb-2" style="font-size: 0.95rem;">
-                    ¿Confirmas que terminaste de capturar toda la división?
-                </p>
-                <p class="text-secondary mb-4" style="font-size: 0.875rem; line-height: 1.6;">
-                    Esta acción marcará la división como <strong>Entregada</strong>. Secretaría Académica podrá procesar los registros a partir de este momento.
-                </p>
-                <div id="resumenGradosCierre" class="text-start rounded-3 p-3 mb-3" style="background: #f0fdf4; border: 1px solid #86efac;">
-                </div>
-                <div class="d-flex align-items-start gap-2 text-start rounded-3 p-3"
-                     style="background: #fff7ed; border: 1px solid #fed7aa;">
-                    <i class="bi bi-exclamation-triangle-fill mt-1 flex-shrink-0" style="color: #c2410c;"></i>
-                    <p class="mb-0 small" style="color: #9a3412; line-height: 1.5;">
-                        Esta acción <strong>no se puede deshacer</strong>. Asegúrate de haber confirmado todos los grados que corresponden a tu división.
-                    </p>
+                <p class="fw-semibold text-dark mb-2" style="font-size:0.95rem;">¿Confirmas que terminaste de capturar toda la división?</p>
+                <p class="text-secondary mb-4" style="font-size:0.875rem;line-height:1.6;">Secretaría Académica podrá procesar los registros a partir de este momento.</p>
+                <div id="resumenGradosCierre" class="text-start rounded-3 p-3 mb-3" style="background:#f0fdf4;border:1px solid #86efac;max-height:180px;overflow-y:auto;"></div>
+                <div class="d-flex align-items-start gap-2 text-start rounded-3 p-3" style="background:#fff7ed;border:1px solid #fed7aa;">
+                    <i class="bi bi-exclamation-triangle-fill mt-1 flex-shrink-0" style="color:#c2410c;"></i>
+                    <p class="mb-0 small" style="color:#9a3412;line-height:1.5;">Esta acción <strong>no se puede deshacer</strong>. Asegúrate de haber confirmado todos los grados de tu división.</p>
                 </div>
             </div>
             <div class="modal-footer border-0 px-4 pb-4 pt-2 d-flex gap-2 justify-content-center">
-                <button type="button"
-                        class="btn fw-semibold flex-fill"
-                        style="border: 1.5px solid #e2e8f0; border-radius: 10px; padding: 11px; color: #64748b; background: white;"
-                        data-bs-dismiss="modal">
-                    Cancelar
-                </button>
-                <button type="button"
-                        class="btn fw-bold flex-fill text-white"
-                        style="border-radius: 10px; padding: 11px; background: linear-gradient(135deg, #0f766e, #0d9488); border: none;"
-                        onclick="ejecutarCierreDivision()">
-                    <i class="bi bi-lock-fill me-2"></i>Confirmar Cierre
+                <button type="button" class="btn fw-semibold flex-fill" style="border:1.5px solid #e2e8f0;border-radius:10px;padding:11px;color:#64748b;background:white;" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn fw-bold flex-fill text-white" style="border-radius:10px;padding:11px;background:#004b87;border:none;" onclick="ejecutarCierreDivision()">
+                    <i class="bi bi-send-fill me-2"></i>Confirmar envío
                 </button>
             </div>
         </div>
@@ -682,7 +591,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-    const DIVISION_ID   = 'sistemas_productivos';
+    const DIVISION_ID = 'sistemas_productivos';
     const DIVISION_NOMBRE = 'División de Sistemas Productivos y Mantenimiento Industrial';
 
     const materiasFalsas = [
@@ -697,9 +606,7 @@
 
     let datosTemporalesListosParaGuardar = null;
 
-    window.addEventListener('DOMContentLoaded', () => {
-        actualizarUIEstadoDivision();
-    });
+    window.addEventListener('DOMContentLoaded', () => { actualizarUIEstadoDivision(); });
 
     function obtenerEstadoDivision() {
         const data = JSON.parse(localStorage.getItem('estadoDivisiones')) || {};
@@ -709,13 +616,14 @@
     function actualizarUIEstadoDivision() {
         const estado = obtenerEstadoDivision();
         const container = document.getElementById('statusBadgeContainer');
-        const banner = document.getElementById('bannerDivision');
-        const statusIcon = document.getElementById('statusIcon');
-        const bannerTexto = document.getElementById('bannerDivisionTexto');
-        
+        const pill = document.getElementById('divisionStatusPill');
+        const statusTexto = document.getElementById('statusTexto');
         const seccionCerrar = document.getElementById('seccionCerrarCarga');
-        const textoCerrar = document.getElementById('textoCerrarCarga');
-        const btnCerrar = document.getElementById('btnCerrarCarga');
+        const panelEnvio = document.getElementById('panelEnvio');
+        const iconoEnvio = document.getElementById('iconoEnvio');
+        const tituloEnvio = document.getElementById('tituloEnvio');
+        const textoEnvio = document.getElementById('textoEnvio');
+        const btnEnviar = document.getElementById('btnEnviarDivision');
 
         const registros = JSON.parse(localStorage.getItem('registrosResumenCargas')) || [];
         const tieneCompletos = registros.some(r => r.estado === 'completo' && r.division === DIVISION_ID);
@@ -723,29 +631,30 @@
 
         if (estado === 'entregado') {
             container.classList.remove('d-none');
-            banner.className = 'd-flex align-items-center gap-2 px-3 py-2 rounded-pill border shadow-sm bg-primary bg-opacity-10 border-primary-subtle';
-            statusIcon.className = 'bi bi-check-circle-fill text-primary fs-5';
-            bannerTexto.textContent = 'Entregada a Secretaría';
-            bannerTexto.className = 'fw-bold text-primary';
-            
+            pill.className = 'division-status-pill entregada';
+            statusTexto.textContent = 'Entregada a Secretaría Académica';
             seccionCerrar.classList.add('d-none');
             bloquearFormulario(true);
         } else if (tieneCompletos) {
             container.classList.remove('d-none');
-            banner.className = 'd-flex align-items-center gap-2 px-3 py-2 rounded-pill border shadow-sm bg-success bg-opacity-10 border-success-subtle';
-            statusIcon.className = 'bi bi-pencil-fill text-success fs-5';
-            bannerTexto.textContent = 'En Proceso';
-            bannerTexto.className = 'fw-bold text-success';
-            
+            pill.className = 'division-status-pill en-proceso';
+            statusTexto.textContent = 'En proceso — captura activa';
             seccionCerrar.classList.remove('d-none');
+
             if (tieneBorradores) {
-                textoCerrar.innerHTML = '<span class="fw-bold"><i class="bi bi-x-octagon-fill me-1"></i>ACCIÓN BLOQUEADA:</span> Aún tienes borradores sin confirmar. Resuélvelos para poder cerrar.';
-                btnCerrar.disabled = true;
-                btnCerrar.style.opacity = '0.5';
+                panelEnvio.className = 'seccion-envio bloqueada';
+                iconoEnvio.className = 'icono-envio bloqueado';
+                iconoEnvio.innerHTML = '<i class="bi bi-lock-fill text-white" style="font-size:1.3rem;"></i>';
+                tituloEnvio.textContent = 'Envío pendiente — hay borradores sin confirmar';
+                textoEnvio.textContent = 'Tienes borradores incompletos en tu división. Confírmalos o elimínalos antes de poder enviarla a Secretaría Académica.';
+                btnEnviar.disabled = true;
             } else {
-                textoCerrar.textContent = 'Cuando hayas confirmado todos los grados, cierra la carga para entregarla a Secretaría. Esta acción es irreversible.';
-                btnCerrar.disabled = false;
-                btnCerrar.style.opacity = '1';
+                panelEnvio.className = 'seccion-envio';
+                iconoEnvio.className = 'icono-envio';
+                iconoEnvio.innerHTML = '<i class="bi bi-send-fill text-white" style="font-size:1.3rem;"></i>';
+                tituloEnvio.textContent = 'Enviar división a Secretaría Académica';
+                textoEnvio.textContent = 'Cuando completes grados y carreras, usa este botón para marcar tu división como entregada. Secretaría Académica podrá iniciar la carga académica a partir de ese momento.';
+                btnEnviar.disabled = false;
             }
         } else {
             container.classList.add('d-none');
@@ -754,15 +663,15 @@
     }
 
     function bloquearFormulario(bloquear) {
-        const elementos = document.querySelectorAll('#selPeriodo, #selCarrera, #selPlan, #btnProfesorDropdown, #btnTutorDropdown, #selGrupoTutor');
-        elementos.forEach(el => { el.disabled = bloquear; });
+        ['selPeriodo','selCarrera','selPlan','btnProfesorDropdown','btnTutorDropdown','selGrupoTutor'].forEach(id => {
+            const el = document.getElementById(id);
+            if (el) el.disabled = bloquear;
+        });
         const btnGuardar = document.querySelector('.btn-guardar');
         if (btnGuardar) {
             btnGuardar.disabled = bloquear;
-            if (bloquear) {
-                btnGuardar.style.opacity = '0.5';
-                btnGuardar.title = 'La carga de esta división ya fue entregada a Secretaría.';
-            }
+            btnGuardar.style.opacity = bloquear ? '0.5' : '1';
+            if (bloquear) btnGuardar.title = 'La carga de esta división ya fue entregada a Secretaría.';
         }
     }
 
@@ -775,20 +684,18 @@
         const periodo = document.getElementById('selPeriodo').value;
         const carrera = document.getElementById('selCarrera').value;
         const plan = document.getElementById('selPlan').value;
-        const seccionGrados = document.getElementById('seccionGrados');
-        const seccionConfiguracion = document.getElementById('seccionConfiguracion');
         if (periodo && carrera && plan) {
-            document.getElementById('leyendaDisponibles').innerHTML = `<span style="color: #004b87;">GRADOS DISPONIBLES</span>`;
-            seccionGrados.classList.remove('d-none');
+            document.getElementById('leyendaDisponibles').innerHTML = `<span style="color:#004b87;">GRADOS DISPONIBLES</span>`;
+            document.getElementById('seccionGrados').classList.remove('d-none');
         } else {
-            seccionGrados.classList.add('d-none');
-            seccionConfiguracion.classList.add('d-none');
+            document.getElementById('seccionGrados').classList.add('d-none');
+            document.getElementById('seccionConfiguracion').classList.add('d-none');
         }
     }
 
     function seleccionarGrado(btnElement, nombreGrado) {
         document.querySelectorAll('.btn-grado').forEach(btn => {
-            btn.classList.remove('bg-primary', 'text-white');
+            btn.classList.remove('bg-primary','text-white');
             btn.classList.add('btn-outline-primary');
             btn.style.backgroundColor = '';
             btn.style.color = '';
@@ -797,17 +704,14 @@
             btnElement.classList.remove('btn-outline-primary');
             btnElement.style.backgroundColor = '#0d6efd';
             btnElement.style.color = 'white';
-            btnElement.classList.add('bg-primary', 'text-white');
         }
         document.getElementById('selGrupoTutor').value = "";
         document.getElementById('tutorActivo').value = "";
-        const btnTutor = document.getElementById('btnTutorDropdown');
-        btnTutor.innerHTML = "Selecciona...";
-        btnTutor.classList.remove('border-success');
+        document.getElementById('btnTutorDropdown').innerHTML = "Selecciona...";
+        document.getElementById('btnTutorDropdown').classList.remove('border-success');
         document.getElementById('profesorActivo').value = "";
-        const btnProfesor = document.getElementById('btnProfesorDropdown');
-        btnProfesor.innerHTML = "Despliega o busca un profesor...";
-        btnProfesor.classList.remove('border-success');
+        document.getElementById('btnProfesorDropdown').innerHTML = "Despliega o busca un profesor...";
+        document.getElementById('btnProfesorDropdown').classList.remove('border-success');
         document.getElementById('seccionConfiguracion').classList.remove('d-none');
         document.getElementById('tituloTablaGrado').innerText = nombreGrado;
         const comboCarrera = document.getElementById('selCarrera');
@@ -825,29 +729,25 @@
 
     function seleccionarTutor(nombre, event) {
         event.preventDefault();
-        const btn = document.getElementById('btnTutorDropdown');
-        btn.innerHTML = `<i class="bi bi-person-check-fill text-success me-2"></i> ${nombre}`;
-        btn.classList.add('border-success');
+        document.getElementById('btnTutorDropdown').innerHTML = `<i class="bi bi-person-check-fill text-success me-2"></i> ${nombre}`;
+        document.getElementById('btnTutorDropdown').classList.add('border-success');
         document.getElementById('tutorActivo').value = nombre;
         document.getElementById('buscadorTutores').value = '';
         filtrarTutores();
     }
 
     function asignarTutor() {
-        const grupoSeleccionado = document.getElementById('selGrupoTutor').value;
-        const tutorSeleccionado = document.getElementById('tutorActivo').value.trim();
-        if (!grupoSeleccionado || !tutorSeleccionado) {
-            alert("Selecciona un grupo y un tutor primero.");
-            return;
-        }
-        const partes = tutorSeleccionado.split(' ');
-        let nombreCorto = partes[0];
-        if (partes.length > 1) nombreCorto += ' ' + partes[1];
-        const spanTutor = document.getElementById(`tutor-${grupoSeleccionado}`);
-        if (spanTutor) {
-            spanTutor.innerText = nombreCorto;
-            spanTutor.className = 'badge-tutor shadow-sm';
-            mostrarAlerta('Tutor asignado correctamente al grupo ' + grupoSeleccionado, 'success');
+        const grupo = document.getElementById('selGrupoTutor').value;
+        const tutor = document.getElementById('tutorActivo').value.trim();
+        if (!grupo || !tutor) { alert("Selecciona un grupo y un tutor primero."); return; }
+        const partes = tutor.split(' ');
+        let corto = partes[0];
+        if (partes.length > 1) corto += ' ' + partes[1];
+        const span = document.getElementById(`tutor-${grupo}`);
+        if (span) {
+            span.innerText = corto;
+            span.className = 'badge-tutor shadow-sm';
+            mostrarAlerta('Tutor asignado al grupo ' + grupo, 'success');
         }
     }
 
@@ -860,53 +760,48 @@
 
     function seleccionarProfesor(nombre, event) {
         event.preventDefault();
-        const btn = document.getElementById('btnProfesorDropdown');
-        btn.innerHTML = `<i class="bi bi-person-check-fill text-success me-2"></i> ${nombre}`;
-        btn.classList.add('border-success');
+        document.getElementById('btnProfesorDropdown').innerHTML = `<i class="bi bi-person-check-fill text-success me-2"></i> ${nombre}`;
+        document.getElementById('btnProfesorDropdown').classList.add('border-success');
         document.getElementById('profesorActivo').value = nombre;
         document.getElementById('buscadorProfesores').value = '';
         filtrarProfesores();
     }
 
     function dibujarTabla() {
-        const gruposActuales = obtenerGruposActuales();
+        const grupos = obtenerGruposActuales();
         const thead = document.getElementById('cabeceraTabla');
-        let theadHtml = `
-            <tr>
-                <th class="text-start ps-3" style="width: 25%;">Asignatura / Grupo</th>
-                <th style="width: 12%;">Semanas<br><small class="text-muted opacity-75" style="text-transform:none;">(Inicio - Fin)</small></th>
-                <th style="width: 10%;">Total<br><small class="text-muted opacity-75" style="text-transform:none;">Semanas</small></th>`;
-        const widthColumna = 53 / (gruposActuales.length || 1);
-        gruposActuales.forEach(g => {
-            theadHtml += `
-                <th style="width: ${widthColumna}%;">
-                    <div class="fs-6 text-dark mb-1">${g}</div>
-                    <div class="fw-normal text-muted" style="font-size: 0.75rem;">
-                        <i class="bi bi-person-video me-1"></i>Tutor: <br>
-                        <span id="tutor-${g}" class="text-muted fw-medium">Sin asignar</span>
-                    </div>
-                </th>`;
+        let th = `<tr>
+            <th class="text-start ps-3" style="width:25%;">Asignatura / Grupo</th>
+            <th style="width:12%;">Semanas<br><small class="text-muted opacity-75" style="text-transform:none;">(Inicio - Fin)</small></th>
+            <th style="width:10%;">Total<br><small class="text-muted opacity-75" style="text-transform:none;">Semanas</small></th>`;
+        const w = 53 / (grupos.length || 1);
+        grupos.forEach(g => {
+            th += `<th style="width:${w}%;">
+                <div class="fs-6 text-dark mb-1">${g}</div>
+                <div class="fw-normal text-muted" style="font-size:0.75rem;">
+                    <i class="bi bi-person-video me-1"></i>Tutor:<br>
+                    <span id="tutor-${g}" class="text-muted fw-medium">Sin asignar</span>
+                </div>
+            </th>`;
         });
-        theadHtml += `</tr>`;
-        thead.innerHTML = theadHtml;
-
+        thead.innerHTML = th + `</tr>`;
         const tbody = document.getElementById('cuerpoTabla');
         tbody.innerHTML = '';
-        materiasFalsas.forEach(materiaObj => {
+        materiasFalsas.forEach(m => {
             const tr = document.createElement('tr');
-            const tdMateria = document.createElement('td');
-            tdMateria.className = 'text-start materia-texto ps-3';
-            tdMateria.innerText = materiaObj.nombre;
-            tr.appendChild(tdMateria);
-            const tdRango = document.createElement('td');
-            tdRango.className = 'align-middle';
-            tdRango.innerHTML = `<span class="badge-semanas">${materiaObj.inicio} a ${materiaObj.fin}</span>`;
-            tr.appendChild(tdRango);
-            const tdTotal = document.createElement('td');
-            tdTotal.className = 'align-middle';
-            tdTotal.innerHTML = `<span class="badge-semanas bg-white text-primary">${materiaObj.total}</span>`;
-            tr.appendChild(tdTotal);
-            gruposActuales.forEach(() => {
+            const tdM = document.createElement('td');
+            tdM.className = 'text-start materia-texto ps-3';
+            tdM.innerText = m.nombre;
+            tr.appendChild(tdM);
+            const tdR = document.createElement('td');
+            tdR.className = 'align-middle';
+            tdR.innerHTML = `<span class="badge-semanas">${m.inicio} a ${m.fin}</span>`;
+            tr.appendChild(tdR);
+            const tdT = document.createElement('td');
+            tdT.className = 'align-middle';
+            tdT.innerHTML = `<span class="badge-semanas bg-white text-primary">${m.total}</span>`;
+            tr.appendChild(tdT);
+            grupos.forEach(() => {
                 const td = document.createElement('td');
                 td.className = 'celda-interactiva';
                 td.style.cursor = 'pointer';
@@ -921,23 +816,16 @@
         if (celda.classList.contains('celda-asignada')) {
             if (celda.classList.contains('permitir-borrado')) {
                 celda.innerHTML = '';
-                celda.classList.remove('celda-asignada', 'permitir-borrado');
+                celda.classList.remove('celda-asignada','permitir-borrado');
             }
             return;
         }
-        const inputProfesor = document.getElementById('profesorActivo').value.trim();
-        if (inputProfesor === '') {
-            alert('Despliega la lista y selecciona el profesor que vas a asignar.');
-            return;
-        }
-        const partes = inputProfesor.split(' ');
-        let nombreParaTabla = partes[0];
-        if (partes.length > 1) nombreParaTabla += ' ' + partes[1];
-        celda.innerHTML = `
-            <div class="prof-badge shadow-sm">
-                <span class="nombre-prof">${nombreParaTabla}</span>
-                <i class="bi bi-trash3-fill icon-borrar"></i>
-            </div>`;
+        const prof = document.getElementById('profesorActivo').value.trim();
+        if (!prof) { alert('Despliega la lista y selecciona el profesor que vas a asignar.'); return; }
+        const partes = prof.split(' ');
+        let nombre = partes[0];
+        if (partes.length > 1) nombre += ' ' + partes[1];
+        celda.innerHTML = `<div class="prof-badge shadow-sm"><span class="nombre-prof">${nombre}</span><i class="bi bi-trash3-fill icon-borrar"></i></div>`;
         celda.classList.add('celda-asignada');
         celda.addEventListener('mouseleave', function() {
             if (this.classList.contains('celda-asignada')) this.classList.add('permitir-borrado');
@@ -947,32 +835,21 @@
     function mostrarAlerta(mensaje, tipo = 'success') {
         const existing = document.getElementById('toastFlotante');
         if (existing) existing.remove();
-
         const config = {
             success: { icono: 'bi-check-circle-fill', color: '#16a34a' },
             info:    { icono: 'bi-exclamation-triangle-fill', color: '#f59e0b' },
             error:   { icono: 'bi-x-circle-fill', color: '#dc2626' }
         };
         const c = config[tipo] || config.success;
-
         const toast = document.createElement('div');
         toast.id = 'toastFlotante';
-        toast.style.cssText = `
-            position: fixed; top: 20px; right: 24px; z-index: 9999;
-            display: flex; align-items: center; gap: 12px;
-            background: #ffffff; border: 1px solid #e2e8f0;
-            border-left: 4px solid ${c.color}; border-radius: 10px;
-            padding: 14px 16px; box-shadow: 0 4px 16px rgba(0,0,0,0.08);
-            font-family: 'Inter', sans-serif; font-size: 0.875rem; font-weight: 500;
-            max-width: 300px; animation: slideInToast 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-        `;
+        toast.style.cssText = `position:fixed;top:20px;right:24px;z-index:9999;display:flex;align-items:center;gap:12px;background:#ffffff;border:1px solid #e2e8f0;border-left:4px solid ${c.color};border-radius:10px;padding:14px 16px;box-shadow:0 4px 16px rgba(0,0,0,0.08);font-family:'Inter',sans-serif;font-size:0.875rem;font-weight:500;max-width:300px;animation:slideInToast 0.3s cubic-bezier(0.34,1.56,0.64,1);`;
         toast.innerHTML = `
-            <div style="width: 26px; height: 26px; border-radius: 50%; background: ${c.color}; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                <i class="bi ${c.icono}" style="color: white; font-size: 0.8rem;"></i>
+            <div style="width:26px;height:26px;border-radius:50%;background:${c.color};display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                <i class="bi ${c.icono}" style="color:white;font-size:0.8rem;"></i>
             </div>
-            <span style="flex: 1; color: #1e293b;">${mensaje}</span>
-            <button onclick="this.parentElement.remove()" style="background: none; border: none; color: #94a3b8; cursor: pointer; font-size: 1rem; padding: 0 0 0 6px; line-height: 1; flex-shrink: 0;">✕</button>
-        `;
+            <span style="flex:1;color:#1e293b;">${mensaje}</span>
+            <button onclick="this.parentElement.remove()" style="background:none;border:none;color:#94a3b8;cursor:pointer;font-size:1rem;padding:0 0 0 6px;line-height:1;flex-shrink:0;">✕</button>`;
         document.body.appendChild(toast);
         setTimeout(() => {
             if (toast && toast.parentElement) {
@@ -987,49 +864,37 @@
             mostrarAlerta('Esta división ya fue entregada. No puedes agregar más registros.', 'error');
             return;
         }
-
         const periodo = document.getElementById('selPeriodo').value;
         const carrera = document.getElementById('selCarrera').options[document.getElementById('selCarrera').selectedIndex].text;
         const plan = document.getElementById('selPlan').value;
         const grado = document.getElementById('tituloTablaGrado').innerText;
-        const gruposActuales = obtenerGruposActuales();
+        const grupos = obtenerGruposActuales();
         const tutores = {};
-        gruposActuales.forEach(g => {
-            const tutorTag = document.getElementById(`tutor-${g}`);
-            tutores[g] = tutorTag ? tutorTag.innerText : 'Sin asignar';
+        grupos.forEach(g => {
+            const t = document.getElementById(`tutor-${g}`);
+            tutores[g] = t ? t.innerText : 'Sin asignar';
         });
         const asignaciones = [];
         const filas = document.querySelectorAll('#cuerpoTabla tr');
-        let celdasTotales = filas.length * gruposActuales.length;
-        let celdasLlenas = 0;
+        let total = filas.length * grupos.length, llenas = 0;
         filas.forEach(fila => {
-            const asigData = {
-                materia: fila.cells[0].innerText,
-                semanas: fila.cells[1].innerText,
-                total: fila.cells[2].innerText
-            };
-            gruposActuales.forEach((g, idx) => {
+            const d = { materia: fila.cells[0].innerText, semanas: fila.cells[1].innerText, total: fila.cells[2].innerText };
+            grupos.forEach((g, idx) => {
                 const celda = fila.cells[idx + 3];
-                const profNode = celda ? celda.querySelector('.nombre-prof') : null;
-                const profesor = profNode ? profNode.innerText : '---';
-                if (profesor !== '---') celdasLlenas++;
-                asigData[g] = profesor;
+                const pn = celda ? celda.querySelector('.nombre-prof') : null;
+                const p = pn ? pn.innerText : '---';
+                if (p !== '---') llenas++;
+                d[g] = p;
             });
-            asignaciones.push(asigData);
+            asignaciones.push(d);
         });
-        if (celdasLlenas === 0) {
-            alert("No has asignado ningún profesor en la tabla todavía.");
-            return;
-        }
+        if (llenas === 0) { alert("No has asignado ningún profesor en la tabla todavía."); return; }
         datosTemporalesListosParaGuardar = {
-            id: Date.now(),
-            fecha: new Date().toLocaleDateString('es-MX'),
-            periodo, carrera, plan, grado,
-            division: DIVISION_ID,
-            gruposRegistrados: gruposActuales,
-            tutores, asignaciones
+            id: Date.now(), fecha: new Date().toLocaleDateString('es-MX'),
+            periodo, carrera, plan, grado, division: DIVISION_ID,
+            gruposRegistrados: grupos, tutores, asignaciones
         };
-        if (celdasLlenas < celdasTotales) {
+        if (llenas < total) {
             new bootstrap.Modal(document.getElementById('modalConfirmarBorrador')).show();
         } else {
             new bootstrap.Modal(document.getElementById('modalConfirmarCompleto')).show();
@@ -1042,94 +907,64 @@
         let registros = JSON.parse(localStorage.getItem('registrosResumenCargas')) || [];
         registros.push(datosTemporalesListosParaGuardar);
         localStorage.setItem('registrosResumenCargas', JSON.stringify(registros));
-
-        const modalBorrador = bootstrap.Modal.getInstance(document.getElementById('modalConfirmarBorrador'));
-        if (modalBorrador) modalBorrador.hide();
-        const modalCompleto = bootstrap.Modal.getInstance(document.getElementById('modalConfirmarCompleto'));
-        if (modalCompleto) modalCompleto.hide();
-
-        const msg = estado === 'completo'
-            ? 'Grado confirmado y bloqueado para edición.'
-            : 'Guardado como borrador correctamente.';
-        mostrarAlerta(msg, 'success');
+        ['modalConfirmarBorrador','modalConfirmarCompleto'].forEach(id => {
+            const m = bootstrap.Modal.getInstance(document.getElementById(id));
+            if (m) m.hide();
+        });
+        mostrarAlerta(estado === 'completo' ? 'Grado confirmado correctamente.' : 'Guardado como borrador.', 'success');
         datosTemporalesListosParaGuardar = null;
-
-        setTimeout(() => {
-            actualizarUIEstadoDivision();
-            dibujarTabla();
-        }, 400);
+        setTimeout(() => { actualizarUIEstadoDivision(); dibujarTabla(); }, 400);
     }
 
     function cerrarCargaDivision() {
         const registros = JSON.parse(localStorage.getItem('registrosResumenCargas')) || [];
-        const completosDivision = registros.filter(r => r.estado === 'completo' && r.division === DIVISION_ID);
-        const borradoresDivision = registros.filter(r => r.estado === 'borrador' && r.division === DIVISION_ID);
-
-        if (borradoresDivision.length > 0) {
-            mostrarAlerta('Tienes borradores pendientes. Confírmalos o elimínalos antes de cerrar.', 'error');
-            return;
-        }
-        if (completosDivision.length === 0) {
-            mostrarAlerta('No hay registros confirmados para cerrar.', 'error');
-            return;
-        }
-
+        const completos = registros.filter(r => r.estado === 'completo' && r.division === DIVISION_ID);
+        const borradores = registros.filter(r => r.estado === 'borrador' && r.division === DIVISION_ID);
+        if (borradores.length > 0) { mostrarAlerta('Tienes borradores pendientes. Confírmalos antes de enviar.', 'error'); return; }
+        if (completos.length === 0) { mostrarAlerta('No hay registros confirmados para enviar.', 'error'); return; }
         const porCarrera = {};
-        completosDivision.forEach(r => {
+        completos.forEach(r => {
             if (!porCarrera[r.carrera]) porCarrera[r.carrera] = [];
             porCarrera[r.carrera].push(r.grado);
         });
-        let resumenHtml = `<p class="mb-2 small fw-bold" style="color:#166534;"><i class="bi bi-check-circle-fill me-1"></i>Grados confirmados que se cerrarán:</p>`;
-        for (const carrera in porCarrera) {
-            resumenHtml += `<div class="small text-dark mb-1"><span class="fw-semibold">${carrera}:</span> ${porCarrera[carrera].join(', ')}</div>`;
+        let html = `<p class="mb-2 small fw-bold" style="color:#166534;"><i class="bi bi-check-circle-fill me-1"></i>Carreras y Grados que se enviarán:</p>`;
+        for (const c in porCarrera) {
+            html += `<div class="small text-dark mb-1"><span class="fw-semibold">${c}:</span> ${porCarrera[c].join(', ')}</div>`;
         }
-        document.getElementById('resumenGradosCierre').innerHTML = resumenHtml;
-
+        document.getElementById('resumenGradosCierre').innerHTML = html;
         new bootstrap.Modal(document.getElementById('modalCerrarCarga')).show();
     }
 
     function ejecutarCierreDivision() {
-        const estadoDivisiones = JSON.parse(localStorage.getItem('estadoDivisiones')) || {};
-        estadoDivisiones[DIVISION_ID] = 'entregado';
-        estadoDivisiones[`${DIVISION_ID}_fecha`] = new Date().toLocaleDateString('es-MX');
-        localStorage.setItem('estadoDivisiones', JSON.stringify(estadoDivisiones));
-
-        const modal = bootstrap.Modal.getInstance(document.getElementById('modalCerrarCarga'));
-        if (modal) modal.hide();
-
-        mostrarAlerta('¡Carga de la división entregada exitosamente!', 'success');
-
-        setTimeout(() => {
-            actualizarUIEstadoDivision();
-        }, 400);
+        const est = JSON.parse(localStorage.getItem('estadoDivisiones')) || {};
+        est[DIVISION_ID] = 'entregado';
+        est[`${DIVISION_ID}_fecha`] = new Date().toLocaleDateString('es-MX');
+        localStorage.setItem('estadoDivisiones', JSON.stringify(est));
+        const m = bootstrap.Modal.getInstance(document.getElementById('modalCerrarCarga'));
+        if (m) m.hide();
+        mostrarAlerta('División enviada a Secretaría Académica exitosamente.', 'success');
+        setTimeout(() => actualizarUIEstadoDivision(), 400);
     }
 
     function inicializarVistaTarjetas(tipo) {
-        let registros = JSON.parse(localStorage.getItem('registrosResumenCargas')) || [];
-        let delTipo = registros.filter(r => r.estado === tipo);
-        const selectFiltro = document.getElementById(`filtroPeriodo_${tipo}`);
+        const registros = JSON.parse(localStorage.getItem('registrosResumenCargas')) || [];
+        const delTipo = registros.filter(r => r.estado === tipo);
+        const select = document.getElementById(`filtroPeriodo_${tipo}`);
         const contenedor = document.getElementById(`contenedorTarjetas_${tipo}`);
-        const btnLimpiar = document.getElementById(`btnLimpiarFiltro_${tipo}`);
+        const btnL = document.getElementById(`btnLimpiarFiltro_${tipo}`);
         if (delTipo.length === 0) {
-            selectFiltro.innerHTML = '<option value="" selected disabled>No hay periodos registrados</option>';
-            selectFiltro.disabled = true;
-            btnLimpiar.classList.add('d-none');
-            contenedor.innerHTML = `
-                <div class="col-12 text-center py-5 text-muted bg-white rounded-4 border">
-                    <i class="bi bi-folder-x fs-1 opacity-50 mb-3 d-block"></i>
-                    <p class="mb-0">Aún no hay ${tipo === 'borrador' ? 'borradores' : 'carreras guardadas'}.</p>
-                </div>`;
+            select.innerHTML = '<option value="" selected disabled>No hay periodos registrados</option>';
+            select.disabled = true;
+            btnL.classList.add('d-none');
+            contenedor.innerHTML = `<div class="col-12 text-center py-5 text-muted bg-white rounded-4 border"><i class="bi bi-folder-x fs-1 opacity-50 mb-3 d-block"></i><p class="mb-0">Aún no hay ${tipo === 'borrador' ? 'borradores' : 'carreras guardadas'}.</p></div>`;
             return;
         }
-        selectFiltro.disabled = false;
-        const periodosUnicos = [...new Set(delTipo.map(r => r.periodo))];
-        const valorActual = selectFiltro.value;
-        const forzarVacio = !periodosUnicos.includes(valorActual);
-        let opcionesHtml = `<option value="" disabled ${forzarVacio ? 'selected' : ''}>Selecciona un periodo...</option>`;
-        periodosUnicos.forEach(p => {
-            opcionesHtml += `<option value="${p}" ${p === valorActual && !forzarVacio ? 'selected' : ''}>${p}</option>`;
-        });
-        selectFiltro.innerHTML = opcionesHtml;
+        select.disabled = false;
+        const periodos = [...new Set(delTipo.map(r => r.periodo))];
+        const actual = select.value;
+        const forzar = !periodos.includes(actual);
+        select.innerHTML = `<option value="" disabled ${forzar ? 'selected' : ''}>Selecciona un periodo...</option>` +
+            periodos.map(p => `<option value="${p}" ${p === actual && !forzar ? 'selected' : ''}>${p}</option>`).join('');
         cargarTarjetas(tipo);
     }
 
@@ -1139,64 +974,48 @@
     }
 
     function cargarTarjetas(tipo) {
-        const selectFiltro = document.getElementById(`filtroPeriodo_${tipo}`);
-        const valorFiltro = selectFiltro.value;
+        const select = document.getElementById(`filtroPeriodo_${tipo}`);
+        const valor = select.value;
         const contenedor = document.getElementById(`contenedorTarjetas_${tipo}`);
-        const btnLimpiar = document.getElementById(`btnLimpiarFiltro_${tipo}`);
-        if (!valorFiltro) {
-            btnLimpiar.classList.add('d-none');
-            contenedor.innerHTML = `
-                <div class="col-12 text-center py-5 text-muted bg-white rounded-4 border" style="border-style: dashed !important;">
-                    <i class="bi bi-hand-index-thumb fs-1 opacity-50 mb-3 d-block text-${tipo === 'borrador' ? 'warning' : 'primary'}"></i>
-                    <p class="mb-0 fw-medium">Selecciona un periodo en el menú de arriba para mostrar.</p>
-                </div>`;
+        const btnL = document.getElementById(`btnLimpiarFiltro_${tipo}`);
+        if (!valor) {
+            btnL.classList.add('d-none');
+            contenedor.innerHTML = `<div class="col-12 text-center py-5 text-muted bg-white rounded-4 border" style="border-style:dashed !important;"><i class="bi bi-hand-index-thumb fs-1 opacity-50 mb-3 d-block text-${tipo === 'borrador' ? 'warning' : 'primary'}"></i><p class="mb-0 fw-medium">Selecciona un periodo para mostrar.</p></div>`;
             return;
         }
-        btnLimpiar.classList.remove('d-none');
-        let registros = JSON.parse(localStorage.getItem('registrosResumenCargas')) || [];
-        let aMostrar = registros.filter(r => r.estado === tipo && r.periodo === valorFiltro);
+        btnL.classList.remove('d-none');
+        const registros = JSON.parse(localStorage.getItem('registrosResumenCargas')) || [];
+        const aMostrar = registros.filter(r => r.estado === tipo && r.periodo === valor);
         const porCarrera = {};
-        aMostrar.forEach(reg => {
-            if (!porCarrera[reg.carrera]) porCarrera[reg.carrera] = [];
-            porCarrera[reg.carrera].push(reg);
-        });
+        aMostrar.forEach(r => { if (!porCarrera[r.carrera]) porCarrera[r.carrera] = []; porCarrera[r.carrera].push(r); });
         let html = '';
-        for (let carrera in porCarrera) {
-            let regs = porCarrera[carrera].reverse();
-            let htmlGrados = '';
-            regs.forEach(reg => {
-                htmlGrados += `
-                <button class="btn btn-grado-registro w-100 rounded-3 mb-2 d-flex justify-content-between align-items-center p-3 shadow-sm" onclick="abrirModalDetalle(${reg.id})">
-                    <span class="fw-bold text-dark"><i class="bi bi-bookmark-fill ${tipo === 'borrador' ? 'text-warning' : 'text-primary'} me-2"></i>${reg.grado}</span>
-                    <span class="badge bg-light text-secondary border">${reg.fecha}</span>
-                </button>`;
-            });
-            const badgeSuperior = tipo === 'borrador'
+        for (const carrera in porCarrera) {
+            const regs = porCarrera[carrera].reverse();
+            const badge = tipo === 'borrador'
                 ? `<div class="mb-3"><span class="badge-estado-incompleto"><i class="bi bi-clock-history me-1"></i>Incompleto</span></div>`
                 : `<div class="mb-3"><span class="badge-estado-completo"><i class="bi bi-check-circle-fill me-1"></i>Completo</span></div>`;
+            const grados = regs.map(r => `
+                <button class="btn btn-grado-registro w-100 rounded-3 mb-2 d-flex justify-content-between align-items-center p-3 shadow-sm" onclick="abrirModalDetalle(${r.id})">
+                    <span class="fw-bold text-dark"><i class="bi bi-bookmark-fill ${tipo === 'borrador' ? 'text-warning' : 'text-primary'} me-2"></i>${r.grado}</span>
+                    <span class="badge bg-light text-secondary border">${r.fecha}</span>
+                </button>`).join('');
             html += `
             <div class="col-md-4 col-sm-6 mb-4">
                 <div class="flip-card" onclick="this.classList.toggle('flipped')">
                     <div class="flip-card-inner">
                         <div class="flip-card-front text-center pt-3">
-                            ${badgeSuperior}
-                            <div class="bg-primary bg-opacity-10 text-primary p-3 rounded-circle mb-3 d-inline-block">
-                                <i class="bi bi-briefcase-fill fs-3"></i>
-                            </div>
-                            <h5 class="fw-bold px-2" style="color: #004b87;">${carrera}</h5>
+                            ${badge}
+                            <div class="bg-primary bg-opacity-10 text-primary p-3 rounded-circle mb-3 d-inline-block"><i class="bi bi-briefcase-fill fs-3"></i></div>
+                            <h5 class="fw-bold px-2" style="color:#004b87;">${carrera}</h5>
                             <span class="badge bg-light text-secondary border mt-1 px-3 py-2 rounded-pill">${regs.length} resúmenes</span>
-                            <div class="mt-auto pt-3 text-muted small w-100 border-top">
-                                <i class="bi bi-arrow-repeat me-1"></i> Clic para girar y ver grados
-                            </div>
+                            <div class="mt-auto pt-3 text-muted small w-100 border-top"><i class="bi bi-arrow-repeat me-1"></i>Clic para girar y ver grados</div>
                         </div>
                         <div class="flip-card-back" onclick="event.stopPropagation()">
                             <div class="d-flex justify-content-between align-items-center mb-3 pb-3 border-bottom">
                                 <h6 class="m-0 fw-bold text-dark">Grados Registrados</h6>
-                                <button class="btn btn-sm btn-light border rounded-circle py-0 px-2 text-muted shadow-sm" onclick="this.closest('.flip-card').classList.remove('flipped')">
-                                    <i class="bi bi-x fs-5"></i>
-                                </button>
+                                <button class="btn btn-sm btn-light border rounded-circle py-0 px-2 text-muted shadow-sm" onclick="this.closest('.flip-card').classList.remove('flipped')"><i class="bi bi-x fs-5"></i></button>
                             </div>
-                            <div class="flex-grow-1 overflow-auto custom-scrollbar pe-1">${htmlGrados}</div>
+                            <div class="flex-grow-1 overflow-auto custom-scrollbar pe-1">${grados}</div>
                         </div>
                     </div>
                 </div>
@@ -1206,127 +1025,88 @@
     }
 
     function abrirModalDetalle(idRegistro) {
-        let registros = JSON.parse(localStorage.getItem('registrosResumenCargas')) || [];
-        let reg = registros.find(r => r.id === idRegistro);
+        const registros = JSON.parse(localStorage.getItem('registrosResumenCargas')) || [];
+        const reg = registros.find(r => r.id === idRegistro);
         if (!reg) return;
         document.getElementById('modalTituloGral').innerText = `${reg.carrera} - ${reg.grado}`;
         document.getElementById('modalPeriodo').innerText = reg.periodo;
         document.getElementById('modalBadgeEstado').innerHTML = reg.estado === 'borrador'
             ? `<span class="badge-estado-incompleto"><i class="bi bi-clock-history me-1"></i>Incompleto</span>`
             : `<span class="badge-estado-completo"><i class="bi bi-check-circle-fill me-1"></i>Completo</span>`;
-        let tutoresHtml = '';
-        reg.gruposRegistrados.forEach(g => {
-            tutoresHtml += `<span class="badge-tutor-registro shadow-sm me-1">${g}: ${reg.tutores[g] || 'Sin asignar'}</span>`;
-        });
-        document.getElementById('modalTutoresContainer').innerHTML = tutoresHtml;
-        let theadHtml = `<tr><th class="text-start py-3 ps-3">Materia Asignada</th><th class="py-3">Semanas</th><th class="py-3">Total Sem.</th>`;
-        reg.gruposRegistrados.forEach(g => { theadHtml += `<th class="py-3">${g}</th>`; });
-        theadHtml += `</tr>`;
-        document.getElementById('modalCabeceraTabla').innerHTML = theadHtml;
-        let filasHtml = '';
-        reg.asignaciones.forEach(asig => {
-            let tdsHtml = '';
-            reg.gruposRegistrados.forEach(g => {
-                const prof = asig[g];
-                tdsHtml += `<td class="text-primary align-middle">${prof !== '---' ? prof : '<span class="text-muted opacity-25">-</span>'}</td>`;
-            });
-            filasHtml += `
-                <tr>
-                    <td class="text-start fw-medium ps-3 text-dark align-middle">${asig.materia}</td>
-                    <td class="text-muted small align-middle">${asig.semanas || '-'}</td>
-                    <td class="text-primary fw-medium small align-middle">${asig.total || '-'}</td>
-                    ${tdsHtml}
-                </tr>`;
-        });
-        document.getElementById('modalCuerpoTabla').innerHTML = filasHtml;
+        document.getElementById('modalTutoresContainer').innerHTML = reg.gruposRegistrados
+            .map(g => `<span class="badge-tutor-registro shadow-sm me-1">${g}: ${reg.tutores[g] || 'Sin asignar'}</span>`).join('');
+        document.getElementById('modalCabeceraTabla').innerHTML =
+            `<tr><th class="text-start py-3 ps-3">Materia</th><th class="py-3">Semanas</th><th class="py-3">Total</th>` +
+            reg.gruposRegistrados.map(g => `<th class="py-3">${g}</th>`).join('') + `</tr>`;
+        document.getElementById('modalCuerpoTabla').innerHTML = reg.asignaciones.map(a => {
+            const tds = reg.gruposRegistrados.map(g =>
+                `<td class="text-primary align-middle">${a[g] !== '---' ? a[g] : '<span class="text-muted opacity-25">-</span>'}</td>`).join('');
+            return `<tr><td class="text-start fw-medium ps-3 text-dark align-middle">${a.materia}</td><td class="text-muted small align-middle">${a.semanas || '-'}</td><td class="text-primary fw-medium small align-middle">${a.total || '-'}</td>${tds}</tr>`;
+        }).join('');
         const footer = document.getElementById('modalFooterDetalle');
         if (reg.estado === 'borrador') {
             footer.innerHTML = `<button class="btn btn-primary fw-bold px-4 shadow-sm" onclick="editarBorrador(${reg.id})"><i class="bi bi-pencil-square me-2"></i>Editar Borrador</button>`;
-            footer.classList.remove('d-none');
-            footer.classList.add('d-flex');
+            footer.classList.remove('d-none'); footer.classList.add('d-flex');
         } else {
-            footer.innerHTML = '';
-            footer.classList.add('d-none');
-            footer.classList.remove('d-flex');
+            footer.innerHTML = ''; footer.classList.add('d-none'); footer.classList.remove('d-flex');
         }
         new bootstrap.Modal(document.getElementById('modalTablaRegistro')).show();
     }
 
     function editarBorrador(idRegistro) {
         let registros = JSON.parse(localStorage.getItem('registrosResumenCargas')) || [];
-        let reg = registros.find(r => r.id === idRegistro);
+        const reg = registros.find(r => r.id === idRegistro);
         if (!reg) return;
-        const modalInstance = bootstrap.Modal.getInstance(document.getElementById('modalTablaRegistro'));
-        if (modalInstance) modalInstance.hide();
+        const mi = bootstrap.Modal.getInstance(document.getElementById('modalTablaRegistro'));
+        if (mi) mi.hide();
         bootstrap.Tab.getOrCreateInstance(document.querySelector('#pills-config-tab')).show();
         document.getElementById('selPeriodo').value = reg.periodo;
         document.getElementById('selPlan').value = reg.plan;
-        const opcionesCarrera = document.getElementById('selCarrera').options;
-        for (let i = 0; i < opcionesCarrera.length; i++) {
-            if (opcionesCarrera[i].text === reg.carrera) {
-                document.getElementById('selCarrera').selectedIndex = i;
-                break;
-            }
-        }
+        const opts = document.getElementById('selCarrera').options;
+        for (let i = 0; i < opts.length; i++) { if (opts[i].text === reg.carrera) { document.getElementById('selCarrera').selectedIndex = i; break; } }
         verificarSelects();
-        let botonActivo = null;
-        document.querySelectorAll('.btn-grado').forEach(btn => {
-            if (btn.innerText.includes(reg.grado)) botonActivo = btn;
-        });
-        seleccionarGrado(botonActivo, reg.grado);
+        let btn = null;
+        document.querySelectorAll('.btn-grado').forEach(b => { if (b.innerText.includes(reg.grado)) btn = b; });
+        seleccionarGrado(btn, reg.grado);
         reg.gruposRegistrados.forEach(g => {
-            const spanTutor = document.getElementById(`tutor-${g}`);
-            const nombreTutor = reg.tutores[g];
-            if (spanTutor && nombreTutor !== 'Sin asignar') {
-                spanTutor.innerText = nombreTutor;
-                spanTutor.className = 'badge-tutor shadow-sm';
-            }
+            const s = document.getElementById(`tutor-${g}`);
+            if (s && reg.tutores[g] !== 'Sin asignar') { s.innerText = reg.tutores[g]; s.className = 'badge-tutor shadow-sm'; }
         });
         const filas = document.getElementById('cuerpoTabla').querySelectorAll('tr');
-        reg.asignaciones.forEach((asig, index) => {
-            if (filas[index]) {
-                reg.gruposRegistrados.forEach((g, colIdx) => {
-                    const prof = asig[g];
-                    if (prof && prof !== '---') {
-                        const celda = filas[index].cells[colIdx + 3];
-                        celda.innerHTML = `
-                            <div class="prof-badge shadow-sm">
-                                <span class="nombre-prof">${prof}</span>
-                                <i class="bi bi-trash3-fill icon-borrar"></i>
-                            </div>`;
+        reg.asignaciones.forEach((a, i) => {
+            if (filas[i]) {
+                reg.gruposRegistrados.forEach((g, ci) => {
+                    if (a[g] && a[g] !== '---') {
+                        const celda = filas[i].cells[ci + 3];
+                        celda.innerHTML = `<div class="prof-badge shadow-sm"><span class="nombre-prof">${a[g]}</span><i class="bi bi-trash3-fill icon-borrar"></i></div>`;
                         celda.classList.add('celda-asignada');
-                        celda.addEventListener('mouseleave', function() {
-                            if (this.classList.contains('celda-asignada')) this.classList.add('permitir-borrado');
-                        }, { once: true });
+                        celda.addEventListener('mouseleave', function() { if (this.classList.contains('celda-asignada')) this.classList.add('permitir-borrado'); }, { once: true });
                     }
                 });
             }
         });
-        registros = registros.filter(r => r.id !== idRegistro);
-        localStorage.setItem('registrosResumenCargas', JSON.stringify(registros));
+        localStorage.setItem('registrosResumenCargas', JSON.stringify(registros.filter(r => r.id !== idRegistro)));
         mostrarAlerta('Borrador cargado. No olvides guardar tus cambios.', 'info');
         actualizarUIEstadoDivision();
     }
 
     function limpiarMemoria(tipo) {
-        if (confirm(`¿Estás seguro de que quieres borrar TODOS los registros del tipo '${tipo}'? Esto no se puede deshacer.`)) {
-            let registros = JSON.parse(localStorage.getItem('registrosResumenCargas')) || [];
+        if (confirm(`¿Seguro que quieres borrar todos los registros de tipo '${tipo}'?`)) {
+            const registros = JSON.parse(localStorage.getItem('registrosResumenCargas')) || [];
             localStorage.setItem('registrosResumenCargas', JSON.stringify(registros.filter(r => r.estado !== tipo)));
             document.getElementById(`filtroPeriodo_${tipo}`).value = '';
             inicializarVistaTarjetas(tipo);
-            mostrarAlerta('Se borraron los registros correctamente.', 'info');
+            mostrarAlerta('Registros borrados correctamente.', 'info');
             actualizarUIEstadoDivision();
         }
     }
 
     window.resetearStatusPruebas = function() {
-        if(confirm("MODO PRUEBAS: ¿Deseas borrar el status de 'Entregado' para volver a hacer pruebas con esta división?")) {
-            let estadoDivisiones = JSON.parse(localStorage.getItem('estadoDivisiones')) || {};
-            delete estadoDivisiones[DIVISION_ID];
-            localStorage.setItem('estadoDivisiones', JSON.stringify(estadoDivisiones));
-            
-            alert("Status reseteado. La división vuelve a estar abierta para edición.");
-            location.reload(); 
+        if (confirm("MODO PRUEBAS: ¿Deseas resetear el status de la división?")) {
+            const est = JSON.parse(localStorage.getItem('estadoDivisiones')) || {};
+            delete est[DIVISION_ID];
+            localStorage.setItem('estadoDivisiones', JSON.stringify(est));
+            location.reload();
         }
     };
 </script>
