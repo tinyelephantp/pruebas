@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secretaría Académica — Carga Docente</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+        body { font-family: 'Inter', sans-serif; background-color: #f8faff; }
+
+        /* ── Vistas ── */
+        .vista { display: none; }
+        .vista.activa { display: block; }
+
+        /* ── Header ── */
+        .page-header-blue { color: #004b87; font-weight: 700; letter-spacing: -0.5px; }
+
+        /* ── Tarjetas de división ── */
+        .card-division {
+            background: white; border-radius: 16px;
+            border: 1.5px solid #e2e8f0;
+            padding: 1.25rem 1.5rem;
+            transition: all 0.2s;
+        }
+        .card-division:hover { border-color: #93c5fd; box-shadow: 0 4px 20px rgba(0,75,135,0.08); }
+        .card-division.entregado { border-color: #93c5fd; }
+        .card-division.finalizado { border-color: #86efac; }
+
+        .badge-estado {
+            font-size: 0.72rem; font-weight: 700; text-transform: uppercase;
+            padding: 4px 12px; border-radius: 6px; letter-spacing: 0.3px;
+        }
+        .badge-sin-iniciar   { background:#f1f5f9; color:#64748b; }
+        .badge-en-proceso    { background:#fff7ed; color:#c2410c; }
+        .badge-entregado     { background:#eff6ff; color:#1d4ed8; }
+        .badge-finalizado    { background:#f0fdf4; color:#15803d; }
+
+        .barra-progreso-wrap { height: 5px; background:#f1f5f9; border-radius: 4px; margin: 12px 0; }
+        .barra-progreso-fill { height: 100%; border-radius: 4px; transition: width 0.4s; }
+
+        .btn-ver-carga {
+            background: #004b87; color: white; border: none;
+            border-radius: 8px; font-weight: 600; font-size: 0.85rem;
+            padding: 9px 20px; transition: all 0.2s;
+        }
+        .btn-ver-carga:hover { background: #003a6b; transform: translateY(-1px); }
+        .btn-ver-carga:disabled { background: #94a3b8; cursor: not-allowed; transform: none; }
+
+        /* ── Lista de profesores ── */
+        .card-profesor {
+            background: white; border-radius: 12px;
+            border: 1.5px solid #e2e8f0;
+            padding: 1rem 1.25rem;
+            display: flex; align-items: center; gap: 14px;
+            cursor: pointer; transition: all 0.2s;
+        }
+        .card-profesor:hover { border-color: #93c5fd; box-shadow: 0 4px 16px rgba(0,75,135,0.08); transform: translateY(-1px); }
+        .card-profesor.completo { border-color: #86efac; }
+
+        .avatar-prof {
+            width: 42px; height: 42px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 700; font-size: 0.85rem; flex-shrink: 0;
+        }
+        .avatar-pendiente { background: #eff6ff; color: #1d4ed8; }
+        .avatar-completo  { background: #f0fdf4; color: #15803d; }
+
+        .badge-prof-estado {
+            font-size: 0.7rem; font-weight: 700; padding: 3px 10px;
+            border-radius: 20px; text-transform: uppercase;
+        }
+        .badge-prof-pendiente { background: #f1f5f9; color: #64748b; }
+        .badge-prof-completo  { background: #f0fdf4; color: #15803d; }
+
+        /* ── Breadcrumb navegación ── */
+        .breadcrumb-nav {
+            display: flex; align-items: center; gap: 8px;
+            font-size: 0.85rem; color: #64748b; margin-bottom: 1.5rem;
+            padding-bottom: 1rem; border-bottom: 1px solid #f1f5f9;
+        }
+        .breadcrumb-nav .crumb-link {
+            color: #004b87; font-weight: 600; cursor: pointer; text-decoration: none;
+        }
+        .breadcrumb-nav .crumb-link:hover { text-decoration: underline; }
+        .breadcrumb-nav .crumb-sep { color: #cbd5e1; }
+        .breadcrumb-nav .crumb-actual { color: #1e293b; font-weight: 600; }
+
+        /* ── Vista detalle profesor ── */
+        .tabla-resumen-readonly {
+            background: white; border-radius: 14px;
+            border: 1px solid #e2e8f0; overflow: hidden;
+        }
+        .tabla-resumen-readonly thead th {
+            background: #f8faff; color: #64748b; font-weight: 600;
+            font-size: 0.8rem; text-transform: uppercase; padding: 12px 14px;
+            border-bottom: 1px solid #e2e8f0; border: none;
+        }
+        .tabla-resumen-readonly tbody td {
+            padding: 12px 14px; border-bottom: 1px solid #f1f5f9;
+            font-size: 0.875rem; vertical-align: middle;
+        }
+        .tabla-resumen-readonly tbody tr:last-child td { border-bottom: none; }
+
+        .seccion-titulo {
+            font-size: 0.75rem; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 0.5px; color: #64748b; margin-bottom: 12px;
+        }
+
+        /* ── Formulario de carga ── */
+        .form-carga-row {
+            background: white; border-radius: 14px;
+            border: 1px solid #e2e8f0; padding: 1.25rem;
+            margin-bottom: 12px; transition: border-color 0.2s;
+        }
+        .form-carga-row:hover { border-color: #93c5fd; }
+        .form-carga-row .materia-label {
+            font-weight: 600; color: #1e293b; font-size: 0.875rem;
+        }
+        .form-carga-row .grupo-label {
+            font-size: 0.75rem; color: #64748b; margin-top: 2px;
+        }
+
+        .input-carga {
+            border: 1.5px solid #e2e8f0; border-radius: 8px;
+            padding: 8px 12px; font-size: 0.85rem; width: 100%;
+            font-family: 'Inter', sans-serif; transition: border-color 0.2s;
+            background: #f8faff;
+        }
+        .input-carga:focus { outline: none; border-color: #93c5fd; background: white; }
+        .input-carga[readonly] { background: #f1f5f9; color: #475569; cursor: default; }
+
+        .select-carga {
+            border: 1.5px solid #e2e8f0; border-radius: 8px;
+            padding: 8px 12px; font-size: 0.85rem; width: 100%;
+            font-family: 'Inter', sans-serif; background: #f8faff;
+            transition: border-color 0.2s; appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24'%3E%3Cpath fill='%2364748b' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat; background-position: right 10px center;
+            padding-right: 30px;
+        }
+        .select-carga:focus { outline: none; border-color: #93c5fd; background-color: white; }
+
+        .totales-card {
+            background: #f8faff; border-radius: 12px;
+            border: 1.5px solid #c7d9f0; padding: 1.25rem;
+            display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+        }
+        .total-item { text-align: center; }
+        .total-item .total-label { font-size: 0.75rem; color: #64748b; margin-bottom: 4px; }
+        .total-item .total-valor {
+            font-size: 1.5rem; font-weight: 700; color: #004b87;
+        }
+        .total-item .total-unidad { font-size: 0.75rem; color: #94a3b8; }
+
+        .btn-guardar-carga {
+            background: #004b87; color: white; border: none;
+            border-radius: 10px; font-weight: 600; padding: 12px 32px;
+            font-size: 0.9rem; transition: all 0.2s;
+            box-shadow: 0 4px 12px rgba(0,75,135,0.2);
+        }
+        .btn-guardar-carga:hover { background: #003a6b; transform: translateY(-1px); }
+
+        .btn-finalizar-division {
+            background: #16a34a; color: white; border: none;
+            border-radius: 10px; font-weight: 600; padding: 11px 28px;
+            font-size: 0.875rem; transition: all 0.2s;
+            box-shadow: 0 4px 12px rgba(22,163,74,0.2);
+        }
+        .btn-finalizar-division:hover:not(:disabled) { background: #15803d; transform: translateY(-1px); }
+        .btn-finalizar-division:disabled { background: #94a3b8; cursor: not-allowed; box-shadow: none; transform: none; opacity: 1; }
+
+        .btn-volver {
+            background: white; color: #64748b; border: 1.5px solid #e2e8f0;
+            border-radius: 8px; font-weight: 600; font-size: 0.85rem;
+            padding: 8px 18px; transition: all 0.2s; display: inline-flex;
+            align-items: center; gap: 6px; cursor: pointer;
+        }
+        .btn-volver:hover { border-color: #93c5fd; color: #004b87; }
+
+        /* ── Métricas resumen ── */
+        .metric-card {
+            background: white; border-radius: 12px; border: 1px solid #e2e8f0;
+            padding: 1rem 1.25rem; text-align: center;
+        }
+        .metric-card .metric-val { font-size: 1.75rem; font-weight: 700; color: #004b87; }
+        .metric-card .metric-label { font-size: 0.75rem; color: #64748b; margin-top: 2px; }
+
+        /* ── Toasts ── */
+        @keyframes slideInToast {
+            from { opacity: 0; transform: translateX(30px); }
+            to   { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes fadeOutToast {
+            from { opacity: 1; transform: translateX(0); }
+            to   { opacity: 0; transform: translateX(30px); }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container py-5">
+
+    <!-- HEADER GLOBAL -->
+    <div class="d-flex align-items-center mb-4 pb-2 border-bottom">
+        <div class="p-3 rounded-4 me-4" style="background:#eff6ff;">
+            <i class="bi bi-building-fill fs-2" style="color:#004b87;"></i>
+        </div>
+        <div>
+            <h2 class="page-header-blue m-0">Secretaría Académica</h2>
+            <p class="text-muted m-0 mt-1" style="font-size:0.85rem;">
+                <i class="bi bi-layers me-1"></i>Gestión de carga docente por división
+            </p>
+        </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════
+         VISTA 1 — DASHBOARD DE DIVISIONES
+    ══════════════════════════════════════════════ -->
+    <div id="vista-dashboard" class="vista activa">
+
+        <!-- Métricas -->
+        <div class="row g-3 mb-4" id="metricasContainer"></div>
+
+        <!-- Filtro periodo -->
+        <div class="bg-white p-4 rounded-4 border mb-4" style="border-color:#edf2f7 !important;">
+            <div class="row g-3 align-items-end">
+                <div class="col-md-5">
+                    <label class="form-label text-muted small fw-bold text-uppercase">Periodo</label>
+                    <select class="form-select" id="selPeriodoDash" onchange="cargarDashboard()">
+                        <option value="" selected disabled>Selecciona un periodo...</option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label text-muted small fw-bold text-uppercase">Filtrar por estado</label>
+                    <select class="form-select" id="selEstadoDash" onchange="cargarDashboard()">
+                        <option value="">Todos los estados</option>
+                        <option value="sin_iniciar">Sin iniciar</option>
+                        <option value="en_proceso">En proceso</option>
+                        <option value="entregado">Entregado</option>
+                        <option value="finalizado">Finalizado</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="row g-3" id="contenedorDivisiones">
+            <div class="col-12 text-center py-5 text-muted">
+                <i class="bi bi-building fs-1 opacity-25 d-block mb-3"></i>
+                <p class="mb-0">Selecciona un periodo para ver las divisiones.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════
+         VISTA 2 — LISTA DE PROFESORES DE LA DIVISIÓN
+    ══════════════════════════════════════════════ -->
+    <div id="vista-profesores" class="vista">
+        <div class="breadcrumb-nav" id="breadcrumbProfesores"></div>
+
+        <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+            <div>
+                <h4 class="fw-bold m-0" style="color:#1e293b;" id="tituloDivisionProfs"></h4>
+                <p class="text-muted small m-0 mt-1" id="subtituloDivisionProfs"></p>
+            </div>
+            <button class="btn-finalizar-division" id="btnFinalizarDivision" onclick="confirmarFinalizarDivision()">
+                <i class="bi bi-check-circle-fill me-2"></i>Marcar división como finalizada
+            </button>
+        </div>
+
+        <div class="row g-3 mb-4" id="metricasProfesores"></div>
+        <div id="contenedorProfesores"></div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════
+         VISTA 3 — DETALLE + FORMULARIO DEL PROFESOR
+    ══════════════════════════════════════════════ -->
+    <div id="vista-carga" class="vista">
+        <div class="breadcrumb-nav" id="breadcrumbCarga"></div>
+
+        <!-- Info del profesor -->
+        <div class="d-flex align-items-center gap-3 mb-4">
+            <div class="avatar-prof avatar-pendiente" id="avatarProfesor" style="width:52px;height:52px;font-size:1rem;"></div>
+            <div>
+                <h4 class="fw-bold m-0" style="color:#1e293b;" id="nombreProfesorVista"></h4>
+                <p class="text-muted small m-0" id="infoProfesorVista"></p>
+            </div>
+        </div>
+
+        <!-- Tabla resumen (readonly) -->
+        <p class="seccion-titulo"><i class="bi bi-table me-2"></i>Asignaturas del resumen de división</p>
+        <div class="tabla-resumen-readonly mb-4">
+            <table class="table mb-0" id="tablaResumenProfesor">
+                <thead>
+                    <tr>
+                        <th>Asignatura</th>
+                        <th>Grupo</th>
+                        <th>Carrera</th>
+                        <th class="text-center">Sem. inicio</th>
+                        <th class="text-center">Sem. fin</th>
+                        <th class="text-center">Total sem.</th>
+                    </tr>
+                </thead>
+                <tbody id="tbodyResumenProfesor"></tbody>
+            </table>
+        </div>
+
+        <!-- Formulario de carga -->
+        <p class="seccion-titulo"><i class="bi bi-pencil-square me-2"></i>Captura de carga académica</p>
+        <div id="contenedorFormCarga"></div>
+
+        <!-- Totales -->
+        <div class="totales-card mt-4" id="totalesCard">
+            <div class="total-item">
+                <div class="total-label">Total horas jornada laboral</div>
+                <div class="total-valor" id="totalHorasJornada">—</div>
+                <div class="total-unidad">horas</div>
+            </div>
+            <div class="total-item">
+                <div class="total-label">Semanas laborales</div>
+                <div class="total-valor" id="totalSemanasLaborales">—</div>
+                <div class="total-unidad">semanas</div>
+            </div>
+        </div>
+
+        <div class="mt-4 d-flex justify-content-end gap-3">
+            <button class="btn-volver" onclick="irVistaProfesores()">
+                <i class="bi bi-arrow-left"></i>Cancelar
+            </button>
+            <button class="btn-guardar-carga" onclick="guardarCargaProfesor()">
+                <i class="bi bi-floppy-fill me-2"></i>Guardar carga
+            </button>
+        </div>
+    </div>
+
+</div>
+
+<!-- MODAL FINALIZAR DIVISIÓN -->
+<div class="modal fade" id="modalFinalizarDivision" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered" style="max-width:440px;">
+        <div class="modal-content border-0 rounded-4 shadow-lg overflow-hidden">
+            <div class="modal-header border-0 flex-column align-items-center text-center pt-4 pb-3 px-4 position-relative" style="background-color:#16a34a;">
+                <div class="rounded-circle d-flex align-items-center justify-content-center mb-3" style="width:52px;height:52px;background:rgba(255,255,255,0.15);">
+                    <i class="bi bi-check-circle-fill fs-4 text-white"></i>
+                </div>
+                <h5 class="modal-title fw-bold text-white m-0" style="font-size:1.05rem;">Finalizar División</h5>
+                <button type="button" class="position-absolute border-0 d-flex align-items-center justify-content-center" data-bs-dismiss="modal"
+                    style="top:14px;right:14px;width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,0.15);color:white;font-size:1rem;cursor:pointer;transition:background 0.2s;"
+                    onmouseover="this.style.background='rgba(220,38,38,0.75)'" onmouseout="this.style.background='rgba(255,255,255,0.15)'">✕</button>
+            </div>
+            <div class="modal-body px-4 pt-4 pb-3 text-center">
+                <p class="fw-semibold text-dark mb-2" style="font-size:0.95rem;">¿Confirmas que completaste la carga de toda la división?</p>
+                <p class="text-secondary mb-4" style="font-size:0.875rem;line-height:1.6;">Esta acción marcará la división como <strong>Finalizada</strong> y quedará registrada en el sistema.</p>
+                <div class="d-flex align-items-start gap-2 text-start rounded-3 p-3" style="background:#fff7ed;border:1px solid #fed7aa;">
+                    <i class="bi bi-exclamation-triangle-fill mt-1 flex-shrink-0" style="color:#c2410c;"></i>
+                    <p class="mb-0 small" style="color:#9a3412;line-height:1.5;">Asegúrate de haber capturado la carga de <strong>todos los profesores</strong> de esta división antes de continuar.</p>
+                </div>
+            </div>
+            <div class="modal-footer border-0 px-4 pb-4 pt-2 d-flex gap-2 justify-content-center">
+                <button type="button" class="btn fw-semibold flex-fill" style="border:1.5px solid #e2e8f0;border-radius:10px;padding:11px;color:#64748b;background:white;" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn fw-bold flex-fill text-white" style="border-radius:10px;padding:11px;background:#16a34a;border:none;" onclick="ejecutarFinalizarDivision()">
+                    <i class="bi bi-check-circle-fill me-2"></i>Confirmar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+
+    // ── Catálogo de otras actividades (simulado) ──
+    const OTRAS_ACTIVIDADES = [
+        'Tutoría grupal',
+        'Asesoría individual',
+        'Gestión académica',
+        'Investigación aplicada',
+        'Vinculación con el sector',
+        'Coordinación de programa',
+        'Estadías y residencias',
+        'Desarrollo de material didáctico',
+    ];
+
+    // ── Estado de navegación ──
+    let divisionActiva = null;
+    let profesorActivo = null;
+    let periodoDashboard = null;
+
+    // ── Datos simulados de divisiones ──
+    const DIVISIONES_SIMULADAS = [
+        { id: 'sistemas_productivos', nombre: 'División de Sistemas Productivos', director: 'Dir. Ramírez Cruz' },
+        { id: 'ingenieria_industrial', nombre: 'División de Ingeniería Industrial', director: 'Dir. Soto Villanueva' },
+        { id: 'sistemas_informaticos', nombre: 'División de Sistemas Informáticos', director: 'Dir. Flores Mendoza' },
+        { id: 'administracion', nombre: 'División de Administración', director: 'Dir. González Arias' },
+    ];
+
+    window.addEventListener('DOMContentLoaded', () => {
+        poblarSelectPeriodos();
+        actualizarMetricasDash();
+    });
+
+    // ── Utilidades ──
+    function obtenerRegistros() {
+        return JSON.parse(localStorage.getItem('registrosResumenCargas')) || [];
+    }
+
+    function obtenerEstadoDivisiones() {
+        return JSON.parse(localStorage.getItem('estadoDivisiones')) || {};
+    }
+
+    function obtenerCargasGuardadas() {
+        return JSON.parse(localStorage.getItem('cargasAcademicas')) || {};
+    }
+
+    function iniciales(nombre) {
+        if (!nombre) return '?';
+        const p = nombre.trim().split(' ');
+        return (p[0][0] + (p[1] ? p[1][0] : '')).toUpperCase();
+    }
+
+    function poblarSelectPeriodos() {
+        const registros = obtenerRegistros();
+        const periodos = [...new Set(registros.filter(r => r.estado === 'completo').map(r => r.periodo))];
+        const sel = document.getElementById('selPeriodoDash');
+        const actual = sel.value;
+        sel.innerHTML = '<option value="" disabled>Selecciona un periodo...</option>';
+        if (periodos.length === 0) {
+            sel.innerHTML += '<option value="" disabled>No hay periodos con registros entregados</option>';
+            return;
+        }
+        periodos.forEach(p => {
+            sel.innerHTML += `<option value="${p}" ${p === actual ? 'selected' : ''}>${p}</option>`;
+        });
+    }
+
+    // ── Extraer todos los profesores únicos de una división+periodo ──
+    function extraerProfesoresDivision(divisionId, periodo) {
+        const registros = obtenerRegistros().filter(r =>
+            r.estado === 'completo' &&
+            r.division === divisionId &&
+            (!periodo || r.periodo === periodo)
+        );
+        const mapa = {};
+        registros.forEach(reg => {
+            reg.asignaciones.forEach(asig => {
+                reg.gruposRegistrados.forEach(g => {
+                    const prof = asig[g];
+                    if (prof && prof !== '---') {
+                        if (!mapa[prof]) mapa[prof] = [];
+                        mapa[prof].push({
+                            materia: asig.materia,
+                            grupo: g,
+                            carrera: reg.carrera,
+                            semInicio: asig.semanas ? asig.semanas.split(' a ')[0] : '—',
+                            semFin: asig.semanas ? asig.semanas.split(' a ')[1] : '—',
+                            totalSem: asig.total || '—',
+                        });
+                    }
+                });
+            });
+        });
+        return mapa;
+    }
+
+    function obtenerEstadoDivision(divisionId, periodo) {
+        const estados = obtenerEstadoDivisiones();
+        const estadoDirector = estados[divisionId];
+        const cargas = obtenerCargasGuardadas();
+        const keyFin = `${divisionId}_${periodo}_finalizado`;
+        if (cargas[keyFin]) return 'finalizado';
+        if (estadoDirector === 'entregado') return 'entregado';
+        const registros = obtenerRegistros().filter(r =>
+            r.estado === 'completo' && r.division === divisionId && r.periodo === periodo
+        );
+        if (registros.length > 0) return 'en_proceso';
+        return 'sin_iniciar';
+    }
+
+    // ── VISTA 1: Dashboard ──
+    function cargarDashboard() {
+        const periodo = document.getElementById('selPeriodoDash').value;
+        const estadoFiltro = document.getElementById('selEstadoDash').value;
+        periodoDashboard = periodo;
+        if (!periodo) return;
+
+        const contenedor = document.getElementById('contenedorDivisiones');
+
+        let html = '';
+        let counts = { sin_iniciar: 0, en_proceso: 0, entregado: 0, finalizado: 0 };
+
+        DIVISIONES_SIMULADAS.forEach(div => {
+            const estado = obtenerEstadoDivision(div.id, periodo);
+            counts[estado]++;
+            if (estadoFiltro && estado !== estadoFiltro) return;
+
+            const profs = extraerProfesoresDivision(div.id, periodo);
+            const totalProfs = Object.keys(profs).length;
+            const cargas = obtenerCargasGuardadas();
+            const cargasDivision = Object.keys(cargas).filter(k =>
+                k.startsWith(`${div.id}_${periodo}_`) && !k.endsWith('_finalizado')
+            ).length;
+            const pct = totalProfs > 0 ? Math.round((cargasDivision / totalProfs) * 100) : 0;
+
+            const badgeClase = {
+                sin_iniciar: 'badge-sin-iniciar',
+                en_proceso: 'badge-en-proceso',
+                entregado: 'badge-entregado',
+                finalizado: 'badge-finalizado',
+            }[estado];
+            const badgeTexto = {
+                sin_iniciar: 'Sin iniciar',
+                en_proceso: 'En proceso',
+                entregado: 'Entregado',
+                finalizado: 'Finalizado',
+            }[estado];
+            const barColor = {
+                sin_iniciar: '#e2e8f0',
+                en_proceso: '#f59e0b',
+                entregado: '#3b82f6',
+                finalizado: '#16a34a',
+            }[estado];
+
+            const puedeVer = estado === 'entregado' || estado === 'finalizado';
+
+            html += `
+            <div class="col-md-6 col-lg-4">
+                <div class="card-division ${estado}">
+                    <div class="d-flex justify-content-between align-items-start mb-2">
+                        <div style="flex:1; padding-right:12px;">
+                            <div class="fw-bold text-dark" style="font-size:0.95rem;">${div.nombre}</div>
+                            <div class="text-muted small mt-1">${div.director}</div>
+                        </div>
+                        <span class="badge-estado ${badgeClase}">${badgeTexto}</span>
+                    </div>
+                    <div class="barra-progreso-wrap">
+                        <div class="barra-progreso-fill" style="width:${pct}%;background:${barColor};"></div>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="text-muted small">${totalProfs > 0 ? `${cargasDivision}/${totalProfs} profesores capturados` : 'Sin registros aún'}</span>
+                        <button class="btn-ver-carga" ${!puedeVer ? 'disabled' : ''} onclick="irVistaProfesores('${div.id}', '${div.nombre}', '${periodo}')">
+                            ${estado === 'finalizado' ? '<i class="bi bi-eye me-1"></i>Ver registros' : '<i class="bi bi-pencil-square me-1"></i>Realizar carga'}
+                        </button>
+                    </div>
+                    ${!puedeVer && estado !== 'finalizado' ? `<div class="text-muted mt-2" style="font-size:0.75rem;"><i class="bi bi-lock me-1"></i>${estado === 'sin_iniciar' ? 'El Director aún no ha iniciado la captura.' : 'Esperando a que el Director entregue la división.'}</div>` : ''}
+                </div>
+            </div>`;
+        });
+
+        contenedor.innerHTML = html || `<div class="col-12 text-center py-5 text-muted bg-white rounded-4 border"><i class="bi bi-filter-circle fs-1 opacity-25 d-block mb-3"></i><p class="mb-0">No hay divisiones con el estado seleccionado.</p></div>`;
+
+        actualizarMetricasDash(counts);
+    }
+
+    function actualizarMetricasDash(counts = {}) {
+        const total = DIVISIONES_SIMULADAS.length;
+        document.getElementById('metricasContainer').innerHTML = `
+            <div class="col-6 col-md-3"><div class="metric-card"><div class="metric-val">${total}</div><div class="metric-label">Total divisiones</div></div></div>
+            <div class="col-6 col-md-3"><div class="metric-card"><div class="metric-val" style="color:#1d4ed8;">${counts.entregado || 0}</div><div class="metric-label">Entregadas</div></div></div>
+            <div class="col-6 col-md-3"><div class="metric-card"><div class="metric-val" style="color:#c2410c;">${counts.en_proceso || 0}</div><div class="metric-label">En proceso</div></div></div>
+            <div class="col-6 col-md-3"><div class="metric-card"><div class="metric-val" style="color:#15803d;">${counts.finalizado || 0}</div><div class="metric-label">Finalizadas</div></div></div>
+        `;
+    }
+
+    // ── VISTA 2: Profesores de la división ──
+    function irVistaProfesores(divisionId, divisionNombre, periodo) {
+        divisionActiva = { id: divisionId, nombre: divisionNombre, periodo };
+
+        const profs = extraerProfesoresDivision(divisionId, periodo);
+        const cargas = obtenerCargasGuardadas();
+        const totalProfs = Object.keys(profs).length;
+        const capturados = Object.keys(profs).filter(p => cargas[`${divisionId}_${periodo}_${p}`]).length;
+        const estado = obtenerEstadoDivision(divisionId, periodo);
+        const yaFinalizado = estado === 'finalizado';
+
+        // Breadcrumb
+        document.getElementById('breadcrumbProfesores').innerHTML = `
+            <span class="crumb-link" onclick="irVistaDashboard()"><i class="bi bi-house me-1"></i>Inicio</span>
+            <span class="crumb-sep">›</span>
+            <span class="crumb-actual">${divisionNombre}</span>`;
+
+        document.getElementById('tituloDivisionProfs').textContent = divisionNombre;
+        document.getElementById('subtituloDivisionProfs').textContent = `${periodo} · ${totalProfs} profesor${totalProfs !== 1 ? 'es' : ''} asignado${totalProfs !== 1 ? 's' : ''}`;
+
+        // Métricas
+        document.getElementById('metricasProfesores').innerHTML = `
+            <div class="col-4"><div class="metric-card"><div class="metric-val">${totalProfs}</div><div class="metric-label">Profesores</div></div></div>
+            <div class="col-4"><div class="metric-card"><div class="metric-val" style="color:#16a34a;">${capturados}</div><div class="metric-label">Capturados</div></div></div>
+            <div class="col-4"><div class="metric-card"><div class="metric-val" style="color:#f59e0b;">${totalProfs - capturados}</div><div class="metric-label">Pendientes</div></div></div>`;
+
+        // Botón finalizar
+        const btnFin = document.getElementById('btnFinalizarDivision');
+        if (yaFinalizado) {
+            btnFin.disabled = true;
+            btnFin.innerHTML = '<i class="bi bi-check-circle-fill me-2"></i>División finalizada';
+        } else {
+            btnFin.disabled = capturados < totalProfs || totalProfs === 0;
+            btnFin.innerHTML = '<i class="bi bi-check-circle-fill me-2"></i>Marcar división como finalizada';
+        }
+
+        // Lista de profesores
+        let html = '';
+        if (totalProfs === 0) {
+            html = `<div class="text-center py-5 text-muted bg-white rounded-4 border"><i class="bi bi-people fs-1 opacity-25 d-block mb-3"></i><p class="mb-0">No se encontraron profesores en esta división.</p></div>`;
+        } else {
+            Object.entries(profs).forEach(([nombre, asignaturas]) => {
+                const tieneCarga = !!cargas[`${divisionId}_${periodo}_${nombre}`];
+                const ini = iniciales(nombre);
+                html += `
+                <div class="card-profesor ${tieneCarga ? 'completo' : ''} mb-3" onclick="irVistaCarga('${nombre}')">
+                    <div class="avatar-prof ${tieneCarga ? 'avatar-completo' : 'avatar-pendiente'}">${ini}</div>
+                    <div style="flex:1;">
+                        <div class="fw-semibold text-dark" style="font-size:0.9rem;">${nombre}</div>
+                        <div class="text-muted small mt-1">${asignaturas.length} asignatura${asignaturas.length !== 1 ? 's' : ''} · ${[...new Set(asignaturas.map(a => a.grupo))].join(', ')}</div>
+                    </div>
+                    <span class="badge-prof-estado ${tieneCarga ? 'badge-prof-completo' : 'badge-prof-pendiente'}">
+                        ${tieneCarga ? '<i class="bi bi-check-circle-fill me-1"></i>Capturado' : 'Pendiente'}
+                    </span>
+                    <i class="bi bi-chevron-right text-muted"></i>
+                </div>`;
+            });
+        }
+        document.getElementById('contenedorProfesores').innerHTML = html;
+
+        cambiarVista('vista-profesores');
+    }
+
+    // ── VISTA 3: Detalle + formulario del profesor ──
+    function irVistaCarga(nombreProfesor) {
+        profesorActivo = nombreProfesor;
+        const { id, nombre, periodo } = divisionActiva;
+        const profs = extraerProfesoresDivision(id, periodo);
+        const asignaturas = profs[nombreProfesor] || [];
+        const cargas = obtenerCargasGuardadas();
+        const cargaExistente = cargas[`${id}_${periodo}_${nombreProfesor}`] || {};
+
+        // Breadcrumb
+        document.getElementById('breadcrumbCarga').innerHTML = `
+            <span class="crumb-link" onclick="irVistaDashboard()"><i class="bi bi-house me-1"></i>Inicio</span>
+            <span class="crumb-sep">›</span>
+            <span class="crumb-link" onclick="irVistaProfesores('${id}','${nombre}','${periodo}')">${nombre}</span>
+            <span class="crumb-sep">›</span>
+            <span class="crumb-actual">${nombreProfesor}</span>`;
+
+        // Avatar y nombre
+        document.getElementById('avatarProfesor').textContent = iniciales(nombreProfesor);
+        document.getElementById('nombreProfesorVista').textContent = nombreProfesor;
+        document.getElementById('infoProfesorVista').textContent = `${nombre} · ${periodo}`;
+
+        // Tabla resumen readonly
+        document.getElementById('tbodyResumenProfesor').innerHTML = asignaturas.map(a => `
+            <tr>
+                <td class="fw-medium text-dark">${a.materia}</td>
+                <td><span class="badge bg-light text-dark border px-2 py-1" style="font-size:0.75rem;">${a.grupo}</span></td>
+                <td class="text-muted small">${a.carrera.split('/')[0].trim()}</td>
+                <td class="text-center text-muted">${a.semInicio}</td>
+                <td class="text-center text-muted">${a.semFin}</td>
+                <td class="text-center fw-semibold" style="color:#004b87;">${a.totalSem}</td>
+            </tr>`).join('');
+
+        // Formulario por asignatura
+        const optsActividades = OTRAS_ACTIVIDADES.map(a => `<option value="${a}">${a}</option>`).join('');
+
+        document.getElementById('contenedorFormCarga').innerHTML = asignaturas.map((a, i) => {
+            const cRow = cargaExistente[i] || {};
+            return `
+            <div class="form-carga-row">
+                <div class="d-flex align-items-center mb-3 pb-2 border-bottom gap-2">
+                    <i class="bi bi-book text-muted"></i>
+                    <div>
+                        <div class="materia-label">${a.materia}</div>
+                        <div class="grupo-label">${a.grupo} · ${a.carrera.split('/')[0].trim()}</div>
+                    </div>
+                </div>
+                <div class="row g-3">
+                    <div class="col-md-3">
+                        <label class="form-label text-muted small fw-bold">Horas de docencia</label>
+                        <input type="number" class="input-carga" placeholder="ej. 18" min="0"
+                            id="hDoc_${i}" value="${cRow.hDocencia || ''}"
+                            oninput="recalcularTotales()">
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label text-muted small fw-bold">Otras actividades</label>
+                        <select class="select-carga" id="otraAct_${i}">
+                            <option value="">Selecciona actividad...</option>
+                            ${optsActividades}
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label text-muted small fw-bold">Horas act.</label>
+                        <input type="number" class="input-carga" placeholder="ej. 4" min="0"
+                            id="hAct_${i}" value="${cRow.hActividades || ''}"
+                            oninput="recalcularTotales()">
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label text-muted small fw-bold">Semana inicio</label>
+                        <input type="number" class="input-carga" placeholder="${a.semInicio}" min="1" max="20"
+                            id="semIni_${i}" value="${cRow.semIni || a.semInicio}"
+                            oninput="calcSemanasRow(${i})">
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label text-muted small fw-bold">Semana fin</label>
+                        <input type="number" class="input-carga" placeholder="${a.semFin}" min="1" max="20"
+                            id="semFin_${i}" value="${cRow.semFin || a.semFin}"
+                            oninput="calcSemanasRow(${i})">
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label text-muted small fw-bold">Total semanas <span style="color:#3b82f6;font-size:0.7rem;">auto</span></label>
+                        <input type="number" class="input-carga" id="totalSem_${i}" readonly
+                            value="${cRow.totalSem || a.totalSem}">
+                    </div>
+                </div>
+            </div>`;
+        }).join('');
+
+        // Restaurar selects de otras actividades
+        asignaturas.forEach((_, i) => {
+            const cRow = cargaExistente[i] || {};
+            if (cRow.otraActividad) {
+                const sel = document.getElementById(`otraAct_${i}`);
+                if (sel) sel.value = cRow.otraActividad;
+            }
+        });
+
+        recalcularTotales();
+        cambiarVista('vista-carga');
+    }
+
+    function calcSemanasRow(i) {
+        const ini = parseInt(document.getElementById(`semIni_${i}`).value);
+        const fin = parseInt(document.getElementById(`semFin_${i}`).value);
+        const total = document.getElementById(`totalSem_${i}`);
+        if (!isNaN(ini) && !isNaN(fin) && fin >= ini) {
+            total.value = fin - ini + 1;
+        } else {
+            total.value = '';
+        }
+        recalcularTotales();
+    }
+
+    function recalcularTotales() {
+        const { id, periodo } = divisionActiva;
+        const profs = extraerProfesoresDivision(id, periodo);
+        const asignaturas = profs[profesorActivo] || [];
+        let totalHoras = 0, maxSemanas = 0;
+        asignaturas.forEach((_, i) => {
+            const hDoc = parseInt(document.getElementById(`hDoc_${i}`)?.value) || 0;
+            const hAct = parseInt(document.getElementById(`hAct_${i}`)?.value) || 0;
+            const sem = parseInt(document.getElementById(`totalSem_${i}`)?.value) || 0;
+            totalHoras += hDoc + hAct;
+            if (sem > maxSemanas) maxSemanas = sem;
+        });
+        document.getElementById('totalHorasJornada').textContent = totalHoras || '—';
+        document.getElementById('totalSemanasLaborales').textContent = maxSemanas || '—';
+    }
+
+    function guardarCargaProfesor() {
+        const { id, periodo } = divisionActiva;
+        const profs = extraerProfesoresDivision(id, periodo);
+        const asignaturas = profs[profesorActivo] || [];
+        const filas = [];
+        let valido = true;
+
+        asignaturas.forEach((a, i) => {
+            const hDoc = document.getElementById(`hDoc_${i}`)?.value;
+            const otraAct = document.getElementById(`otraAct_${i}`)?.value;
+            const hAct = document.getElementById(`hAct_${i}`)?.value;
+            const semIni = document.getElementById(`semIni_${i}`)?.value;
+            const semFin = document.getElementById(`semFin_${i}`)?.value;
+            const totalSem = document.getElementById(`totalSem_${i}`)?.value;
+            if (!hDoc) { valido = false; }
+            filas.push({ hDocencia: hDoc, otraActividad: otraAct, hActividades: hAct, semIni, semFin, totalSem });
+        });
+
+        if (!valido) {
+            mostrarAlerta('Completa las horas de docencia en todas las asignaturas.', 'error');
+            return;
+        }
+
+        const cargas = obtenerCargasGuardadas();
+        cargas[`${id}_${periodo}_${profesorActivo}`] = filas;
+        localStorage.setItem('cargasAcademicas', JSON.stringify(cargas));
+        mostrarAlerta(`Carga de ${profesorActivo} guardada correctamente.`, 'success');
+
+        setTimeout(() => irVistaProfesores(id, divisionActiva.nombre, periodo), 600);
+    }
+
+    function confirmarFinalizarDivision() {
+        new bootstrap.Modal(document.getElementById('modalFinalizarDivision')).show();
+    }
+
+    function ejecutarFinalizarDivision() {
+        const { id, periodo } = divisionActiva;
+        const cargas = obtenerCargasGuardadas();
+        cargas[`${id}_${periodo}_finalizado`] = true;
+        localStorage.setItem('cargasAcademicas', JSON.stringify(cargas));
+        const m = bootstrap.Modal.getInstance(document.getElementById('modalFinalizarDivision'));
+        if (m) m.hide();
+        mostrarAlerta('División marcada como finalizada.', 'success');
+        setTimeout(() => {
+            irVistaProfesores(id, divisionActiva.nombre, periodo);
+            cargarDashboard();
+        }, 600);
+    }
+
+    // ── Navegación entre vistas ──
+    function cambiarVista(idVista) {
+        document.querySelectorAll('.vista').forEach(v => v.classList.remove('activa'));
+        document.getElementById(idVista).classList.add('activa');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function irVistaDashboard() {
+        divisionActiva = null;
+        profesorActivo = null;
+        poblarSelectPeriodos();
+        if (periodoDashboard) {
+            document.getElementById('selPeriodoDash').value = periodoDashboard;
+            cargarDashboard();
+        }
+        cambiarVista('vista-dashboard');
+    }
+
+    function irVistaProfesores(id, nombre, periodo) {
+        if (!id && divisionActiva) { id = divisionActiva.id; nombre = divisionActiva.nombre; periodo = divisionActiva.periodo; }
+        irVistaProfesores_interno(id, nombre, periodo);
+    }
+
+    function irVistaProfesores_interno(divisionId, divisionNombre, periodo) {
+        divisionActiva = { id: divisionId, nombre: divisionNombre, periodo };
+        profesorActivo = null;
+        const profs = extraerProfesoresDivision(divisionId, periodo);
+        const cargas = obtenerCargasGuardadas();
+        const totalProfs = Object.keys(profs).length;
+        const capturados = Object.keys(profs).filter(p => cargas[`${divisionId}_${periodo}_${p}`]).length;
+        const estado = obtenerEstadoDivision(divisionId, periodo);
+        const yaFinalizado = estado === 'finalizado';
+
+        document.getElementById('breadcrumbProfesores').innerHTML = `
+            <span class="crumb-link" onclick="irVistaDashboard()"><i class="bi bi-house me-1"></i>Inicio</span>
+            <span class="crumb-sep">›</span>
+            <span class="crumb-actual">${divisionNombre}</span>`;
+
+        document.getElementById('tituloDivisionProfs').textContent = divisionNombre;
+        document.getElementById('subtituloDivisionProfs').textContent = `${periodo} · ${totalProfs} profesor${totalProfs !== 1 ? 'es' : ''} asignado${totalProfs !== 1 ? 's' : ''}`;
+
+        document.getElementById('metricasProfesores').innerHTML = `
+            <div class="col-4"><div class="metric-card"><div class="metric-val">${totalProfs}</div><div class="metric-label">Profesores</div></div></div>
+            <div class="col-4"><div class="metric-card"><div class="metric-val" style="color:#16a34a;">${capturados}</div><div class="metric-label">Capturados</div></div></div>
+            <div class="col-4"><div class="metric-card"><div class="metric-val" style="color:#f59e0b;">${totalProfs - capturados}</div><div class="metric-label">Pendientes</div></div></div>`;
+
+        const btnFin = document.getElementById('btnFinalizarDivision');
+        if (yaFinalizado) {
+            btnFin.disabled = true;
+            btnFin.innerHTML = '<i class="bi bi-check-circle-fill me-2"></i>División finalizada';
+        } else {
+            btnFin.disabled = capturados < totalProfs || totalProfs === 0;
+            btnFin.innerHTML = '<i class="bi bi-check-circle-fill me-2"></i>Marcar división como finalizada';
+        }
+
+        let html = '';
+        if (totalProfs === 0) {
+            html = `<div class="text-center py-5 text-muted bg-white rounded-4 border"><i class="bi bi-people fs-1 opacity-25 d-block mb-3"></i><p class="mb-0">No se encontraron profesores en esta división.</p></div>`;
+        } else {
+            Object.entries(profs).forEach(([nombre, asignaturas]) => {
+                const tieneCarga = !!cargas[`${divisionId}_${periodo}_${nombre}`];
+                html += `
+                <div class="card-profesor ${tieneCarga ? 'completo' : ''} mb-3" onclick="irVistaCarga('${nombre}')">
+                    <div class="avatar-prof ${tieneCarga ? 'avatar-completo' : 'avatar-pendiente'}">${iniciales(nombre)}</div>
+                    <div style="flex:1;">
+                        <div class="fw-semibold text-dark" style="font-size:0.9rem;">${nombre}</div>
+                        <div class="text-muted small mt-1">${asignaturas.length} asignatura${asignaturas.length !== 1 ? 's' : ''} · ${[...new Set(asignaturas.map(a => a.grupo))].join(', ')}</div>
+                    </div>
+                    <span class="badge-prof-estado ${tieneCarga ? 'badge-prof-completo' : 'badge-prof-pendiente'}">
+                        ${tieneCarga ? '<i class="bi bi-check-circle-fill me-1"></i>Capturado' : 'Pendiente'}
+                    </span>
+                    <i class="bi bi-chevron-right text-muted"></i>
+                </div>`;
+            });
+        }
+        document.getElementById('contenedorProfesores').innerHTML = html;
+        cambiarVista('vista-profesores');
+    }
+
+    // ── Toast ──
+    function mostrarAlerta(mensaje, tipo = 'success') {
+        const existing = document.getElementById('toastFlotante');
+        if (existing) existing.remove();
+        const config = {
+            success: { icono: 'bi-check-circle-fill', color: '#16a34a' },
+            info:    { icono: 'bi-exclamation-triangle-fill', color: '#f59e0b' },
+            error:   { icono: 'bi-x-circle-fill', color: '#dc2626' }
+        };
+        const c = config[tipo] || config.success;
+        const toast = document.createElement('div');
+        toast.id = 'toastFlotante';
+        toast.style.cssText = `position:fixed;top:20px;right:24px;z-index:9999;display:flex;align-items:center;gap:12px;background:#ffffff;border:1px solid #e2e8f0;border-left:4px solid ${c.color};border-radius:10px;padding:14px 16px;box-shadow:0 4px 16px rgba(0,0,0,0.08);font-family:'Inter',sans-serif;font-size:0.875rem;font-weight:500;max-width:320px;animation:slideInToast 0.3s cubic-bezier(0.34,1.56,0.64,1);`;
+        toast.innerHTML = `
+            <div style="width:26px;height:26px;border-radius:50%;background:${c.color};display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                <i class="bi ${c.icono}" style="color:white;font-size:0.8rem;"></i>
+            </div>
+            <span style="flex:1;color:#1e293b;">${mensaje}</span>
+            <button onclick="this.parentElement.remove()" style="background:none;border:none;color:#94a3b8;cursor:pointer;font-size:1rem;padding:0 0 0 6px;line-height:1;flex-shrink:0;">✕</button>`;
+        document.body.appendChild(toast);
+        setTimeout(() => {
+            if (toast && toast.parentElement) {
+                toast.style.animation = 'fadeOutToast 0.25s ease forwards';
+                setTimeout(() => toast.remove(), 250);
+            }
+        }, 3500);
+    }
+
+    // Alias para que los breadcrumbs funcionen correctamente
+    window.irVistaProfesores = irVistaProfesores_interno;
+</script>
+</body>
+</html>
