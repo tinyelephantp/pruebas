@@ -25,11 +25,6 @@
             background-color: #16a34a !important;
             box-shadow: 0 4px 10px rgba(22,163,74,0.2);
         }
-        #pills-borradores-tab.active {
-            background-color: #f59e0b !important;
-            color: #78350f !important;
-            box-shadow: 0 4px 10px rgba(245,158,11,0.2);
-        }
 
         /* Status pill en el header */
         .division-status-pill {
@@ -50,7 +45,7 @@
         .division-status-pill.en-proceso .status-dot { background: #16a34a; }
         .division-status-pill.entregada .status-dot { background: #3b82f6; }
 
-        /* Sección de cierre — sobria y profesional */
+        /* Sección de cierre */
         .seccion-envio {
             background: #f8faff;
             border: 1.5px solid #c7d9f0;
@@ -87,7 +82,6 @@
             box-shadow: none; opacity: 1;
         }
 
-        /* Resto de estilos */
         .btn-crear-nuevo-style {
             background-color: #009688; color: white !important;
             border-radius: 8px; font-weight: 600;
@@ -140,10 +134,6 @@
         .dropdown-menu-profesores { max-height: 250px; overflow-y: auto; border-radius: 12px; }
         .materia-texto { color: #1e293b; font-weight: 600; font-size: 0.9rem; }
 
-        .badge-semanas {
-            background-color: #f1f5f9; color: #475569; border: 1px solid #e2e8f0;
-            padding: 4px 10px; border-radius: 6px; font-size: 0.8rem; font-weight: 600;
-        }
         .badge-tutor {
             background-color: #009688; color: white; padding: 4px 10px;
             border-radius: 6px; font-weight: 600; font-size: 0.75rem;
@@ -161,23 +151,22 @@
             background-color: #198754; color: #ffffff; border-radius: 6px;
             padding: 4px 12px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase;
         }
-        .flip-card { background-color: transparent; perspective: 1000px; height: 300px; cursor: pointer; }
-        .flip-card-inner {
-            position: relative; width: 100%; height: 100%;
-            transition: transform 0.6s cubic-bezier(0.4,0.2,0.2,1);
-            transform-style: preserve-3d;
+
+        /* Registro cards list style */
+        .registro-card {
+            background: white;
+            border: 1px solid #edf2f7;
+            border-radius: 14px;
+            padding: 16px 20px;
+            transition: all 0.2s;
+            cursor: pointer;
         }
-        .flip-card.flipped .flip-card-inner { transform: rotateY(180deg); }
-        .flip-card-front, .flip-card-back {
-            position: absolute; width: 100%; height: 100%;
-            backface-visibility: hidden; border-radius: 20px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.05); border: 1px solid #edf2f7; padding: 1.5rem;
+        .registro-card:hover {
+            box-shadow: 0 4px 16px rgba(0,75,135,0.1);
+            border-color: #bfdbfe;
+            transform: translateY(-1px);
         }
-        .flip-card-front {
-            background-color: white; display: flex; flex-direction: column;
-            align-items: center; justify-content: center; text-align: center;
-        }
-        .flip-card-back { background-color: #ffffff; transform: rotateY(180deg); display: flex; flex-direction: column; }
+
         .btn-grado-registro { transition: all 0.2s; border: 1px solid #e2e8f0; background-color: #f8fafc; }
         .btn-grado-registro:hover {
             border-color: #004b87; background-color: #eff6ff;
@@ -236,13 +225,8 @@
             </button>
         </li>
         <li class="nav-item" role="presentation">
-            <button class="nav-link" id="pills-registros-tab" data-bs-toggle="pill" data-bs-target="#pills-registros" type="button" role="tab" onclick="inicializarVistaTarjetas('completo')">
-                <i class="bi bi-journal-check me-2"></i>Ver Registros Guardados
-            </button>
-        </li>
-        <li class="nav-item" role="presentation">
-            <button class="nav-link" id="pills-borradores-tab" data-bs-toggle="pill" data-bs-target="#pills-borradores" type="button" role="tab" onclick="inicializarVistaTarjetas('borrador')">
-                <i class="bi bi-file-earmark-dashed me-2"></i>Ver Borradores
+            <button class="nav-link" id="pills-registros-tab" data-bs-toggle="pill" data-bs-target="#pills-registros" type="button" role="tab" onclick="inicializarVistaRegistros()">
+                <i class="bi bi-journal-check me-2"></i>Registros
             </button>
         </li>
     </ul>
@@ -289,69 +273,67 @@
             </div>
 
             <div class="d-none" id="seccionConfiguracion">
-                <div class="row mb-4">
-                    <div class="col-lg-6 mb-3 mb-lg-0">
-                        <div class="bg-white p-4 rounded-4 shadow-sm border h-100" style="border-color:#edf2f7 !important;">
-                            <h6 class="text-muted text-uppercase fw-bold mb-4 small"><i class="bi bi-people-fill me-2"></i>Asignar Tutores</h6>
-                            <div class="row g-2 align-items-end">
-                                <div class="col-md-3">
-                                    <label class="form-label text-muted small">Grupo</label>
-                                    <select class="form-select" id="selGrupoTutor">
-                                        <option value="" selected disabled>Elige...</option>
-                                        <option value="AUT05SM-24">AUT05SM-24</option>
-                                        <option value="AUT06SM-24">AUT06SM-24</option>
-                                        <option value="AUT07SM-24">AUT07SM-24</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="form-label text-muted small">Tutor</label>
-                                    <div class="dropdown w-100">
-                                        <button class="form-select bg-white text-start shadow-sm text-truncate" type="button" id="btnTutorDropdown" data-bs-toggle="dropdown" aria-expanded="false">Selecciona...</button>
-                                        <ul class="dropdown-menu w-100 p-2 dropdown-menu-profesores" id="listaOpcionesTutores">
-                                            <li class="px-2 pb-2">
-                                                <input type="text" class="form-control" id="buscadorTutores" placeholder="Escribe para buscar..." onkeyup="filtrarTutores()" onclick="event.stopPropagation()">
-                                            </li>
-                                            <li><a class="dropdown-item rounded py-2" href="#" onclick="seleccionarTutor('Nuria Alavez Ríos',event)">Nuria Alavez Ríos</a></li>
-                                            <li><a class="dropdown-item rounded py-2" href="#" onclick="seleccionarTutor('Rocío Gómez Vargas',event)">Rocío Gómez Vargas</a></li>
-                                            <li><a class="dropdown-item rounded py-2" href="#" onclick="seleccionarTutor('Hugo Sánchez Cruz',event)">Hugo Sánchez Cruz</a></li>
-                                            <li><a class="dropdown-item rounded py-2" href="#" onclick="seleccionarTutor('Oscar Pérez López',event)">Oscar Pérez López</a></li>
-                                            <li><a class="dropdown-item rounded py-2" href="#" onclick="seleccionarTutor('Rafael Domínguez Pérez',event)">Rafael Domínguez Pérez</a></li>
-                                            <li><a class="dropdown-item rounded py-2" href="#" onclick="seleccionarTutor('Jessica Martínez Lugo',event)">Jessica Martínez Lugo</a></li>
-                                        </ul>
-                                    </div>
-                                    <input type="hidden" id="tutorActivo" value="">
-                                </div>
-                                <div class="col-md-3">
-                                    <button class="btn btn-crear-nuevo-style w-100 px-0" onclick="asignarTutor()">
-                                        <i class="bi bi-plus-lg me-1"></i>Agregar
-                                    </button>
-                                </div>
-                            </div>
+
+                <!-- ASIGNAR TUTORES — ancho completo -->
+                <div class="bg-white p-4 rounded-4 shadow-sm border mb-3" style="border-color:#edf2f7 !important;">
+                    <h6 class="text-muted text-uppercase fw-bold mb-4 small"><i class="bi bi-people-fill me-2"></i>Asignar Tutores</h6>
+                    <div class="row g-3 align-items-end">
+                        <div class="col-md-3">
+                            <label class="form-label text-muted small">Grupo</label>
+                            <select class="form-select" id="selGrupoTutor">
+                                <option value="" selected disabled>Elige...</option>
+                                <option value="AUT05SM-24">AUT05SM-24</option>
+                                <option value="AUT06SM-24">AUT06SM-24</option>
+                                <option value="AUT07SM-24">AUT07SM-24</option>
+                            </select>
                         </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="p-4 rounded-4 shadow-sm h-100" style="background-color:#f1f5f9; border:1px solid #e2e8f0;">
-                            <h6 class="text-muted text-uppercase fw-bold mb-4 small"><i class="bi bi-person-badge-fill me-2"></i>Profesor a impartir</h6>
-                            <label class="form-label text-dark small fw-medium">Selecciona el profesor que vas a colocar en la tabla:</label>
+                        <div class="col-md-7">
+                            <label class="form-label text-muted small">Tutor</label>
                             <div class="dropdown w-100">
-                                <button class="form-select bg-white text-start shadow-sm text-truncate" type="button" id="btnProfesorDropdown" data-bs-toggle="dropdown" aria-expanded="false">Despliega o busca un profesor...</button>
-                                <ul class="dropdown-menu w-100 p-2 dropdown-menu-profesores" id="listaOpcionesProfesores">
+                                <button class="form-select bg-white text-start shadow-sm text-truncate" type="button" id="btnTutorDropdown" data-bs-toggle="dropdown" aria-expanded="false">Selecciona...</button>
+                                <ul class="dropdown-menu w-100 p-2 dropdown-menu-profesores" id="listaOpcionesTutores">
                                     <li class="px-2 pb-2">
-                                        <input type="text" class="form-control" id="buscadorProfesores" placeholder="Escribe para buscar..." onkeyup="filtrarProfesores()" onclick="event.stopPropagation()">
+                                        <input type="text" class="form-control" id="buscadorTutores" placeholder="Escribe para buscar..." onkeyup="filtrarTutores()" onclick="event.stopPropagation()">
                                     </li>
-                                    <li><a class="dropdown-item rounded py-2" href="#" onclick="seleccionarProfesor('Nuria Alavez Ríos',event)">Nuria Alavez Ríos</a></li>
-                                    <li><a class="dropdown-item rounded py-2" href="#" onclick="seleccionarProfesor('Rafael Domínguez Pérez',event)">Rafael Domínguez Pérez</a></li>
-                                    <li><a class="dropdown-item rounded py-2" href="#" onclick="seleccionarProfesor('Fernando Ortiz Silva',event)">Fernando Ortiz Silva</a></li>
-                                    <li><a class="dropdown-item rounded py-2" href="#" onclick="seleccionarProfesor('Hugo Sánchez Cruz',event)">Hugo Sánchez Cruz</a></li>
-                                    <li><a class="dropdown-item rounded py-2" href="#" onclick="seleccionarProfesor('Jessica Martínez Lugo',event)">Jessica Martínez Lugo</a></li>
-                                    <li><a class="dropdown-item rounded py-2" href="#" onclick="seleccionarProfesor('Sayuri Torres Blanco',event)">Sayuri Torres Blanco</a></li>
-                                    <li><a class="dropdown-item rounded py-2" href="#" onclick="seleccionarProfesor('Oscar Pérez López',event)">Oscar Pérez López</a></li>
-                                    <li><a class="dropdown-item rounded py-2" href="#" onclick="seleccionarProfesor('Rocío Gómez Vargas',event)">Rocío Gómez Vargas</a></li>
+                                    <li><a class="dropdown-item rounded py-2" href="#" onclick="seleccionarTutor('Nuria Alavez Ríos',event)">Nuria Alavez Ríos</a></li>
+                                    <li><a class="dropdown-item rounded py-2" href="#" onclick="seleccionarTutor('Rocío Gómez Vargas',event)">Rocío Gómez Vargas</a></li>
+                                    <li><a class="dropdown-item rounded py-2" href="#" onclick="seleccionarTutor('Hugo Sánchez Cruz',event)">Hugo Sánchez Cruz</a></li>
+                                    <li><a class="dropdown-item rounded py-2" href="#" onclick="seleccionarTutor('Oscar Pérez López',event)">Oscar Pérez López</a></li>
+                                    <li><a class="dropdown-item rounded py-2" href="#" onclick="seleccionarTutor('Rafael Domínguez Pérez',event)">Rafael Domínguez Pérez</a></li>
+                                    <li><a class="dropdown-item rounded py-2" href="#" onclick="seleccionarTutor('Jessica Martínez Lugo',event)">Jessica Martínez Lugo</a></li>
                                 </ul>
                             </div>
-                            <input type="hidden" id="profesorActivo" value="">
+                            <input type="hidden" id="tutorActivo" value="">
+                        </div>
+                        <div class="col-md-2">
+                            <button class="btn btn-crear-nuevo-style w-100" onclick="asignarTutor()">
+                                <i class="bi bi-plus-lg me-1"></i>Agregar
+                            </button>
                         </div>
                     </div>
+                </div>
+
+                <!-- PROFESOR A IMPARTIR — ancho completo -->
+                <div class="p-4 rounded-4 shadow-sm mb-4" style="background-color:#f1f5f9; border:1px solid #e2e8f0;">
+                    <h6 class="text-muted text-uppercase fw-bold mb-3 small"><i class="bi bi-person-badge-fill me-2"></i>Profesor a impartir</h6>
+                    <label class="form-label text-dark small fw-medium">Selecciona el profesor que vas a colocar en la tabla:</label>
+                    <div class="dropdown w-100">
+                        <button class="form-select bg-white text-start shadow-sm text-truncate" type="button" id="btnProfesorDropdown" data-bs-toggle="dropdown" aria-expanded="false">Despliega o busca un profesor...</button>
+                        <ul class="dropdown-menu w-100 p-2 dropdown-menu-profesores" id="listaOpcionesProfesores">
+                            <li class="px-2 pb-2">
+                                <input type="text" class="form-control" id="buscadorProfesores" placeholder="Escribe para buscar..." onkeyup="filtrarProfesores()" onclick="event.stopPropagation()">
+                            </li>
+                            <li><a class="dropdown-item rounded py-2" href="#" onclick="seleccionarProfesor('Nuria Alavez Ríos',event)">Nuria Alavez Ríos</a></li>
+                            <li><a class="dropdown-item rounded py-2" href="#" onclick="seleccionarProfesor('Rafael Domínguez Pérez',event)">Rafael Domínguez Pérez</a></li>
+                            <li><a class="dropdown-item rounded py-2" href="#" onclick="seleccionarProfesor('Fernando Ortiz Silva',event)">Fernando Ortiz Silva</a></li>
+                            <li><a class="dropdown-item rounded py-2" href="#" onclick="seleccionarProfesor('Hugo Sánchez Cruz',event)">Hugo Sánchez Cruz</a></li>
+                            <li><a class="dropdown-item rounded py-2" href="#" onclick="seleccionarProfesor('Jessica Martínez Lugo',event)">Jessica Martínez Lugo</a></li>
+                            <li><a class="dropdown-item rounded py-2" href="#" onclick="seleccionarProfesor('Sayuri Torres Blanco',event)">Sayuri Torres Blanco</a></li>
+                            <li><a class="dropdown-item rounded py-2" href="#" onclick="seleccionarProfesor('Oscar Pérez López',event)">Oscar Pérez López</a></li>
+                            <li><a class="dropdown-item rounded py-2" href="#" onclick="seleccionarProfesor('Rocío Gómez Vargas',event)">Rocío Gómez Vargas</a></li>
+                        </ul>
+                    </div>
+                    <input type="hidden" id="profesorActivo" value="">
                 </div>
 
                 <div class="tabla-contenedor">
@@ -385,54 +367,30 @@
         <!-- TAB REGISTROS -->
         <div class="tab-pane fade" id="pills-registros" role="tabpanel">
             <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
-                <h5 class="m-0 text-secondary fw-bold"><i class="bi bi-grid-fill me-2 text-primary"></i>Carreras Guardadas</h5>
+                <h5 class="m-0 text-secondary fw-bold"><i class="bi bi-journal-check me-2 text-success"></i>Registros Guardados</h5>
                 <div class="d-flex gap-2">
                     <button class="btn btn-outline-warning btn-sm rounded-pill px-3 fw-medium" onclick="resetearStatusPruebas()">
                         <i class="bi bi-arrow-counterclockwise me-1"></i>Reset
                     </button>
-                    <button class="btn btn-outline-danger btn-sm rounded-pill px-3 fw-medium" onclick="limpiarMemoria('completo')">
+                    <button class="btn btn-outline-danger btn-sm rounded-pill px-3 fw-medium" onclick="limpiarTodosRegistros()">
                         <i class="bi bi-trash3 me-1"></i>Borrar todo
                     </button>
                 </div>
             </div>
             <div class="row mb-4">
                 <div class="col-md-5">
-                    <label class="form-label text-muted small fw-bold"><i class="bi bi-funnel-fill me-1 text-primary"></i>Selecciona el Periodo para ver registros:</label>
+                    <label class="form-label text-muted small fw-bold"><i class="bi bi-funnel-fill me-1 text-success"></i>Selecciona el Periodo:</label>
                     <div class="d-flex gap-2">
-                        <select class="form-select border-0 shadow-sm bg-white flex-grow-1" id="filtroPeriodo_completo" onchange="cargarTarjetas('completo')">
+                        <select class="form-select border-0 shadow-sm bg-white flex-grow-1" id="filtroPeriodo_registros" onchange="cargarListaRegistros()">
                             <option value="" selected disabled>Selecciona un periodo...</option>
                         </select>
-                        <button class="btn btn-white border shadow-sm d-none bg-white" id="btnLimpiarFiltro_completo" onclick="limpiarFiltroPeriodo('completo')" title="Limpiar filtro">
+                        <button class="btn btn-white border shadow-sm d-none bg-white" id="btnLimpiarFiltro_registros" onclick="limpiarFiltroRegistros()" title="Limpiar filtro">
                             <i class="bi bi-eraser-fill text-muted"></i>
                         </button>
                     </div>
                 </div>
             </div>
-            <div class="row" id="contenedorTarjetas_completo"></div>
-        </div>
-
-        <!-- TAB BORRADORES -->
-        <div class="tab-pane fade" id="pills-borradores" role="tabpanel">
-            <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
-                <h5 class="m-0 text-secondary fw-bold"><i class="bi bi-file-earmark-dashed me-2 text-warning"></i>Borradores Incompletos</h5>
-                <button class="btn btn-outline-danger btn-sm rounded-pill px-3 fw-medium" onclick="limpiarMemoria('borrador')">
-                    <i class="bi bi-trash3 me-1"></i>Borrar borradores
-                </button>
-            </div>
-            <div class="row mb-4">
-                <div class="col-md-5">
-                    <label class="form-label text-muted small fw-bold"><i class="bi bi-funnel-fill me-1 text-warning"></i>Selecciona el Periodo de los borradores:</label>
-                    <div class="d-flex gap-2">
-                        <select class="form-select border-0 shadow-sm bg-white flex-grow-1" id="filtroPeriodo_borrador" onchange="cargarTarjetas('borrador')">
-                            <option value="" selected disabled>Selecciona un periodo...</option>
-                        </select>
-                        <button class="btn btn-white border shadow-sm d-none bg-white" id="btnLimpiarFiltro_borrador" onclick="limpiarFiltroPeriodo('borrador')" title="Limpiar filtro">
-                            <i class="bi bi-eraser-fill text-muted"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
-            <div class="row" id="contenedorTarjetas_borrador"></div>
+            <div id="contenedorListaRegistros"></div>
         </div>
 
     </div>
@@ -595,13 +553,13 @@
     const DIVISION_NOMBRE = 'División de Sistemas Productivos y Mantenimiento Industrial';
 
     const materiasFalsas = [
-        { nombre: "INGLES I", inicio: 1, fin: 14, total: 14 },
-        { nombre: "FUNDAMENTOS MATEMÁTICOS", inicio: 1, fin: 7, total: 7 },
-        { nombre: "COMUNICACIÓN Y HABILIDADES DIGITALES", inicio: 7, fin: 14, total: 8 },
-        { nombre: "DESARROLLO HUMANO Y VALORES", inicio: 1, fin: 14, total: 14 },
-        { nombre: "DIBUJO INDUSTRIAL", inicio: 1, fin: 7, total: 7 },
-        { nombre: "QUÍMICA BÁSICA", inicio: 7, fin: 14, total: 8 },
-        { nombre: "METROLOGÍA", inicio: 1, fin: 14, total: 14 }
+        { nombre: "INGLES I" },
+        { nombre: "FUNDAMENTOS MATEMÁTICOS" },
+        { nombre: "COMUNICACIÓN Y HABILIDADES DIGITALES" },
+        { nombre: "DESARROLLO HUMANO Y VALORES" },
+        { nombre: "DIBUJO INDUSTRIAL" },
+        { nombre: "QUÍMICA BÁSICA" },
+        { nombre: "METROLOGÍA" }
     ];
 
     let datosTemporalesListosParaGuardar = null;
@@ -771,10 +729,8 @@
         const grupos = obtenerGruposActuales();
         const thead = document.getElementById('cabeceraTabla');
         let th = `<tr>
-            <th class="text-start ps-3" style="width:25%;">Asignatura / Grupo</th>
-            <th style="width:12%;">Semanas<br><small class="text-muted opacity-75" style="text-transform:none;">(Inicio - Fin)</small></th>
-            <th style="width:10%;">Total<br><small class="text-muted opacity-75" style="text-transform:none;">Semanas</small></th>`;
-        const w = 53 / (grupos.length || 1);
+            <th class="text-start ps-3" style="width:35%;">Asignatura / Grupo</th>`;
+        const w = 65 / (grupos.length || 1);
         grupos.forEach(g => {
             th += `<th style="width:${w}%;">
                 <div class="fs-6 text-dark mb-1">${g}</div>
@@ -793,14 +749,6 @@
             tdM.className = 'text-start materia-texto ps-3';
             tdM.innerText = m.nombre;
             tr.appendChild(tdM);
-            const tdR = document.createElement('td');
-            tdR.className = 'align-middle';
-            tdR.innerHTML = `<span class="badge-semanas">${m.inicio} a ${m.fin}</span>`;
-            tr.appendChild(tdR);
-            const tdT = document.createElement('td');
-            tdT.className = 'align-middle';
-            tdT.innerHTML = `<span class="badge-semanas bg-white text-primary">${m.total}</span>`;
-            tr.appendChild(tdT);
             grupos.forEach(() => {
                 const td = document.createElement('td');
                 td.className = 'celda-interactiva';
@@ -878,9 +826,9 @@
         const filas = document.querySelectorAll('#cuerpoTabla tr');
         let total = filas.length * grupos.length, llenas = 0;
         filas.forEach(fila => {
-            const d = { materia: fila.cells[0].innerText, semanas: fila.cells[1].innerText, total: fila.cells[2].innerText };
+            const d = { materia: fila.cells[0].innerText };
             grupos.forEach((g, idx) => {
-                const celda = fila.cells[idx + 3];
+                const celda = fila.cells[idx + 1];
                 const pn = celda ? celda.querySelector('.nombre-prof') : null;
                 const p = pn ? pn.innerText : '---';
                 if (p !== '---') llenas++;
@@ -946,81 +894,84 @@
         setTimeout(() => actualizarUIEstadoDivision(), 400);
     }
 
-    function inicializarVistaTarjetas(tipo) {
+    /* ── REGISTROS TAB ── */
+    function inicializarVistaRegistros() {
         const registros = JSON.parse(localStorage.getItem('registrosResumenCargas')) || [];
-        const delTipo = registros.filter(r => r.estado === tipo);
-        const select = document.getElementById(`filtroPeriodo_${tipo}`);
-        const contenedor = document.getElementById(`contenedorTarjetas_${tipo}`);
-        const btnL = document.getElementById(`btnLimpiarFiltro_${tipo}`);
-        if (delTipo.length === 0) {
+        const select = document.getElementById('filtroPeriodo_registros');
+        const contenedor = document.getElementById('contenedorListaRegistros');
+        const btnL = document.getElementById('btnLimpiarFiltro_registros');
+
+        if (registros.length === 0) {
             select.innerHTML = '<option value="" selected disabled>No hay periodos registrados</option>';
             select.disabled = true;
             btnL.classList.add('d-none');
-            contenedor.innerHTML = `<div class="col-12 text-center py-5 text-muted bg-white rounded-4 border"><i class="bi bi-folder-x fs-1 opacity-50 mb-3 d-block"></i><p class="mb-0">Aún no hay ${tipo === 'borrador' ? 'borradores' : 'carreras guardadas'}.</p></div>`;
+            contenedor.innerHTML = `<div class="text-center py-5 text-muted bg-white rounded-4 border"><i class="bi bi-folder-x fs-1 opacity-50 mb-3 d-block"></i><p class="mb-0">Aún no hay registros guardados.</p></div>`;
             return;
         }
         select.disabled = false;
-        const periodos = [...new Set(delTipo.map(r => r.periodo))];
+        const periodos = [...new Set(registros.map(r => r.periodo))];
         const actual = select.value;
         const forzar = !periodos.includes(actual);
         select.innerHTML = `<option value="" disabled ${forzar ? 'selected' : ''}>Selecciona un periodo...</option>` +
             periodos.map(p => `<option value="${p}" ${p === actual && !forzar ? 'selected' : ''}>${p}</option>`).join('');
-        cargarTarjetas(tipo);
+        cargarListaRegistros();
     }
 
-    function limpiarFiltroPeriodo(tipo) {
-        document.getElementById(`filtroPeriodo_${tipo}`).value = "";
-        cargarTarjetas(tipo);
+    function limpiarFiltroRegistros() {
+        document.getElementById('filtroPeriodo_registros').value = "";
+        cargarListaRegistros();
     }
 
-    function cargarTarjetas(tipo) {
-        const select = document.getElementById(`filtroPeriodo_${tipo}`);
+    function cargarListaRegistros() {
+        const select = document.getElementById('filtroPeriodo_registros');
         const valor = select.value;
-        const contenedor = document.getElementById(`contenedorTarjetas_${tipo}`);
-        const btnL = document.getElementById(`btnLimpiarFiltro_${tipo}`);
+        const contenedor = document.getElementById('contenedorListaRegistros');
+        const btnL = document.getElementById('btnLimpiarFiltro_registros');
+
         if (!valor) {
             btnL.classList.add('d-none');
-            contenedor.innerHTML = `<div class="col-12 text-center py-5 text-muted bg-white rounded-4 border" style="border-style:dashed !important;"><i class="bi bi-hand-index-thumb fs-1 opacity-50 mb-3 d-block text-${tipo === 'borrador' ? 'warning' : 'primary'}"></i><p class="mb-0 fw-medium">Selecciona un periodo para mostrar.</p></div>`;
+            contenedor.innerHTML = `<div class="text-center py-5 text-muted bg-white rounded-4 border" style="border-style:dashed !important;"><i class="bi bi-hand-index-thumb fs-1 opacity-50 mb-3 d-block text-success"></i><p class="mb-0 fw-medium">Selecciona un periodo para mostrar.</p></div>`;
             return;
         }
         btnL.classList.remove('d-none');
         const registros = JSON.parse(localStorage.getItem('registrosResumenCargas')) || [];
-        const aMostrar = registros.filter(r => r.estado === tipo && r.periodo === valor);
-        const porCarrera = {};
-        aMostrar.forEach(r => { if (!porCarrera[r.carrera]) porCarrera[r.carrera] = []; porCarrera[r.carrera].push(r); });
-        let html = '';
-        for (const carrera in porCarrera) {
-            const regs = porCarrera[carrera].reverse();
-            const badge = tipo === 'borrador'
-                ? `<div class="mb-3"><span class="badge-estado-incompleto"><i class="bi bi-clock-history me-1"></i>Incompleto</span></div>`
-                : `<div class="mb-3"><span class="badge-estado-completo"><i class="bi bi-check-circle-fill me-1"></i>Completo</span></div>`;
-            const grados = regs.map(r => `
-                <button class="btn btn-grado-registro w-100 rounded-3 mb-2 d-flex justify-content-between align-items-center p-3 shadow-sm" onclick="abrirModalDetalle(${r.id})">
-                    <span class="fw-bold text-dark"><i class="bi bi-bookmark-fill ${tipo === 'borrador' ? 'text-warning' : 'text-primary'} me-2"></i>${r.grado}</span>
-                    <span class="badge bg-light text-secondary border">${r.fecha}</span>
-                </button>`).join('');
+        const aMostrar = registros.filter(r => r.periodo === valor);
+
+        if (aMostrar.length === 0) {
+            contenedor.innerHTML = `<div class="text-center py-5 text-muted bg-white rounded-4 border"><i class="bi bi-inbox fs-1 opacity-50 mb-3 d-block"></i><p class="mb-0">No hay registros para este periodo.</p></div>`;
+            return;
+        }
+
+        let html = '<div class="d-flex flex-column gap-3">';
+        aMostrar.slice().reverse().forEach(r => {
+            const esCompleto = r.estado === 'completo';
+            const badgeHtml = esCompleto
+                ? `<span class="badge-estado-completo"><i class="bi bi-check-circle-fill me-1"></i>Completo</span>`
+                : `<span class="badge-estado-incompleto"><i class="bi bi-clock-history me-1"></i>Incompleto</span>`;
             html += `
-            <div class="col-md-4 col-sm-6 mb-4">
-                <div class="flip-card" onclick="this.classList.toggle('flipped')">
-                    <div class="flip-card-inner">
-                        <div class="flip-card-front text-center pt-3">
-                            ${badge}
-                            <div class="bg-primary bg-opacity-10 text-primary p-3 rounded-circle mb-3 d-inline-block"><i class="bi bi-briefcase-fill fs-3"></i></div>
-                            <h5 class="fw-bold px-2" style="color:#004b87;">${carrera}</h5>
-                            <span class="badge bg-light text-secondary border mt-1 px-3 py-2 rounded-pill">${regs.length} resúmenes</span>
-                            <div class="mt-auto pt-3 text-muted small w-100 border-top"><i class="bi bi-arrow-repeat me-1"></i>Clic para girar y ver grados</div>
+            <div class="registro-card" onclick="abrirModalDetalle(${r.id})">
+                <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="p-2 rounded-3" style="background:${esCompleto ? '#f0fdf4' : '#fffbeb'};">
+                            <i class="bi bi-${esCompleto ? 'journal-check text-success' : 'journal-text text-warning'} fs-5"></i>
                         </div>
-                        <div class="flip-card-back" onclick="event.stopPropagation()">
-                            <div class="d-flex justify-content-between align-items-center mb-3 pb-3 border-bottom">
-                                <h6 class="m-0 fw-bold text-dark">Grados Registrados</h6>
-                                <button class="btn btn-sm btn-light border rounded-circle py-0 px-2 text-muted shadow-sm" onclick="this.closest('.flip-card').classList.remove('flipped')"><i class="bi bi-x fs-5"></i></button>
+                        <div>
+                            <div class="fw-bold text-dark" style="font-size:0.95rem;">${r.carrera}</div>
+                            <div class="text-muted small mt-1">
+                                <i class="bi bi-bookmark-fill me-1 ${esCompleto ? 'text-success' : 'text-warning'}"></i>${r.grado}
+                                <span class="mx-2 text-muted opacity-50">·</span>
+                                <i class="bi bi-calendar3 me-1"></i>${r.fecha}
                             </div>
-                            <div class="flex-grow-1 overflow-auto custom-scrollbar pe-1">${grados}</div>
                         </div>
+                    </div>
+                    <div class="d-flex align-items-center gap-3">
+                        ${badgeHtml}
+                        <i class="bi bi-chevron-right text-muted"></i>
                     </div>
                 </div>
             </div>`;
-        }
+        });
+        html += '</div>';
         contenedor.innerHTML = html;
     }
 
@@ -1036,12 +987,12 @@
         document.getElementById('modalTutoresContainer').innerHTML = reg.gruposRegistrados
             .map(g => `<span class="badge-tutor-registro shadow-sm me-1">${g}: ${reg.tutores[g] || 'Sin asignar'}</span>`).join('');
         document.getElementById('modalCabeceraTabla').innerHTML =
-            `<tr><th class="text-start py-3 ps-3">Materia</th><th class="py-3">Semanas</th><th class="py-3">Total</th>` +
+            `<tr><th class="text-start py-3 ps-3">Materia</th>` +
             reg.gruposRegistrados.map(g => `<th class="py-3">${g}</th>`).join('') + `</tr>`;
         document.getElementById('modalCuerpoTabla').innerHTML = reg.asignaciones.map(a => {
             const tds = reg.gruposRegistrados.map(g =>
                 `<td class="text-primary align-middle">${a[g] !== '---' ? a[g] : '<span class="text-muted opacity-25">-</span>'}</td>`).join('');
-            return `<tr><td class="text-start fw-medium ps-3 text-dark align-middle">${a.materia}</td><td class="text-muted small align-middle">${a.semanas || '-'}</td><td class="text-primary fw-medium small align-middle">${a.total || '-'}</td>${tds}</tr>`;
+            return `<tr><td class="text-start fw-medium ps-3 text-dark align-middle">${a.materia}</td>${tds}</tr>`;
         }).join('');
         const footer = document.getElementById('modalFooterDetalle');
         if (reg.estado === 'borrador') {
@@ -1077,7 +1028,7 @@
             if (filas[i]) {
                 reg.gruposRegistrados.forEach((g, ci) => {
                     if (a[g] && a[g] !== '---') {
-                        const celda = filas[i].cells[ci + 3];
+                        const celda = filas[i].cells[ci + 1];
                         celda.innerHTML = `<div class="prof-badge shadow-sm"><span class="nombre-prof">${a[g]}</span><i class="bi bi-trash3-fill icon-borrar"></i></div>`;
                         celda.classList.add('celda-asignada');
                         celda.addEventListener('mouseleave', function() { if (this.classList.contains('celda-asignada')) this.classList.add('permitir-borrado'); }, { once: true });
@@ -1090,12 +1041,10 @@
         actualizarUIEstadoDivision();
     }
 
-    function limpiarMemoria(tipo) {
-        if (confirm(`¿Seguro que quieres borrar todos los registros de tipo '${tipo}'?`)) {
-            const registros = JSON.parse(localStorage.getItem('registrosResumenCargas')) || [];
-            localStorage.setItem('registrosResumenCargas', JSON.stringify(registros.filter(r => r.estado !== tipo)));
-            document.getElementById(`filtroPeriodo_${tipo}`).value = '';
-            inicializarVistaTarjetas(tipo);
+    function limpiarTodosRegistros() {
+        if (confirm("¿Seguro que quieres borrar todos los registros?")) {
+            localStorage.removeItem('registrosResumenCargas');
+            inicializarVistaRegistros();
             mostrarAlerta('Registros borrados correctamente.', 'info');
             actualizarUIEstadoDivision();
         }
