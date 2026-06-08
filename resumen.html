@@ -26,26 +26,6 @@
             box-shadow: 0 4px 10px rgba(22,163,74,0.2);
         }
 
-        /* Status pill en el header */
-        .division-status-pill {
-            display: inline-flex; align-items: center; gap: 8px;
-            padding: 8px 16px; border-radius: 50px;
-            font-size: 0.8rem; font-weight: 600;
-            border: 1.5px solid; transition: all 0.3s;
-        }
-        .division-status-pill.en-proceso {
-            background: #f0fdf4; border-color: #86efac; color: #15803d;
-        }
-        .division-status-pill.entregada {
-            background: #eff6ff; border-color: #93c5fd; color: #1d4ed8;
-        }
-        .division-status-pill .status-dot {
-            width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
-        }
-        .division-status-pill.en-proceso .status-dot { background: #16a34a; }
-        .division-status-pill.entregada .status-dot { background: #3b82f6; }
-
-        /* Sección de cierre */
         .seccion-envio {
             background: #f8faff;
             border: 1.5px solid #c7d9f0;
@@ -97,6 +77,33 @@
             padding: 12px 30px; transition: all 0.2s;
         }
         .btn-guardar:hover { background-color: #0b5ed7; transform: translateY(-2px); }
+
+        /* Botón Ir a Carga Académica */
+        .btn-carga-academica {
+            background: linear-gradient(135deg, #004b87 0%, #0072c6 100%);
+            color: white !important;
+            border-radius: 10px; font-weight: 700;
+            padding: 12px 28px; border: none;
+            transition: all 0.25s ease;
+            box-shadow: 0 4px 14px rgba(0,75,135,0.3);
+            display: inline-flex; align-items: center; gap: 10px;
+            font-size: 0.95rem; letter-spacing: 0.02em;
+            text-decoration: none;
+        }
+        .btn-carga-academica:hover {
+            background: linear-gradient(135deg, #003a6b 0%, #005fa3 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0,75,135,0.4);
+        }
+        .btn-carga-academica:disabled,
+        .btn-carga-academica.disabled {
+            background: linear-gradient(135deg, #94a3b8 0%, #b0bec5 100%);
+            cursor: not-allowed;
+            box-shadow: none;
+            transform: none;
+            opacity: 1;
+            pointer-events: none;
+        }
 
         .tabla-contenedor {
             background-color: white; border-radius: 20px;
@@ -152,26 +159,50 @@
             padding: 4px 12px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase;
         }
 
-        /* Registro cards list style */
-        .registro-card {
-            background: white;
-            border: 1px solid #edf2f7;
-            border-radius: 14px;
-            padding: 16px 20px;
-            transition: all 0.2s;
-            cursor: pointer;
+        /* ── Flip Cards ── */
+        .flip-card-container { perspective: 1000px; height: 300px; }
+        .flip-card { background-color: transparent; width: 100%; height: 100%; cursor: pointer; }
+        .flip-card-inner {
+            position: relative; width: 100%; height: 100%; text-align: center;
+            transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1);
+            transform-style: preserve-3d;
         }
-        .registro-card:hover {
-            box-shadow: 0 4px 16px rgba(0,75,135,0.1);
-            border-color: #bfdbfe;
-            transform: translateY(-1px);
+        .flip-card.flipped .flip-card-inner { transform: rotateY(180deg); }
+        .flip-card-front, .flip-card-back {
+            position: absolute; width: 100%; height: 100%;
+            backface-visibility: hidden; border-radius: 16px;
+            border: 1px solid #edf2f7; box-shadow: 0 6px 16px rgba(0,75,135,0.06);
+            padding: 1.5rem; display: flex; flex-direction: column;
         }
+        .flip-card-front {
+            background: linear-gradient(145deg, #ffffff 0%, #f8faff 100%);
+            align-items: center; justify-content: center; transition: border-color 0.3s;
+        }
+        .flip-card-front:hover { border-color: #93c5fd; }
+        .flip-card-back {
+            background: #ffffff; transform: rotateY(180deg);
+            overflow-y: auto; border: 1.5px solid #93c5fd;
+        }
+        .flip-card-back::-webkit-scrollbar { width: 4px; }
+        .flip-card-back::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        .flip-back-title {
+            font-size: 0.85rem; font-weight: 700; color: #004b87;
+            text-transform: uppercase; margin-bottom: 12px;
+            border-bottom: 1px solid #f1f5f9; padding-bottom: 8px; text-align: left;
+        }
+        .grado-btn-grid { display: grid; grid-template-columns: 1fr; gap: 8px; }
+        .grado-btn {
+            background: #f8fafc; border: 1px solid #e2e8f0;
+            padding: 10px 12px; border-radius: 10px; font-size: 0.85rem;
+            font-weight: 600; color: #1e293b; transition: all 0.2s;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .grado-btn:hover { border-color: #004b87; background: #eff6ff; color: #004b87; transform: translateY(-1px); }
+        .grado-btn.incompleto { border-left: 4px solid #f59e0b; }
+        .grado-btn.completo { border-left: 4px solid #16a34a; }
 
         .btn-grado-registro { transition: all 0.2s; border: 1px solid #e2e8f0; background-color: #f8fafc; }
-        .btn-grado-registro:hover {
-            border-color: #004b87; background-color: #eff6ff;
-            color: #004b87 !important; transform: translateX(4px);
-        }
+        .btn-grado-registro:hover { border-color: #004b87; background-color: #eff6ff; color: #004b87 !important; transform: translateX(4px); }
         .custom-scrollbar::-webkit-scrollbar { width: 4px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
@@ -206,13 +237,6 @@
                 <p class="text-muted m-0 mt-1" style="font-size:0.85rem;">
                     <i class="bi bi-building me-1"></i>División de Sistemas Productivos y Mantenimiento Industrial
                 </p>
-            </div>
-        </div>
-
-        <div id="statusBadgeContainer" class="d-none">
-            <div id="divisionStatusPill" class="division-status-pill">
-                <span class="status-dot"></span>
-                <span id="statusTexto"></span>
             </div>
         </div>
     </div>
@@ -274,7 +298,6 @@
 
             <div class="d-none" id="seccionConfiguracion">
 
-                <!-- ASIGNAR TUTORES — ancho completo -->
                 <div class="bg-white p-4 rounded-4 shadow-sm border mb-3" style="border-color:#edf2f7 !important;">
                     <h6 class="text-muted text-uppercase fw-bold mb-4 small"><i class="bi bi-people-fill me-2"></i>Asignar Tutores</h6>
                     <div class="row g-3 align-items-end">
@@ -313,7 +336,6 @@
                     </div>
                 </div>
 
-                <!-- PROFESOR A IMPARTIR — ancho completo -->
                 <div class="p-4 rounded-4 shadow-sm mb-4" style="background-color:#f1f5f9; border:1px solid #e2e8f0;">
                     <h6 class="text-muted text-uppercase fw-bold mb-3 small"><i class="bi bi-person-badge-fill me-2"></i>Profesor a impartir</h6>
                     <label class="form-label text-dark small fw-medium">Selecciona el profesor que vas a colocar en la tabla:</label>
@@ -366,9 +388,15 @@
 
         <!-- TAB REGISTROS -->
         <div class="tab-pane fade" id="pills-registros" role="tabpanel">
-            <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
+
+            <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom flex-wrap gap-3">
                 <h5 class="m-0 text-secondary fw-bold"><i class="bi bi-journal-check me-2 text-success"></i>Registros Guardados</h5>
-                <div class="d-flex gap-2">
+                <div class="d-flex gap-2 align-items-center flex-wrap">
+                    <button id="btnCargaAcademica" class="btn-carga-academica disabled" onclick="irACargaAcademica()">
+                        <i class="bi bi-mortarboard-fill"></i>
+                        Ir a Carga Académica
+                        <i class="bi bi-arrow-right-circle-fill"></i>
+                    </button>
                     <button class="btn btn-outline-warning btn-sm rounded-pill px-3 fw-medium" onclick="resetearStatusPruebas()">
                         <i class="bi bi-arrow-counterclockwise me-1"></i>Reset
                     </button>
@@ -377,6 +405,10 @@
                     </button>
                 </div>
             </div>
+
+            <!-- Estado del botón carga académica -->
+            <div id="estadoCargaAcademica" class="mb-3"></div>
+
             <div class="row mb-4">
                 <div class="col-md-5">
                     <label class="form-label text-muted small fw-bold"><i class="bi bi-funnel-fill me-1 text-success"></i>Selecciona el Periodo:</label>
@@ -394,32 +426,6 @@
         </div>
 
     </div>
-
-    <!-- SECCIÓN ENVÍO A SECRETARÍA -->
-    <div id="seccionCerrarCarga" class="d-none mt-5">
-        <div class="seccion-envio" id="panelEnvio">
-            <div class="d-flex align-items-center justify-content-between flex-wrap gap-4">
-                <div class="d-flex align-items-center gap-4">
-                    <div class="icono-envio" id="iconoEnvio">
-                        <i class="bi bi-send-fill text-white" style="font-size:1.3rem;"></i>
-                    </div>
-                    <div>
-                        <div class="fw-bold text-dark mb-1" style="font-size:1rem;" id="tituloEnvio">
-                            Enviar división a Secretaría Académica
-                        </div>
-                        <div class="text-muted small" id="textoEnvio" style="max-width:480px; line-height:1.5;">
-                            Cuando hayas confirmado todas las carreras de tu división, usa este botón para marcarla como entregada. Secretaría Académica podrá iniciar el proceso de carga académica a partir de ese momento.
-                        </div>
-                    </div>
-                </div>
-                <button class="btn btn-enviar-division" onclick="cerrarCargaDivision()" id="btnEnviarDivision">
-                    <i class="bi bi-send-fill me-2"></i>Enviar a Secretaría
-                </button>
-            </div>
-        </div>
-    </div>
-
-</div>
 
 <!-- MODAL BORRADOR -->
 <div class="modal fade" id="modalConfirmarBorrador" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
@@ -514,33 +520,61 @@
     </div>
 </div>
 
-<!-- MODAL CIERRE DIVISIÓN -->
-<div class="modal fade" id="modalCerrarCarga" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
-    <div class="modal-dialog modal-dialog-centered" style="max-width:460px;">
+<!-- MODAL CONFIRMAR EDITAR -->
+<div class="modal fade" id="modalConfirmarEditar" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered" style="max-width:440px;">
         <div class="modal-content border-0 rounded-4 shadow-lg overflow-hidden">
-            <div class="modal-header border-0 flex-column align-items-center text-center pt-4 pb-3 px-4 position-relative" style="background-color:#004b87;">
-                <div class="rounded-circle d-flex align-items-center justify-content-center mb-3" style="width:56px;height:56px;background:rgba(255,255,255,0.15);">
-                    <i class="bi bi-send-fill fs-4 text-white"></i>
+            <div class="modal-header border-0 flex-column align-items-center text-center pt-4 pb-3 px-4 position-relative" style="background-color:#374151;">
+                <div class="rounded-circle d-flex align-items-center justify-content-center mb-3" style="width:52px;height:52px;background:rgba(255,255,255,0.15);">
+                    <i class="bi bi-pencil-square fs-4 text-white"></i>
                 </div>
-                <h5 class="modal-title fw-bold text-white m-0" style="font-size:1.05rem;">Enviar División a Secretaría</h5>
-                <p class="text-white small mt-1 mb-0" style="opacity:0.8;">División de Sistemas Productivos y Mantenimiento Industrial</p>
+                <h5 class="modal-title fw-bold text-white m-0" style="font-size:1.05rem;">Editar Registro</h5>
                 <button type="button" class="position-absolute border-0 d-flex align-items-center justify-content-center" data-bs-dismiss="modal" aria-label="Cerrar"
                     style="top:14px;right:14px;width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,0.15);color:white;font-size:1rem;cursor:pointer;transition:background 0.2s;"
                     onmouseover="this.style.background='rgba(220,38,38,0.75)'" onmouseout="this.style.background='rgba(255,255,255,0.15)'">✕</button>
             </div>
             <div class="modal-body px-4 pt-4 pb-3 text-center">
-                <p class="fw-semibold text-dark mb-2" style="font-size:0.95rem;">¿Confirmas que terminaste de capturar toda la división?</p>
-                <p class="text-secondary mb-4" style="font-size:0.875rem;line-height:1.6;">Secretaría Académica podrá procesar los registros a partir de este momento.</p>
-                <div id="resumenGradosCierre" class="text-start rounded-3 p-3 mb-3" style="background:#f0fdf4;border:1px solid #86efac;max-height:180px;overflow-y:auto;"></div>
-                <div class="d-flex align-items-start gap-2 text-start rounded-3 p-3" style="background:#fff7ed;border:1px solid #fed7aa;">
-                    <i class="bi bi-exclamation-triangle-fill mt-1 flex-shrink-0" style="color:#c2410c;"></i>
-                    <p class="mb-0 small" style="color:#9a3412;line-height:1.5;">Esta acción <strong>no se puede deshacer</strong>. Asegúrate de haber confirmado todos los grados de tu división.</p>
+                <p class="fw-semibold text-dark mb-2" style="font-size:0.95rem;">Serás redirigido a la pestaña de Configuración.</p>
+                <p class="text-secondary mb-4" style="font-size:0.875rem;line-height:1.6;">Se cargarán todos los datos capturados de este registro para que puedas modificarlos. El registro actual será eliminado y reemplazado cuando guardes de nuevo.</p>
+                <div class="d-flex align-items-start gap-2 text-start rounded-3 p-3" style="background:#f1f5f9;border:1px solid #cbd5e1;">
+                    <i class="bi bi-info-circle-fill mt-1 flex-shrink-0" style="color:#475569;"></i>
+                    <p class="mb-0 small" style="color:#334155;line-height:1.5;">¿Deseas continuar y cargar el registro en el formulario de configuración?</p>
                 </div>
             </div>
             <div class="modal-footer border-0 px-4 pb-4 pt-2 d-flex gap-2 justify-content-center">
                 <button type="button" class="btn fw-semibold flex-fill" style="border:1.5px solid #e2e8f0;border-radius:10px;padding:11px;color:#64748b;background:white;" data-bs-dismiss="modal">Cancelar</button>
-                <button type="button" class="btn fw-bold flex-fill text-white" style="border-radius:10px;padding:11px;background:#004b87;border:none;" onclick="ejecutarCierreDivision()">
-                    <i class="bi bi-send-fill me-2"></i>Confirmar envío
+                <button type="button" id="btnConfirmarEditarOk" class="btn fw-bold flex-fill text-white" style="border-radius:10px;padding:11px;background:#374151;border:none;">
+                    <i class="bi bi-pencil-fill me-2"></i>Sí, editar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL CONFIRMAR BORRAR -->
+<div class="modal fade" id="modalConfirmarBorrar" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered" style="max-width:420px;">
+        <div class="modal-content border-0 rounded-4 shadow-lg overflow-hidden">
+            <div class="modal-header border-0 flex-column align-items-center text-center pt-4 pb-3 px-4 position-relative" style="background-color:#dc2626;">
+                <div class="rounded-circle d-flex align-items-center justify-content-center mb-3" style="width:52px;height:52px;background:rgba(255,255,255,0.15);">
+                    <i class="bi bi-trash3-fill fs-4 text-white"></i>
+                </div>
+                <h5 class="modal-title fw-bold text-white m-0" style="font-size:1.05rem;">Eliminar Registro</h5>
+                <button type="button" class="position-absolute border-0 d-flex align-items-center justify-content-center" data-bs-dismiss="modal" aria-label="Cerrar"
+                    style="top:14px;right:14px;width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,0.15);color:white;font-size:1rem;cursor:pointer;transition:background 0.2s;"
+                    onmouseover="this.style.background='rgba(220,38,38,0.75)'" onmouseout="this.style.background='rgba(255,255,255,0.15)'">✕</button>
+            </div>
+            <div class="modal-body px-4 pt-4 pb-3 text-center">
+                <p class="fw-semibold text-dark mb-2" style="font-size:0.95rem;">¿Estás seguro de que deseas eliminar este registro?</p>
+                <div class="d-flex align-items-start gap-2 text-start rounded-3 p-3 mt-3" style="background:#fef2f2;border:1px solid #fecaca;">
+                    <i class="bi bi-exclamation-triangle-fill mt-1 flex-shrink-0" style="color:#dc2626;"></i>
+                    <p class="mb-0 small" style="color:#991b1b;line-height:1.5;">Esta acción <strong>no se puede deshacer</strong>. El registro será eliminado permanentemente y no podrás recuperarlo.</p>
+                </div>
+            </div>
+            <div class="modal-footer border-0 px-4 pb-4 pt-2 d-flex gap-2 justify-content-center">
+                <button type="button" class="btn fw-semibold flex-fill" style="border:1.5px solid #e2e8f0;border-radius:10px;padding:11px;color:#64748b;background:white;" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" id="btnConfirmarBorrarOk" class="btn fw-bold flex-fill text-white" style="border-radius:10px;padding:11px;background:#dc2626;border:none;">
+                    <i class="bi bi-trash3-fill me-2"></i>Eliminar
                 </button>
             </div>
         </div>
@@ -563,61 +597,53 @@
     ];
 
     let datosTemporalesListosParaGuardar = null;
+    let _idRegistroEditar = null;
+    let _idRegistroBorrar = null;
 
-    window.addEventListener('DOMContentLoaded', () => { actualizarUIEstadoDivision(); });
+    window.addEventListener('DOMContentLoaded', () => {
+        actualizarBtnCargaAcademica();
+    });
+
+    /* ── Habilitación del botón Carga Académica ── */
+    function actualizarBtnCargaAcademica() {
+        const registros = JSON.parse(localStorage.getItem('registrosResumenCargas')) || [];
+        const tieneCompletos = registros.some(r => r.estado === 'completo' && r.division === DIVISION_ID);
+        const tieneBorradores = registros.some(r => r.estado === 'borrador' && r.division === DIVISION_ID);
+        const btn = document.getElementById('btnCargaAcademica');
+        const estadoEl = document.getElementById('estadoCargaAcademica');
+
+        if (tieneCompletos && !tieneBorradores) {
+            btn.classList.remove('disabled');
+            if (estadoEl) estadoEl.innerHTML = `
+                <div class="d-flex align-items-center gap-2 mb-2 p-2 rounded-3" style="background:#f0fdf4;border:1px solid #86efac;max-width:fit-content;">
+                    <i class="bi bi-check-circle-fill text-success"></i>
+                    <span class="small fw-semibold text-success">Listo para continuar con la Carga Académica</span>
+                </div>`;
+        } else {
+            btn.classList.add('disabled');
+            if (estadoEl) {
+                let motivos = [];
+                if (!tieneCompletos) motivos.push('No hay registros con estado <strong>Completo</strong>.');
+                if (tieneBorradores) motivos.push('Hay registros en estado <strong>Borrador</strong> sin confirmar.');
+                estadoEl.innerHTML = `
+                    <div class="d-flex align-items-start gap-2 mb-2 p-2 rounded-3" style="background:#fff7ed;border:1px solid #fed7aa;max-width:fit-content;">
+                        <i class="bi bi-lock-fill mt-1 flex-shrink-0" style="color:#c2410c;"></i>
+                        <span class="small text-warning-emphasis">${motivos.join(' ')} Resuelve esto para continuar.</span>
+                    </div>`;
+            }
+        }
+    }
+
+    function irACargaAcademica() {
+        const btn = document.getElementById('btnCargaAcademica');
+        if (btn.classList.contains('disabled')) return;
+        mostrarAlerta('Redirigiendo a Carga Académica...', 'success');
+        // window.location.href = '/carga-academica';
+    }
 
     function obtenerEstadoDivision() {
         const data = JSON.parse(localStorage.getItem('estadoDivisiones')) || {};
         return data[DIVISION_ID] || null;
-    }
-
-    function actualizarUIEstadoDivision() {
-        const estado = obtenerEstadoDivision();
-        const container = document.getElementById('statusBadgeContainer');
-        const pill = document.getElementById('divisionStatusPill');
-        const statusTexto = document.getElementById('statusTexto');
-        const seccionCerrar = document.getElementById('seccionCerrarCarga');
-        const panelEnvio = document.getElementById('panelEnvio');
-        const iconoEnvio = document.getElementById('iconoEnvio');
-        const tituloEnvio = document.getElementById('tituloEnvio');
-        const textoEnvio = document.getElementById('textoEnvio');
-        const btnEnviar = document.getElementById('btnEnviarDivision');
-
-        const registros = JSON.parse(localStorage.getItem('registrosResumenCargas')) || [];
-        const tieneCompletos = registros.some(r => r.estado === 'completo' && r.division === DIVISION_ID);
-        const tieneBorradores = registros.some(r => r.estado === 'borrador' && r.division === DIVISION_ID);
-
-        if (estado === 'entregado') {
-            container.classList.remove('d-none');
-            pill.className = 'division-status-pill entregada';
-            statusTexto.textContent = 'Entregada a Secretaría Académica';
-            seccionCerrar.classList.add('d-none');
-            bloquearFormulario(true);
-        } else if (tieneCompletos) {
-            container.classList.remove('d-none');
-            pill.className = 'division-status-pill en-proceso';
-            statusTexto.textContent = 'En proceso — captura activa';
-            seccionCerrar.classList.remove('d-none');
-
-            if (tieneBorradores) {
-                panelEnvio.className = 'seccion-envio bloqueada';
-                iconoEnvio.className = 'icono-envio bloqueado';
-                iconoEnvio.innerHTML = '<i class="bi bi-lock-fill text-white" style="font-size:1.3rem;"></i>';
-                tituloEnvio.textContent = 'Envío pendiente — hay borradores sin confirmar';
-                textoEnvio.textContent = 'Tienes borradores incompletos en tu división. Confírmalos o elimínalos antes de poder enviarla a Secretaría Académica.';
-                btnEnviar.disabled = true;
-            } else {
-                panelEnvio.className = 'seccion-envio';
-                iconoEnvio.className = 'icono-envio';
-                iconoEnvio.innerHTML = '<i class="bi bi-send-fill text-white" style="font-size:1.3rem;"></i>';
-                tituloEnvio.textContent = 'Enviar división a Secretaría Académica';
-                textoEnvio.textContent = 'Cuando completes grados y carreras, usa este botón para marcar tu división como entregada. Secretaría Académica podrá iniciar la carga académica a partir de ese momento.';
-                btnEnviar.disabled = false;
-            }
-        } else {
-            container.classList.add('d-none');
-            seccionCerrar.classList.add('d-none');
-        }
     }
 
     function bloquearFormulario(bloquear) {
@@ -861,37 +887,7 @@
         });
         mostrarAlerta(estado === 'completo' ? 'Grado confirmado correctamente.' : 'Guardado como borrador.', 'success');
         datosTemporalesListosParaGuardar = null;
-        setTimeout(() => { actualizarUIEstadoDivision(); dibujarTabla(); }, 400);
-    }
-
-    function cerrarCargaDivision() {
-        const registros = JSON.parse(localStorage.getItem('registrosResumenCargas')) || [];
-        const completos = registros.filter(r => r.estado === 'completo' && r.division === DIVISION_ID);
-        const borradores = registros.filter(r => r.estado === 'borrador' && r.division === DIVISION_ID);
-        if (borradores.length > 0) { mostrarAlerta('Tienes borradores pendientes. Confírmalos antes de enviar.', 'error'); return; }
-        if (completos.length === 0) { mostrarAlerta('No hay registros confirmados para enviar.', 'error'); return; }
-        const porCarrera = {};
-        completos.forEach(r => {
-            if (!porCarrera[r.carrera]) porCarrera[r.carrera] = [];
-            porCarrera[r.carrera].push(r.grado);
-        });
-        let html = `<p class="mb-2 small fw-bold" style="color:#166534;"><i class="bi bi-check-circle-fill me-1"></i>Carreras y Grados que se enviarán:</p>`;
-        for (const c in porCarrera) {
-            html += `<div class="small text-dark mb-1"><span class="fw-semibold">${c}:</span> ${porCarrera[c].join(', ')}</div>`;
-        }
-        document.getElementById('resumenGradosCierre').innerHTML = html;
-        new bootstrap.Modal(document.getElementById('modalCerrarCarga')).show();
-    }
-
-    function ejecutarCierreDivision() {
-        const est = JSON.parse(localStorage.getItem('estadoDivisiones')) || {};
-        est[DIVISION_ID] = 'entregado';
-        est[`${DIVISION_ID}_fecha`] = new Date().toLocaleDateString('es-MX');
-        localStorage.setItem('estadoDivisiones', JSON.stringify(est));
-        const m = bootstrap.Modal.getInstance(document.getElementById('modalCerrarCarga'));
-        if (m) m.hide();
-        mostrarAlerta('División enviada a Secretaría Académica exitosamente.', 'success');
-        setTimeout(() => actualizarUIEstadoDivision(), 400);
+        setTimeout(() => { actualizarBtnCargaAcademica(); dibujarTabla(); }, 400);
     }
 
     /* ── REGISTROS TAB ── */
@@ -900,6 +896,8 @@
         const select = document.getElementById('filtroPeriodo_registros');
         const contenedor = document.getElementById('contenedorListaRegistros');
         const btnL = document.getElementById('btnLimpiarFiltro_registros');
+
+        actualizarBtnCargaAcademica();
 
         if (registros.length === 0) {
             select.innerHTML = '<option value="" selected disabled>No hay periodos registrados</option>';
@@ -934,6 +932,7 @@
             return;
         }
         btnL.classList.remove('d-none');
+
         const registros = JSON.parse(localStorage.getItem('registrosResumenCargas')) || [];
         const aMostrar = registros.filter(r => r.periodo === valor);
 
@@ -942,38 +941,171 @@
             return;
         }
 
-        let html = '<div class="d-flex flex-column gap-3">';
-        aMostrar.slice().reverse().forEach(r => {
-            const esCompleto = r.estado === 'completo';
-            const badgeHtml = esCompleto
-                ? `<span class="badge-estado-completo"><i class="bi bi-check-circle-fill me-1"></i>Completo</span>`
-                : `<span class="badge-estado-incompleto"><i class="bi bi-clock-history me-1"></i>Incompleto</span>`;
-            html += `
-            <div class="registro-card" onclick="abrirModalDetalle(${r.id})">
-                <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
-                    <div class="d-flex align-items-center gap-3">
-                        <div class="p-2 rounded-3" style="background:${esCompleto ? '#f0fdf4' : '#fffbeb'};">
-                            <i class="bi bi-${esCompleto ? 'journal-check text-success' : 'journal-text text-warning'} fs-5"></i>
+        const agrupadosPorCarrera = {};
+        aMostrar.forEach(r => {
+            if (!agrupadosPorCarrera[r.carrera]) agrupadosPorCarrera[r.carrera] = [];
+            agrupadosPorCarrera[r.carrera].push(r);
+        });
+
+        let html = '<div class="row g-4">';
+
+        for (const [carrera, grados] of Object.entries(agrupadosPorCarrera)) {
+            const completosCount = grados.filter(g => g.estado === 'completo').length;
+            const esCarreraCompleta = completosCount === grados.length;
+
+            let gradosHtml = '';
+            grados.sort((a, b) => a.grado.localeCompare(b.grado)).forEach(r => {
+                const esCompleto = r.estado === 'completo';
+                const claseEstado = esCompleto ? 'completo' : 'incompleto';
+                const iconEstado = esCompleto
+                    ? '<i class="bi bi-check-circle-fill text-success fs-6"></i>'
+                    : '<i class="bi bi-clock-history text-warning fs-6"></i>';
+
+                gradosHtml += `
+                    <div class="grado-btn ${claseEstado} d-flex justify-content-between align-items-center" style="cursor: default; padding: 8px 12px;" onclick="event.stopPropagation();">
+                        <span class="fw-bold text-dark text-nowrap"><i class="bi bi-bookmark-fill text-muted me-2 opacity-50"></i>${r.grado}</span>
+                        <div class="d-flex align-items-center gap-2">
+                            <button class="btn btn-outline-primary p-0 d-flex align-items-center justify-content-center"
+                                style="width:30px;height:30px;border-radius:8px;border-width:1.5px;"
+                                onclick="abrirModalDetalle(${r.id});" title="Ver detalle">
+                                <i class="bi bi-eye-fill" style="font-size:1.1rem;"></i>
+                            </button>
+                            <button class="btn btn-outline-secondary p-0 d-flex align-items-center justify-content-center"
+                                style="width:30px;height:30px;border-radius:8px;border-width:1.5px;"
+                                onclick="confirmarEditar(${r.id});" title="Editar">
+                                <i class="bi bi-pencil-fill" style="font-size:1.1rem;"></i>
+                            </button>
+                            <button class="btn btn-outline-danger p-0 d-flex align-items-center justify-content-center"
+                                style="width:30px;height:30px;border-radius:8px;border-width:1.5px;"
+                                onclick="confirmarBorrar(${r.id});" title="Borrar">
+                                <i class="bi bi-trash3-fill" style="font-size:1.1rem;"></i>
+                            </button>
+                            <div class="vr bg-secondary opacity-25 ms-2 me-1" style="width:2px;"></div>
+                            ${iconEstado}
                         </div>
-                        <div>
-                            <div class="fw-bold text-dark" style="font-size:0.95rem;">${r.carrera}</div>
-                            <div class="text-muted small mt-1">
-                                <i class="bi bi-bookmark-fill me-1 ${esCompleto ? 'text-success' : 'text-warning'}"></i>${r.grado}
-                                <span class="mx-2 text-muted opacity-50">·</span>
-                                <i class="bi bi-calendar3 me-1"></i>${r.fecha}
+                    </div>`;
+            });
+
+            html += `
+            <div class="col-md-6 col-lg-4">
+                <div class="flip-card-container">
+                    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front">
+                                <div class="p-3 rounded-circle mb-3 shadow-sm d-inline-flex" style="background:${esCarreraCompleta ? '#f0fdf4' : '#fffbeb'}; color:${esCarreraCompleta ? '#16a34a' : '#d97706'};">
+                                    <i class="bi bi-${esCarreraCompleta ? 'mortarboard-fill' : 'journal-text'} fs-2"></i>
+                                </div>
+                                <h6 class="fw-bold text-dark mb-2 lh-base" style="font-size:0.95rem;">${carrera}</h6>
+                                <span class="badge bg-light text-secondary border px-3 py-2 mb-3 shadow-sm">
+                                    ${grados.length} Grado(s)
+                                </span>
+                                <div class="mt-auto text-primary small fw-semibold" style="opacity:0.8;">
+                                    <i class="bi bi-arrow-repeat me-1"></i>Clic para ver grados
+                                </div>
+                            </div>
+                            <div class="flip-card-back">
+                                <div class="flip-back-title">Grados Registrados</div>
+                                <div class="grado-btn-grid mb-3">
+                                    ${gradosHtml}
+                                </div>
+                                <div class="mt-auto text-center text-muted w-100" style="font-size:0.75rem;">
+                                    <i class="bi bi-arrow-return-left"></i> Voltear tarjeta
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="d-flex align-items-center gap-3">
-                        ${badgeHtml}
-                        <i class="bi bi-chevron-right text-muted"></i>
-                    </div>
                 </div>
             </div>`;
-        });
+        }
+
         html += '</div>';
         contenedor.innerHTML = html;
     }
+
+    /* ── Editar con modal de confirmación ── */
+    function confirmarEditar(idRegistro) {
+        _idRegistroEditar = idRegistro;
+        const modal = new bootstrap.Modal(document.getElementById('modalConfirmarEditar'));
+        document.getElementById('btnConfirmarEditarOk').onclick = function() {
+            modal.hide();
+            setTimeout(() => ejecutarEdicion(_idRegistroEditar), 300);
+        };
+        modal.show();
+    }
+
+    function ejecutarEdicion(idRegistro) {
+        let registros = JSON.parse(localStorage.getItem('registrosResumenCargas')) || [];
+        const reg = registros.find(r => r.id === idRegistro);
+        if (!reg) return;
+
+        const mi = bootstrap.Modal.getInstance(document.getElementById('modalTablaRegistro'));
+        if (mi) mi.hide();
+
+        bootstrap.Tab.getOrCreateInstance(document.querySelector('#pills-config-tab')).show();
+
+        document.getElementById('selPeriodo').value = reg.periodo;
+        document.getElementById('selPlan').value = reg.plan;
+        const opts = document.getElementById('selCarrera').options;
+        for (let i = 0; i < opts.length; i++) {
+            if (opts[i].text === reg.carrera) { document.getElementById('selCarrera').selectedIndex = i; break; }
+        }
+        verificarSelects();
+
+        let btn = null;
+        document.querySelectorAll('.btn-grado').forEach(b => { if (b.innerText.includes(reg.grado)) btn = b; });
+        seleccionarGrado(btn, reg.grado);
+
+        reg.gruposRegistrados.forEach(g => {
+            const s = document.getElementById(`tutor-${g}`);
+            if (s && reg.tutores[g] !== 'Sin asignar') {
+                s.innerText = reg.tutores[g];
+                s.className = 'badge-tutor shadow-sm';
+            }
+        });
+
+        const filas = document.getElementById('cuerpoTabla').querySelectorAll('tr');
+        reg.asignaciones.forEach((a, i) => {
+            if (filas[i]) {
+                reg.gruposRegistrados.forEach((g, ci) => {
+                    if (a[g] && a[g] !== '---') {
+                        const celda = filas[i].cells[ci + 1];
+                        celda.innerHTML = `<div class="prof-badge shadow-sm"><span class="nombre-prof">${a[g]}</span><i class="bi bi-trash3-fill icon-borrar"></i></div>`;
+                        celda.classList.add('celda-asignada');
+                        celda.addEventListener('mouseleave', function() {
+                            if (this.classList.contains('celda-asignada')) this.classList.add('permitir-borrado');
+                        }, { once: true });
+                    }
+                });
+            }
+        });
+
+        localStorage.setItem('registrosResumenCargas', JSON.stringify(registros.filter(r => r.id !== idRegistro)));
+        mostrarAlerta('Registro cargado. Realiza tus cambios y guarda de nuevo.', 'info');
+        actualizarBtnCargaAcademica();
+    }
+
+    /* ── Borrar con modal de confirmación ── */
+    function confirmarBorrar(idRegistro) {
+        _idRegistroBorrar = idRegistro;
+        const modal = new bootstrap.Modal(document.getElementById('modalConfirmarBorrar'));
+        document.getElementById('btnConfirmarBorrarOk').onclick = function() {
+            modal.hide();
+            setTimeout(() => ejecutarBorrado(_idRegistroBorrar), 300);
+        };
+        modal.show();
+    }
+
+    function ejecutarBorrado(idRegistro) {
+        let registros = JSON.parse(localStorage.getItem('registrosResumenCargas')) || [];
+        registros = registros.filter(r => r.id !== idRegistro);
+        localStorage.setItem('registrosResumenCargas', JSON.stringify(registros));
+        mostrarAlerta('Registro eliminado.', 'info');
+        inicializarVistaRegistros();
+        cargarListaRegistros();
+    }
+
+    function editarRegistro(idRegistro) { confirmarEditar(idRegistro); }
+    function borrarRegistro(idRegistro) { confirmarBorrar(idRegistro); }
 
     function abrirModalDetalle(idRegistro) {
         const registros = JSON.parse(localStorage.getItem('registrosResumenCargas')) || [];
@@ -1005,40 +1137,9 @@
     }
 
     function editarBorrador(idRegistro) {
-        let registros = JSON.parse(localStorage.getItem('registrosResumenCargas')) || [];
-        const reg = registros.find(r => r.id === idRegistro);
-        if (!reg) return;
         const mi = bootstrap.Modal.getInstance(document.getElementById('modalTablaRegistro'));
         if (mi) mi.hide();
-        bootstrap.Tab.getOrCreateInstance(document.querySelector('#pills-config-tab')).show();
-        document.getElementById('selPeriodo').value = reg.periodo;
-        document.getElementById('selPlan').value = reg.plan;
-        const opts = document.getElementById('selCarrera').options;
-        for (let i = 0; i < opts.length; i++) { if (opts[i].text === reg.carrera) { document.getElementById('selCarrera').selectedIndex = i; break; } }
-        verificarSelects();
-        let btn = null;
-        document.querySelectorAll('.btn-grado').forEach(b => { if (b.innerText.includes(reg.grado)) btn = b; });
-        seleccionarGrado(btn, reg.grado);
-        reg.gruposRegistrados.forEach(g => {
-            const s = document.getElementById(`tutor-${g}`);
-            if (s && reg.tutores[g] !== 'Sin asignar') { s.innerText = reg.tutores[g]; s.className = 'badge-tutor shadow-sm'; }
-        });
-        const filas = document.getElementById('cuerpoTabla').querySelectorAll('tr');
-        reg.asignaciones.forEach((a, i) => {
-            if (filas[i]) {
-                reg.gruposRegistrados.forEach((g, ci) => {
-                    if (a[g] && a[g] !== '---') {
-                        const celda = filas[i].cells[ci + 1];
-                        celda.innerHTML = `<div class="prof-badge shadow-sm"><span class="nombre-prof">${a[g]}</span><i class="bi bi-trash3-fill icon-borrar"></i></div>`;
-                        celda.classList.add('celda-asignada');
-                        celda.addEventListener('mouseleave', function() { if (this.classList.contains('celda-asignada')) this.classList.add('permitir-borrado'); }, { once: true });
-                    }
-                });
-            }
-        });
-        localStorage.setItem('registrosResumenCargas', JSON.stringify(registros.filter(r => r.id !== idRegistro)));
-        mostrarAlerta('Borrador cargado. No olvides guardar tus cambios.', 'info');
-        actualizarUIEstadoDivision();
+        setTimeout(() => confirmarEditar(idRegistro), 300);
     }
 
     function limpiarTodosRegistros() {
@@ -1046,7 +1147,7 @@
             localStorage.removeItem('registrosResumenCargas');
             inicializarVistaRegistros();
             mostrarAlerta('Registros borrados correctamente.', 'info');
-            actualizarUIEstadoDivision();
+            actualizarBtnCargaAcademica();
         }
     }
 
@@ -1059,5 +1160,7 @@
         }
     };
 </script>
+</body>
+</html>
 </body>
 </html>
