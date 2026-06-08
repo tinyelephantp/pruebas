@@ -227,7 +227,7 @@
 <div class="container py-5">
 
     <!-- HEADER -->
-    <div class="d-flex justify-content-between align-items-center mb-4 pb-2 border-bottom flex-wrap gap-3">
+   <div class="d-flex justify-content-between align-items-center mb-4 pb-2 border-bottom flex-wrap gap-3">
         <div class="d-flex align-items-center">
             <div class="bg-primary bg-opacity-10 p-3 rounded-4 me-4">
                 <i class="bi bi-calendar-range-fill fs-2" style="color: #004b87;"></i>
@@ -238,6 +238,14 @@
                     <i class="bi bi-building me-1"></i>División de Sistemas Productivos y Mantenimiento Industrial
                 </p>
             </div>
+        </div>
+        
+        <div>
+            <button id="btnCargaAcademica" class="btn-carga-academica disabled" onclick="irACargaAcademica()">
+                <i class="bi bi-mortarboard-fill"></i>
+                Ir a Carga Académica
+                <i class="bi bi-arrow-right-circle-fill ms-2"></i>
+            </button>
         </div>
     </div>
 
@@ -392,11 +400,6 @@
             <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom flex-wrap gap-3">
                 <h5 class="m-0 text-secondary fw-bold"><i class="bi bi-journal-check me-2 text-success"></i>Registros Guardados</h5>
                 <div class="d-flex gap-2 align-items-center flex-wrap">
-                    <button id="btnCargaAcademica" class="btn-carga-academica disabled" onclick="irACargaAcademica()">
-                        <i class="bi bi-mortarboard-fill"></i>
-                        Ir a Carga Académica
-                        <i class="bi bi-arrow-right-circle-fill"></i>
-                    </button>
                     <button class="btn btn-outline-warning btn-sm rounded-pill px-3 fw-medium" onclick="resetearStatusPruebas()">
                         <i class="bi bi-arrow-counterclockwise me-1"></i>Reset
                     </button>
@@ -614,37 +617,46 @@
 
         if (tieneCompletos && !tieneBorradores) {
             btn.classList.remove('disabled');
-            if (estadoEl) estadoEl.innerHTML = `
-                <div class="d-flex align-items-center gap-2 mb-2 p-2 rounded-3" style="background:#f0fdf4;border:1px solid #86efac;max-width:fit-content;">
-                    <i class="bi bi-check-circle-fill text-success"></i>
-                    <span class="small fw-semibold text-success">Listo para continuar con la Carga Académica</span>
-                </div>`;
+            // Dejamos el contenedor vacío para que no muestre el estatus verde
+            if (estadoEl) estadoEl.innerHTML = ''; 
         } else {
             btn.classList.add('disabled');
             if (estadoEl) {
                 let motivos = [];
-                if (!tieneCompletos) motivos.push('No hay registros con estado <strong>Completo</strong>.');
                 if (tieneBorradores) motivos.push('Hay registros en estado <strong>Borrador</strong> sin confirmar.');
                 estadoEl.innerHTML = `
                     <div class="d-flex align-items-start gap-2 mb-2 p-2 rounded-3" style="background:#fff7ed;border:1px solid #fed7aa;max-width:fit-content;">
                         <i class="bi bi-lock-fill mt-1 flex-shrink-0" style="color:#c2410c;"></i>
-                        <span class="small text-warning-emphasis">${motivos.join(' ')} Resuelve esto para continuar.</span>
-                    </div>`;
             }
         }
     }
 
-    function irACargaAcademica() {
+   function irACargaAcademica() {
         const btn = document.getElementById('btnCargaAcademica');
         if (btn.classList.contains('disabled')) return;
+        
         mostrarAlerta('Redirigiendo a Carga Académica...', 'success');
-        // window.location.href = '/carga-academica';
+        
+        // Activamos la redirección apuntando exactamente a tu archivo local
+        window.location.href = 'carga_academica.html';
     }
 
-    function obtenerEstadoDivision() {
-        const data = JSON.parse(localStorage.getItem('estadoDivisiones')) || {};
-        return data[DIVISION_ID] || null;
-    }
+        // Si NO hay borradores, desbloqueamos el botón
+        if (!tieneBorradores) {
+            btn.classList.remove('disabled');
+            if (estadoEl) estadoEl.innerHTML = '';
+        } else {
+            // Si hay borradores, lo bloqueamos y mostramos el aviso
+            btn.classList.add('disabled');
+            if (estadoEl) {
+                estadoEl.innerHTML = `
+                    <div class="d-flex align-items-start gap-2 mb-2 p-2 rounded-3" style="background:#fff7ed;border:1px solid #fed7aa;max-width:fit-content;">
+                        <i class="bi bi-lock-fill mt-1 flex-shrink-0" style="color:#c2410c;"></i>
+                        <span class="small text-warning-emphasis">Hay registros en estado <strong>Borrador</strong> sin confirmar </span>
+                    </div>`;
+            }
+        }
+    
 
     function bloquearFormulario(bloquear) {
         ['selPeriodo','selCarrera','selPlan','btnProfesorDropdown','btnTutorDropdown','selGrupoTutor'].forEach(id => {
@@ -1160,7 +1172,5 @@
         }
     };
 </script>
-</body>
-</html>
 </body>
 </html>
