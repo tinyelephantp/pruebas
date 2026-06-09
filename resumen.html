@@ -3,249 +3,363 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Resumen de Asignaciones — Director</title>
+    <title>Asignación de Materias — Director</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 
-        body { font-family: 'Inter', sans-serif; background-color: #f8faff; }
+        :root {
+            --navy:       #0a2540;
+            --navy-mid:   #1a3a5c;
+            --blue:       #0057b8;
+            --blue-light: #e8f1fb;
+            --blue-glow:  rgba(0,87,184,.18);
+            --teal:       #009688;
+            --teal-light: #e0f2f1;
+            --green:      #16a34a;
+            --amber:      #f59e0b;
+            --amber-dk:   #b45309;
+            --red:        #dc2626;
+            --purple:     #7c3aed;
+            --gray-50:    #f5f7fa;
+            --gray-100:   #eef1f6;
+            --gray-200:   #dde3ed;
+            --gray-400:   #8e9bb5;
+            --gray-600:   #4a5568;
+            --gray-800:   #1a202c;
+            --card-shadow: 0 2px 16px rgba(10,37,64,.07), 0 1px 4px rgba(10,37,64,.04);
+            --card-shadow-hover: 0 8px 32px rgba(10,37,64,.13), 0 2px 8px rgba(10,37,64,.07);
+        }
 
-        .page-header-blue { color: #004b87; font-weight: 700; letter-spacing: -0.5px; }
+        * { box-sizing: border-box; }
 
-        .nav-pills .nav-link {
-            color: #64748b; font-weight: 600; border-radius: 8px;
-            padding: 10px 20px; transition: all 0.2s;
-        }
-        .nav-pills .nav-link.active {
-            background-color: #004b87; color: white;
-            box-shadow: 0 4px 10px rgba(0,75,135,0.2);
-        }
-        #pills-registros-tab.active {
-            background-color: #16a34a !important;
-            box-shadow: 0 4px 10px rgba(22,163,74,0.2);
+        body {
+            font-family: 'Inter', 'Arial', sans-serif;
+            background: var(--gray-50);
+            color: var(--gray-800);
+            font-size: 14px;
         }
 
-        .seccion-envio {
-            background: #f8faff;
-            border: 1.5px solid #c7d9f0;
-            border-radius: 16px;
-            padding: 24px 28px;
-            transition: all 0.3s;
+        /* ── HEADER ── */
+        .app-header {
+            background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 60%, #1e4d8c 100%);
+            padding: 28px 40px 24px;
+            border-radius: 0 0 28px 28px;
+            margin-bottom: 32px;
+            box-shadow: 0 8px 32px rgba(10,37,64,.18);
         }
-        .seccion-envio.bloqueada {
-            background: #fffbeb;
-            border-color: #fde68a;
+        .app-header h2 {
+            font-family: 'Arial', sans-serif;
+            font-weight: 800;
+            font-size: 1.55rem;
+            color: #fff;
+            letter-spacing: -0.3px;
+            margin: 0;
         }
-        .icono-envio {
-            width: 52px; height: 52px; border-radius: 14px;
+        .app-header .subtitle {
+            color: rgba(255,255,255,.62);
+            font-size: .82rem;
+            margin-top: 4px;
+        }
+        .header-icon-wrap {
+            width: 52px; height: 52px; border-radius: 16px;
+            background: rgba(255,255,255,.13);
             display: flex; align-items: center; justify-content: center;
-            background: #004b87; flex-shrink: 0;
-        }
-        .icono-envio.bloqueado { background: #b45309; }
-
-        .btn-enviar-division {
-            background-color: #004b87; color: white;
-            border-radius: 10px; font-weight: 600;
-            padding: 11px 28px; border: none;
-            transition: all 0.2s ease;
-            box-shadow: 0 4px 12px rgba(0,75,135,0.2);
-            white-space: nowrap;
-        }
-        .btn-enviar-division:hover:not(:disabled) {
-            background-color: #003a6b;
-            transform: translateY(-1px);
-            box-shadow: 0 6px 16px rgba(0,75,135,0.3);
-        }
-        .btn-enviar-division:disabled {
-            background-color: #94a3b8; cursor: not-allowed;
-            box-shadow: none; opacity: 1;
+            flex-shrink: 0;
+            backdrop-filter: blur(4px);
         }
 
-        .btn-crear-nuevo-style {
-            background-color: #009688; color: white !important;
-            border-radius: 8px; font-weight: 600;
-            padding: 10px 24px; border: none;
-            transition: all 0.2s ease;
-            box-shadow: 0 4px 6px rgba(0,150,136,0.2);
+        /* ── STATUS PILL ── */
+        .division-status-pill {
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 8px 18px; border-radius: 50px;
+            font-size: .78rem; font-weight: 600;
+            border: 1.5px solid; transition: all .3s;
         }
-        .btn-crear-nuevo-style:hover { background-color: #007d71; transform: translateY(-1px); }
+        .division-status-pill.en-proceso { background:#f0fdf4; border-color:#86efac; color:#15803d; }
+        .division-status-pill.entregada  { background:#eff6ff; border-color:#93c5fd; color:var(--blue); }
+        .division-status-pill .status-dot { width:8px; height:8px; border-radius:50%; }
+        .division-status-pill.en-proceso .status-dot { background:var(--green); }
+        .division-status-pill.entregada  .status-dot { background:#3b82f6; }
 
-        .btn-guardar {
-            background-color: #0d6efd; color: white;
-            border-radius: 8px; font-weight: 600;
-            padding: 12px 30px; transition: all 0.2s;
+        /* ── IR A CARGA ── */
+        .btn-ir-carga {
+            background: linear-gradient(135deg, #fff, #f0f6ff);
+            color: var(--blue); border-radius: 12px; font-weight: 700;
+            padding: 11px 28px; border: none; transition: all .2s;
+            box-shadow: 0 4px 16px rgba(255,255,255,.18);
+            font-size: .88rem;
         }
-        .btn-guardar:hover { background-color: #0b5ed7; transform: translateY(-2px); }
+        .btn-ir-carga:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(255,255,255,.25); color: var(--navy); }
+        .btn-ir-carga:disabled { opacity:.5; cursor:not-allowed; transform:none; }
 
-        /* Botón Ir a Carga Académica */
-        .btn-carga-academica {
-            background: linear-gradient(135deg, #004b87 0%, #0072c6 100%);
-            color: white !important;
-            border-radius: 10px; font-weight: 700;
-            padding: 12px 28px; border: none;
-            transition: all 0.25s ease;
-            box-shadow: 0 4px 14px rgba(0,75,135,0.3);
-            display: inline-flex; align-items: center; gap: 10px;
-            font-size: 0.95rem; letter-spacing: 0.02em;
-            text-decoration: none;
+        /* ── TABS ── */
+        .nav-pills .nav-link {
+            color: var(--gray-600); font-weight: 600; border-radius: 10px;
+            padding: 10px 20px; transition: all .2s; font-size: .85rem;
         }
-        .btn-carga-academica:hover {
-            background: linear-gradient(135deg, #003a6b 0%, #005fa3 100%);
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(0,75,135,0.4);
+        .nav-pills .nav-link.active { background: var(--blue); color: white; box-shadow: 0 4px 12px var(--blue-glow); }
+        #pills-registros-tab.active { background: #0891b2 !important; box-shadow: 0 4px 12px rgba(8,145,178,.22) !important; }
+        #pills-finalizados-tab.active { background: var(--purple) !important; box-shadow: 0 4px 12px rgba(124,58,237,.22) !important; }
+
+        /* ── PANEL CONFIG ── */
+        .config-panel {
+            background: white;
+            border-radius: 20px;
+            box-shadow: var(--card-shadow);
+            border: 1px solid var(--gray-200);
+            padding: 28px 32px;
+            margin-bottom: 24px;
         }
-        .btn-carga-academica:disabled,
-        .btn-carga-academica.disabled {
-            background: linear-gradient(135deg, #94a3b8 0%, #b0bec5 100%);
-            cursor: not-allowed;
+        .panel-label {
+            font-size: .7rem; font-weight: 700; text-transform: uppercase;
+            letter-spacing: .7px; color: var(--gray-400); margin-bottom: 7px;
+        }
+        .form-select, .form-control {
+            border-radius: 10px; border: 1.5px solid var(--gray-200);
+            font-size: .875rem; padding: 10px 14px;
+            background: var(--gray-50); transition: all .2s;
             box-shadow: none;
-            transform: none;
-            opacity: 1;
-            pointer-events: none;
+        }
+        .form-select:focus, .form-control:focus {
+            border-color: var(--blue); box-shadow: 0 0 0 3px var(--blue-glow);
+            background: white;
         }
 
+        /* ── GRADO BUTTONS ── */
+        .btn-grado {
+            border-radius: 10px; font-weight: 600; font-size: .85rem;
+            padding: 9px 22px; transition: all .2s;
+            border: 1.5px solid var(--gray-200); background: var(--gray-50);
+            color: var(--gray-600);
+        }
+        .btn-grado:hover { border-color: var(--blue); background: var(--blue-light); color: var(--blue); }
+        .btn-grado.selected { background: var(--blue); color: white; border-color: var(--blue); box-shadow: 0 4px 14px var(--blue-glow); }
+
+        /* ── TABLA ── */
         .tabla-contenedor {
-            background-color: white; border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.03);
-            border: 1px solid #edf2f7; padding: 1.5rem;
+            background: white; border-radius: 20px;
+            box-shadow: var(--card-shadow); border: 1px solid var(--gray-200); padding: 28px;
         }
-        .table-aesthetic { border-collapse: separate; border-spacing: 0 8px; }
+        .table-aesthetic { border-collapse: separate; border-spacing: 0 6px; }
         .table-aesthetic thead th {
-            border-bottom: 2px solid #e2e8f0 !important;
-            color: #64748b; font-weight: 600; font-size: 0.85rem;
-            text-transform: uppercase; padding-bottom: 1rem; border: none;
+            border: none !important; color: var(--gray-400); font-weight: 700;
+            font-size: .72rem; text-transform: uppercase; letter-spacing: .5px;
+            padding-bottom: 12px; border-bottom: 2px solid var(--gray-100) !important;
         }
-        .table-aesthetic tbody tr { transition: all 0.2s; }
+        .table-aesthetic tbody tr { transition: all .2s; }
         .table-aesthetic tbody td {
-            background-color: #ffffff; border-bottom: 1px solid #f1f5f9;
-            vertical-align: middle; padding: 1rem 0.5rem; border-top: none;
+            background: white; border-bottom: 1px solid var(--gray-100);
+            vertical-align: middle; padding: 10px 8px; border-top: none;
         }
-        .celda-interactiva { transition: all 0.2s; }
-        .table-aesthetic tbody td.celda-interactiva:not(.celda-asignada):hover {
-            background-color: #f8fafc; border-radius: 8px;
+        .table-aesthetic tbody tr:hover td { background: #fafbfd; }
+        .materia-texto { color: var(--gray-800); font-weight: 600; font-size: .875rem; }
+        .semana-badge {
+            font-size: .72rem; color: var(--gray-400); font-weight: 500;
+            background: var(--gray-100); border-radius: 6px; padding: 2px 7px;
+            display: inline-block; margin-top: 2px;
+        }
+
+        /* ── CELDA ASIGNACION ── */
+        .celda-interactiva { cursor: pointer; }
+        .celda-interactiva:not(.celda-asignada):hover td,
+        .celda-interactiva:not(.celda-asignada):hover {
+            background: var(--blue-light);
         }
         .prof-badge {
-            background-color: #eff6ff; color: #1d4ed8; padding: 8px 16px;
-            border-radius: 50px; display: inline-flex; align-items: center; justify-content: center;
-            gap: 8px; font-weight: 600; font-size: 0.85rem; border: 1px solid #dbeafe;
-            transition: all 0.2s; width: 90%; margin: 0 auto;
+            background: var(--blue-light); color: var(--blue);
+            padding: 7px 14px; border-radius: 50px;
+            display: inline-flex; align-items: center; justify-content: center;
+            gap: 7px; font-weight: 600; font-size: .82rem;
+            border: 1px solid #c3d9f7; transition: all .2s;
+            width: 92%; margin: 0 auto;
         }
         .celda-asignada.permitir-borrado:hover .prof-badge {
-            background-color: #fef2f2; color: #dc2626; border-color: #fee2e2; cursor: pointer;
+            background: #fef2f2; color: var(--red); border-color: #fee2e2; cursor: pointer;
         }
         .icon-borrar { display: none; }
         .celda-asignada.permitir-borrado:hover .nombre-prof { display: none; }
         .celda-asignada.permitir-borrado:hover .icon-borrar { display: inline-block; }
 
-        .dropdown-menu-profesores { max-height: 250px; overflow-y: auto; border-radius: 12px; }
-        .materia-texto { color: #1e293b; font-weight: 600; font-size: 0.9rem; }
+        /* ── DROPDOWN ── */
+        .dropdown-menu-profesores {
+            max-height: 260px; overflow-y: auto; border-radius: 14px;
+            box-shadow: 0 12px 40px rgba(10,37,64,.12); border: 1px solid var(--gray-200);
+        }
+        .dropdown-item { border-radius: 8px; font-size: .875rem; padding: 9px 12px; }
+        .dropdown-item:hover { background: var(--blue-light); color: var(--blue); }
 
-        .badge-tutor {
-            background-color: #009688; color: white; padding: 4px 10px;
-            border-radius: 6px; font-weight: 600; font-size: 0.75rem;
-            display: inline-block; margin-top: 4px;
+        /* ── BOTÓN GUARDAR ── */
+        .btn-guardar {
+            border-radius: 10px; font-weight: 700; padding: 12px 32px;
+            transition: all .2s; color: white; border: none; font-size: .88rem;
         }
-        .badge-tutor-registro {
-            background-color: #64748b; color: white; padding: 4px 8px;
-            border-radius: 4px; font-size: 0.7rem; font-weight: 600;
+        .btn-guardar.incompleto {
+            background: linear-gradient(135deg, var(--amber), #e08d00);
+            box-shadow: 0 4px 14px rgba(245,158,11,.3);
         }
-        .badge-estado-incompleto {
-            background-color: #ffc107; color: #212529; border-radius: 6px;
-            padding: 4px 12px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase;
+        .btn-guardar.incompleto:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(245,158,11,.4); }
+        .btn-guardar.completo {
+            background: linear-gradient(135deg, var(--green), #0f7a30);
+            box-shadow: 0 4px 14px rgba(22,163,74,.3);
         }
-        .badge-estado-completo {
-            background-color: #198754; color: #ffffff; border-radius: 6px;
-            padding: 4px 12px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase;
-        }
+        .btn-guardar.completo:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(22,163,74,.4); }
 
-        /* ── Flip Cards ── */
-        .flip-card-container { perspective: 1000px; height: 300px; }
-        .flip-card { background-color: transparent; width: 100%; height: 100%; cursor: pointer; }
-        .flip-card-inner {
-            position: relative; width: 100%; height: 100%; text-align: center;
-            transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1);
-            transform-style: preserve-3d;
+        /* ── BTN CREAR ── */
+        .btn-crear-nuevo-style {
+            background: linear-gradient(135deg, var(--teal), #007a6e);
+            color: white !important; border-radius: 10px; font-weight: 600;
+            padding: 10px 22px; border: none; transition: all .2s;
+            box-shadow: 0 4px 12px rgba(0,150,136,.22);
         }
+        .btn-crear-nuevo-style:hover { transform: translateY(-1px); }
+
+        /* ── BADGES ── */
+        .badge-tutor { background: var(--teal); color: white; padding: 4px 10px; border-radius: 6px; font-weight: 600; font-size: .72rem; }
+        .badge-tutor-registro { background: var(--gray-600); color: white; padding: 3px 8px; border-radius: 5px; font-size: .68rem; font-weight: 600; }
+        .badge-estado-incompleto { background: #fef3c7; color: #92400e; border-radius: 6px; padding: 4px 12px; font-size: .72rem; font-weight: 700; text-transform: uppercase; }
+        .badge-estado-completo   { background: #dcfce7; color: #166534; border-radius: 6px; padding: 4px 12px; font-size: .72rem; font-weight: 700; text-transform: uppercase; }
+
+        /* ── SECCIÓN ENVÍO ── */
+        .seccion-envio {
+            background: white; border: 1.5px solid var(--gray-200);
+            border-radius: 20px; padding: 28px 32px;
+            box-shadow: var(--card-shadow);
+        }
+        .seccion-envio.bloqueada { background: #fffbeb; border-color: #fde68a; }
+        .icono-envio {
+            width: 52px; height: 52px; border-radius: 14px;
+            display: flex; align-items: center; justify-content: center;
+            background: var(--blue); flex-shrink: 0;
+        }
+        .icono-envio.bloqueado { background: var(--amber-dk); }
+        .btn-enviar-division {
+            background: linear-gradient(135deg, var(--blue), var(--navy));
+            color: white; border-radius: 12px; font-weight: 700;
+            padding: 13px 30px; border: none; transition: all .2s;
+            box-shadow: 0 4px 16px var(--blue-glow); white-space: nowrap;
+            font-size: .88rem;
+        }
+        .btn-enviar-division:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 8px 24px var(--blue-glow); }
+        .btn-enviar-division:disabled { background: var(--gray-400); cursor: not-allowed; box-shadow: none; opacity: 1; }
+
+        /* ── FLIP CARDS ── */
+        .flip-card { background: transparent; perspective: 1000px; height: 330px; cursor: pointer; }
+        .flip-card-inner { position: relative; width: 100%; height: 100%; transition: transform .6s cubic-bezier(.4,.2,.2,1); transform-style: preserve-3d; }
         .flip-card.flipped .flip-card-inner { transform: rotateY(180deg); }
         .flip-card-front, .flip-card-back {
             position: absolute; width: 100%; height: 100%;
-            backface-visibility: hidden; border-radius: 16px;
-            border: 1px solid #edf2f7; box-shadow: 0 6px 16px rgba(0,75,135,0.06);
-            padding: 1.5rem; display: flex; flex-direction: column;
+            backface-visibility: hidden; border-radius: 20px;
+            box-shadow: var(--card-shadow); border: 1px solid var(--gray-200); padding: 24px;
         }
         .flip-card-front {
-            background: linear-gradient(145deg, #ffffff 0%, #f8faff 100%);
-            align-items: center; justify-content: center; transition: border-color 0.3s;
+            background: white; display: flex; flex-direction: column;
+            align-items: center; justify-content: center; text-align: center;
         }
-        .flip-card-front:hover { border-color: #93c5fd; }
-        .flip-card-back {
-            background: #ffffff; transform: rotateY(180deg);
-            overflow-y: auto; border: 1.5px solid #93c5fd;
+        .flip-card-back { background: white; transform: rotateY(180deg); display: flex; flex-direction: column; }
+        .btn-grado-registro {
+            transition: all .2s; border: 1px solid var(--gray-200);
+            background: var(--gray-50); border-radius: 10px;
         }
-        .flip-card-back::-webkit-scrollbar { width: 4px; }
-        .flip-card-back::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
-        .flip-back-title {
-            font-size: 0.85rem; font-weight: 700; color: #004b87;
-            text-transform: uppercase; margin-bottom: 12px;
-            border-bottom: 1px solid #f1f5f9; padding-bottom: 8px; text-align: left;
-        }
-        .grado-btn-grid { display: grid; grid-template-columns: 1fr; gap: 8px; }
-        .grado-btn {
-            background: #f8fafc; border: 1px solid #e2e8f0;
-            padding: 10px 12px; border-radius: 10px; font-size: 0.85rem;
-            font-weight: 600; color: #1e293b; transition: all 0.2s;
-            display: flex; justify-content: space-between; align-items: center;
-        }
-        .grado-btn:hover { border-color: #004b87; background: #eff6ff; color: #004b87; transform: translateY(-1px); }
-        .grado-btn.incompleto { border-left: 4px solid #f59e0b; }
-        .grado-btn.completo { border-left: 4px solid #16a34a; }
-
-        .btn-grado-registro { transition: all 0.2s; border: 1px solid #e2e8f0; background-color: #f8fafc; }
-        .btn-grado-registro:hover { border-color: #004b87; background-color: #eff6ff; color: #004b87 !important; transform: translateX(4px); }
+        .btn-grado-registro:hover { border-color: var(--blue); background: var(--blue-light); }
+        .btn-grado-registro .btn-actions { display: none; gap: 6px; }
+        .btn-grado-registro:hover .btn-actions { display: flex; }
+        .btn-grado-registro:hover .grado-label { display: none; }
         .custom-scrollbar::-webkit-scrollbar { width: 4px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
 
-        @keyframes slideInToast {
-            from { opacity: 0; transform: translateX(30px); }
-            to   { opacity: 1; transform: translateX(0); }
+        /* ── AVISO BORRADORES ── */
+        .aviso-borradores {
+            background: linear-gradient(135deg, #fff7ed, #fffbeb);
+            border: 1.5px solid #fed7aa; border-radius: 14px;
+            padding: 15px 22px; margin-bottom: 22px;
+            display: flex; align-items: center; gap: 12px;
+            font-size: .875rem; font-weight: 500; color: #9a3412;
         }
-        @keyframes fadeOutToast {
-            from { opacity: 1; transform: translateX(0); }
-            to   { opacity: 0; transform: translateX(30px); }
+
+        /* ── FILTER ── */
+        .filter-periodo-wrap {
+            background: white; border-radius: 14px;
+            border: 1px solid var(--gray-200); padding: 18px 22px; margin-bottom: 22px;
         }
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(12px); }
-            to   { opacity: 1; transform: translateY(0); }
+
+        /* ── RESET BTN ── */
+        .btn-reset-global {
+            position: fixed; bottom: 28px; right: 28px; z-index: 9990;
+            width: 52px; height: 52px; border-radius: 50%;
+            background: var(--gray-800); color: white; border: none;
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 4px 20px rgba(10,37,64,.28); cursor: pointer;
+            transition: all .2s; font-size: 1rem;
         }
-        #seccionCerrarCarga { animation: fadeInUp 0.4s ease; }
+        .btn-reset-global:hover { background: var(--red); transform: scale(1.08); box-shadow: 0 6px 24px rgba(220,38,38,.3); }
+
+        /* ── MODAL IMPROVEMENTS ── */
+        .modal-content { border-radius: 20px !important; }
+
+        /* ── SECTION PANELS ── */
+        .section-panel {
+            background: white; border-radius: 18px; border: 1px solid var(--gray-200);
+            box-shadow: var(--card-shadow); padding: 24px 28px; margin-bottom: 20px;
+        }
+        .section-panel-alt {
+            background: var(--gray-50); border-radius: 18px; border: 1px solid var(--gray-200);
+            padding: 22px 28px; margin-bottom: 22px;
+        }
+        .section-title {
+            font-size: .72rem; font-weight: 700; text-transform: uppercase;
+            letter-spacing: .6px; color: var(--gray-400); margin-bottom: 18px;
+        }
+
+        /* ── TOAST ANIMATION ── */
+        @keyframes slideInToast { from { opacity:0; transform:translateY(-12px) scale(.95); } to { opacity:1; transform:translateY(0) scale(1); } }
+        @keyframes fadeOutToast { from { opacity:1; } to { opacity:0; transform:translateY(-8px); } }
+
+        /* ── BTN ELIMINAR REGISTRO ── */
+        .btn-eliminar-registro {
+            width: 30px; height: 30px; border-radius: 50%; border: none;
+            background: #fef2f2; color: var(--red); display: flex;
+            align-items: center; justify-content: center; flex-shrink: 0;
+            font-size: .8rem; transition: all .2s; cursor: pointer;
+        }
+        .btn-eliminar-registro:hover { background: var(--red); color: white; transform: scale(1.1); }
     </style>
 </head>
 <body>
 
-<div class="container py-5">
+<!-- ══════════════════════════════════
+     VISTA PRINCIPAL
+══════════════════════════════════ -->
+<div id="ventanaPrincipal">
+<div class="container py-4" style="max-width:1200px;">
 
     <!-- HEADER -->
-   <div class="d-flex justify-content-between align-items-center mb-4 pb-2 border-bottom flex-wrap gap-3">
-        <div class="d-flex align-items-center">
-            <div class="bg-primary bg-opacity-10 p-3 rounded-4 me-4">
-                <i class="bi bi-calendar-range-fill fs-2" style="color: #004b87;"></i>
+    <div class="app-header d-flex justify-content-between align-items-center flex-wrap gap-3">
+        <div class="d-flex align-items-center gap-3">
+            <div class="header-icon-wrap">
+                <i class="bi bi-journal-text fs-3 text-white"></i>
             </div>
             <div>
-                <h2 class="page-header-blue m-0">Resumen de Asignaciones</h2>
-                <p class="text-muted m-0 mt-1" style="font-size:0.85rem;">
+                <h2>Asignación de Materias</h2>
+                <p class="subtitle mb-0">
                     <i class="bi bi-building me-1"></i>División de Sistemas Productivos y Mantenimiento Industrial
                 </p>
             </div>
         </div>
-        
-        <div>
-            <button id="btnCargaAcademica" class="btn-carga-academica disabled" onclick="irACargaAcademica()">
-                <i class="bi bi-mortarboard-fill"></i>
-                Ir a Carga Académica
-                <i class="bi bi-arrow-right-circle-fill ms-2"></i>
-            </button>
+        <div class="d-flex align-items-center gap-3 flex-wrap">
+            <div id="statusBadgeContainer" class="d-none">
+                <div id="divisionStatusPill" class="division-status-pill">
+                    <span class="status-dot"></span>
+                    <span id="statusTexto"></span>
+                </div>
+            </div>
+            <div id="btnIrCargaContainer" class="d-none">
+                <a href="carga_academica.html" class="btn-ir-carga d-inline-flex align-items-center gap-2" id="btnIrCarga">
+                    <i class="bi bi-arrow-right-circle-fill"></i>Ir a Carga Académica
+                </a>
+            </div>
         </div>
     </div>
 
@@ -253,12 +367,17 @@
     <ul class="nav nav-pills mb-4" id="pills-tab" role="tablist">
         <li class="nav-item" role="presentation">
             <button class="nav-link active" id="pills-config-tab" data-bs-toggle="pill" data-bs-target="#pills-config" type="button" role="tab">
-                <i class="bi bi-pencil-square me-2"></i>Configurar Resumen
+                <i class="bi bi-pencil-square me-2"></i>Configurar Asignación
             </button>
         </li>
         <li class="nav-item" role="presentation">
             <button class="nav-link" id="pills-registros-tab" data-bs-toggle="pill" data-bs-target="#pills-registros" type="button" role="tab" onclick="inicializarVistaRegistros()">
-                <i class="bi bi-journal-check me-2"></i>Registros
+                <i class="bi bi-journal-check me-2"></i>Ver Registros
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="pills-finalizados-tab" data-bs-toggle="pill" data-bs-target="#pills-finalizados" type="button" role="tab" onclick="inicializarVistaTarjetas('completo')">
+                <i class="bi bi-archive-fill me-2"></i>Registros Finalizados
             </button>
         </li>
     </ul>
@@ -267,27 +386,27 @@
 
         <!-- TAB CONFIGURAR -->
         <div class="tab-pane fade show active" id="pills-config" role="tabpanel">
-            <div class="bg-white p-4 rounded-4 shadow-sm mb-4 border" style="border-color:#edf2f7 !important;">
+            <div class="config-panel">
                 <div class="row g-3">
                     <div class="col-md-4">
-                        <label class="form-label text-muted small fw-bold text-uppercase">Periodo</label>
-                        <select class="form-select bg-light" id="selPeriodo" onchange="verificarSelects()">
+                        <div class="panel-label">Periodo</div>
+                        <select class="form-select" id="selPeriodo" onchange="verificarSelects()">
                             <option value="" selected disabled>Selecciona un periodo...</option>
                             <option value="Mayo - Agosto 2026">Mayo - Agosto 2026</option>
                             <option value="Septiembre - Diciembre 2026">Septiembre - Diciembre 2026</option>
                         </select>
                     </div>
                     <div class="col-md-4">
-                        <label class="form-label text-muted small fw-bold text-uppercase">Carrera</label>
-                        <select class="form-select bg-light" id="selCarrera" onchange="verificarSelects()">
+                        <div class="panel-label">Carrera</div>
+                        <select class="form-select" id="selCarrera" onchange="verificarSelects()">
                             <option value="" selected disabled>Selecciona una carrera...</option>
                             <option value="Ingenieria Mecatronica">Ingeniería Mecatrónica Mixto Virtual / Automatización Mixto Virtual / UTSJR</option>
                             <option value="Ingenieria Industrial">Ingeniería Industrial Mixta / Sistemas de Gestión de Calidad Mixta / UTSJR</option>
                         </select>
                     </div>
                     <div class="col-md-4">
-                        <label class="form-label text-muted small fw-bold text-uppercase">Plan</label>
-                        <select class="form-select bg-light" id="selPlan" onchange="verificarSelects()">
+                        <div class="panel-label">Plan</div>
+                        <select class="form-select" id="selPlan" onchange="verificarSelects()">
                             <option value="" selected disabled>Selecciona el plan...</option>
                             <option value="Plan 2024">INGENIERÍA MECATRÓNICA PLAN 2024</option>
                             <option value="Plan 2024">INGENIERÍA INDUSTRIAL PLAN 2024</option>
@@ -295,22 +414,22 @@
                     </div>
                 </div>
                 <div id="seccionGrados" class="d-none mt-4 pt-3 border-top">
-                    <p class="text-muted small fw-bold text-uppercase mb-3" id="leyendaDisponibles"></p>
+                    <p class="panel-label mb-3" id="leyendaDisponibles">GRADOS DISPONIBLES</p>
                     <div class="d-flex gap-2 flex-wrap">
-                        <button class="btn btn-outline-primary px-4 rounded-pill btn-grado fw-semibold" onclick="seleccionarGrado(this,'1° Grado')">1° Grado</button>
-                        <button class="btn btn-outline-primary px-4 rounded-pill btn-grado fw-semibold" onclick="seleccionarGrado(this,'3° Grado')">3° Grado</button>
-                        <button class="btn btn-outline-primary px-4 rounded-pill btn-grado fw-semibold" onclick="seleccionarGrado(this,'5° Grado')">5° Grado</button>
+                        <button class="btn-grado" onclick="seleccionarGrado(this,'1° Grado')">1° Grado</button>
+                        <button class="btn-grado" onclick="seleccionarGrado(this,'3° Grado')">3° Grado</button>
+                        <button class="btn-grado" onclick="seleccionarGrado(this,'5° Grado')">5° Grado</button>
                     </div>
                 </div>
             </div>
 
             <div class="d-none" id="seccionConfiguracion">
-
-                <div class="bg-white p-4 rounded-4 shadow-sm border mb-3" style="border-color:#edf2f7 !important;">
-                    <h6 class="text-muted text-uppercase fw-bold mb-4 small"><i class="bi bi-people-fill me-2"></i>Asignar Tutores</h6>
-                    <div class="row g-3 align-items-end">
-                        <div class="col-md-3">
-                            <label class="form-label text-muted small">Grupo</label>
+                <!-- TUTORES -->
+                <div class="section-panel">
+                    <div class="section-title"><i class="bi bi-people-fill me-2"></i>Asignar Tutores</div>
+                    <div class="row g-2 align-items-end">
+                        <div class="col-md-2">
+                            <div class="panel-label">Grupo</div>
                             <select class="form-select" id="selGrupoTutor">
                                 <option value="" selected disabled>Elige...</option>
                                 <option value="AUT05SM-24">AUT05SM-24</option>
@@ -318,20 +437,20 @@
                                 <option value="AUT07SM-24">AUT07SM-24</option>
                             </select>
                         </div>
-                        <div class="col-md-7">
-                            <label class="form-label text-muted small">Tutor</label>
+                        <div class="col-md-8">
+                            <div class="panel-label">Tutor</div>
                             <div class="dropdown w-100">
-                                <button class="form-select bg-white text-start shadow-sm text-truncate" type="button" id="btnTutorDropdown" data-bs-toggle="dropdown" aria-expanded="false">Selecciona...</button>
+                                <button class="form-select bg-white text-start text-truncate" type="button" id="btnTutorDropdown" data-bs-toggle="dropdown" aria-expanded="false">Selecciona...</button>
                                 <ul class="dropdown-menu w-100 p-2 dropdown-menu-profesores" id="listaOpcionesTutores">
                                     <li class="px-2 pb-2">
-                                        <input type="text" class="form-control" id="buscadorTutores" placeholder="Escribe para buscar..." onkeyup="filtrarTutores()" onclick="event.stopPropagation()">
+                                        <input type="text" class="form-control" id="buscadorTutores" placeholder="Buscar..." onkeyup="filtrarTutores()" onclick="event.stopPropagation()">
                                     </li>
-                                    <li><a class="dropdown-item rounded py-2" href="#" onclick="seleccionarTutor('Nuria Alavez Ríos',event)">Nuria Alavez Ríos</a></li>
-                                    <li><a class="dropdown-item rounded py-2" href="#" onclick="seleccionarTutor('Rocío Gómez Vargas',event)">Rocío Gómez Vargas</a></li>
-                                    <li><a class="dropdown-item rounded py-2" href="#" onclick="seleccionarTutor('Hugo Sánchez Cruz',event)">Hugo Sánchez Cruz</a></li>
-                                    <li><a class="dropdown-item rounded py-2" href="#" onclick="seleccionarTutor('Oscar Pérez López',event)">Oscar Pérez López</a></li>
-                                    <li><a class="dropdown-item rounded py-2" href="#" onclick="seleccionarTutor('Rafael Domínguez Pérez',event)">Rafael Domínguez Pérez</a></li>
-                                    <li><a class="dropdown-item rounded py-2" href="#" onclick="seleccionarTutor('Jessica Martínez Lugo',event)">Jessica Martínez Lugo</a></li>
+                                    <li><a class="dropdown-item rounded" href="#" onclick="seleccionarTutor('Nuria Alavez Ríos',event)">Nuria Alavez Ríos</a></li>
+                                    <li><a class="dropdown-item rounded" href="#" onclick="seleccionarTutor('Rocío Gómez Vargas',event)">Rocío Gómez Vargas</a></li>
+                                    <li><a class="dropdown-item rounded" href="#" onclick="seleccionarTutor('Hugo Sánchez Cruz',event)">Hugo Sánchez Cruz</a></li>
+                                    <li><a class="dropdown-item rounded" href="#" onclick="seleccionarTutor('Oscar Pérez López',event)">Oscar Pérez López</a></li>
+                                    <li><a class="dropdown-item rounded" href="#" onclick="seleccionarTutor('Rafael Domínguez Pérez',event)">Rafael Domínguez Pérez</a></li>
+                                    <li><a class="dropdown-item rounded" href="#" onclick="seleccionarTutor('Jessica Martínez Lugo',event)">Jessica Martínez Lugo</a></li>
                                 </ul>
                             </div>
                             <input type="hidden" id="tutorActivo" value="">
@@ -344,34 +463,36 @@
                     </div>
                 </div>
 
-                <div class="p-4 rounded-4 shadow-sm mb-4" style="background-color:#f1f5f9; border:1px solid #e2e8f0;">
-                    <h6 class="text-muted text-uppercase fw-bold mb-3 small"><i class="bi bi-person-badge-fill me-2"></i>Profesor a impartir</h6>
-                    <label class="form-label text-dark small fw-medium">Selecciona el profesor que vas a colocar en la tabla:</label>
+                <!-- PROFESORES -->
+                <div class="section-panel-alt">
+                    <div class="section-title"><i class="bi bi-person-badge-fill me-2"></i>Profesor a impartir</div>
+                    <div class="panel-label mb-2">Selecciona el profesor que colocarás en la tabla:</div>
                     <div class="dropdown w-100">
-                        <button class="form-select bg-white text-start shadow-sm text-truncate" type="button" id="btnProfesorDropdown" data-bs-toggle="dropdown" aria-expanded="false">Despliega o busca un profesor...</button>
+                        <button class="form-select bg-white text-start text-truncate" type="button" id="btnProfesorDropdown" data-bs-toggle="dropdown" aria-expanded="false">Despliega o busca un profesor...</button>
                         <ul class="dropdown-menu w-100 p-2 dropdown-menu-profesores" id="listaOpcionesProfesores">
                             <li class="px-2 pb-2">
-                                <input type="text" class="form-control" id="buscadorProfesores" placeholder="Escribe para buscar..." onkeyup="filtrarProfesores()" onclick="event.stopPropagation()">
+                                <input type="text" class="form-control" id="buscadorProfesores" placeholder="Buscar..." onkeyup="filtrarProfesores()" onclick="event.stopPropagation()">
                             </li>
-                            <li><a class="dropdown-item rounded py-2" href="#" onclick="seleccionarProfesor('Nuria Alavez Ríos',event)">Nuria Alavez Ríos</a></li>
-                            <li><a class="dropdown-item rounded py-2" href="#" onclick="seleccionarProfesor('Rafael Domínguez Pérez',event)">Rafael Domínguez Pérez</a></li>
-                            <li><a class="dropdown-item rounded py-2" href="#" onclick="seleccionarProfesor('Fernando Ortiz Silva',event)">Fernando Ortiz Silva</a></li>
-                            <li><a class="dropdown-item rounded py-2" href="#" onclick="seleccionarProfesor('Hugo Sánchez Cruz',event)">Hugo Sánchez Cruz</a></li>
-                            <li><a class="dropdown-item rounded py-2" href="#" onclick="seleccionarProfesor('Jessica Martínez Lugo',event)">Jessica Martínez Lugo</a></li>
-                            <li><a class="dropdown-item rounded py-2" href="#" onclick="seleccionarProfesor('Sayuri Torres Blanco',event)">Sayuri Torres Blanco</a></li>
-                            <li><a class="dropdown-item rounded py-2" href="#" onclick="seleccionarProfesor('Oscar Pérez López',event)">Oscar Pérez López</a></li>
-                            <li><a class="dropdown-item rounded py-2" href="#" onclick="seleccionarProfesor('Rocío Gómez Vargas',event)">Rocío Gómez Vargas</a></li>
+                            <li><a class="dropdown-item rounded" href="#" onclick="seleccionarProfesor('Nuria Alavez Ríos',event)">Nuria Alavez Ríos</a></li>
+                            <li><a class="dropdown-item rounded" href="#" onclick="seleccionarProfesor('Rafael Domínguez Pérez',event)">Rafael Domínguez Pérez</a></li>
+                            <li><a class="dropdown-item rounded" href="#" onclick="seleccionarProfesor('Fernando Ortiz Silva',event)">Fernando Ortiz Silva</a></li>
+                            <li><a class="dropdown-item rounded" href="#" onclick="seleccionarProfesor('Hugo Sánchez Cruz',event)">Hugo Sánchez Cruz</a></li>
+                            <li><a class="dropdown-item rounded" href="#" onclick="seleccionarProfesor('Jessica Martínez Lugo',event)">Jessica Martínez Lugo</a></li>
+                            <li><a class="dropdown-item rounded" href="#" onclick="seleccionarProfesor('Sayuri Torres Blanco',event)">Sayuri Torres Blanco</a></li>
+                            <li><a class="dropdown-item rounded" href="#" onclick="seleccionarProfesor('Oscar Pérez López',event)">Oscar Pérez López</a></li>
+                            <li><a class="dropdown-item rounded" href="#" onclick="seleccionarProfesor('Rocío Gómez Vargas',event)">Rocío Gómez Vargas</a></li>
                         </ul>
                     </div>
                     <input type="hidden" id="profesorActivo" value="">
                 </div>
 
+                <!-- TABLA -->
                 <div class="tabla-contenedor">
                     <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
                         <div class="d-flex align-items-center flex-wrap gap-3">
-                            <h5 class="m-0 fw-bold" style="color:#004b87;" id="tituloTablaGrado">1° Grado</h5>
-                            <span class="badge bg-primary bg-opacity-10 text-primary border border-primary-subtle rounded-pill fw-medium px-3 py-2 shadow-sm" style="font-size:0.8rem;">
-                                <i class="bi bi-info-circle-fill me-1"></i>Haz clic en vacías para asignar · Pasa el cursor para borrar
+                            <h5 class="m-0 fw-bold" style="color:var(--navy); font-family:'Arial',sans-serif;" id="tituloTablaGrado">1° Grado</h5>
+                            <span class="badge bg-primary bg-opacity-10 text-primary border border-primary-subtle rounded-pill fw-medium px-3 py-2" style="font-size:.75rem;">
+                                <i class="bi bi-info-circle-fill me-1"></i>Clic en vacías para asignar · Hover para borrar
                             </span>
                         </div>
                         <div class="text-end">
@@ -386,74 +507,107 @@
                         </table>
                     </div>
                     <div class="mt-4 d-flex justify-content-end">
-                        <button class="btn btn-guardar border-0 shadow-sm" onclick="validarGuardado()">
-                            <i class="bi bi-floppy-fill me-2"></i>Guardar Resumen
+                        <button class="btn btn-guardar incompleto border-0" id="btnGuardar" onclick="validarGuardado()">
+                            <i class="bi bi-floppy-fill me-2"></i><span id="lblBtnGuardar">Guardar Borrador</span>
                         </button>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- TAB REGISTROS -->
+        <!-- TAB VER REGISTROS -->
         <div class="tab-pane fade" id="pills-registros" role="tabpanel">
+            <div class="aviso-borradores" id="avisoBorradores">
+                <i class="bi bi-exclamation-triangle-fill fs-5 flex-shrink-0" style="color:#c2410c;"></i>
+                <span>Concluye todos tus registros para continuar. <strong>No puedes tener borradores activos.</strong></span>
+            </div>
+            <div id="contenedorRegistrosCombinados" class="row"></div>
+        </div>
 
-            <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom flex-wrap gap-3">
-                <h5 class="m-0 text-secondary fw-bold"><i class="bi bi-journal-check me-2 text-success"></i>Registros Guardados</h5>
-                <div class="d-flex gap-2 align-items-center flex-wrap">
-                    <button class="btn btn-outline-warning btn-sm rounded-pill px-3 fw-medium" onclick="resetearStatusPruebas()">
-                        <i class="bi bi-arrow-counterclockwise me-1"></i>Reset
-                    </button>
-                    <button class="btn btn-outline-danger btn-sm rounded-pill px-3 fw-medium" onclick="limpiarTodosRegistros()">
-                        <i class="bi bi-trash3 me-1"></i>Borrar todo
+        <!-- TAB REGISTROS FINALIZADOS -->
+        <div class="tab-pane fade" id="pills-finalizados" role="tabpanel">
+            <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
+                <h5 class="m-0 fw-bold" style="color:var(--purple); font-family:'Arial',sans-serif;">
+                    <i class="bi bi-archive-fill me-2"></i>Registros Finalizados
+                </h5>
+                <button class="btn btn-outline-danger btn-sm rounded-pill px-3 fw-medium" onclick="limpiarMemoria('completo')">
+                    <i class="bi bi-trash3 me-1"></i>Borrar todo
+                </button>
+            </div>
+            <div class="filter-periodo-wrap">
+                <div class="panel-label"><i class="bi bi-funnel-fill me-1" style="color:var(--purple);"></i>Filtrar por Periodo</div>
+                <div class="d-flex gap-2">
+                    <select class="form-select border-0 bg-white" style="max-width:360px; box-shadow: var(--card-shadow);" id="filtroPeriodo_completo" onchange="cargarTarjetas('completo')">
+                        <option value="" selected disabled>Selecciona un periodo...</option>
+                    </select>
+                    <button class="btn btn-white border bg-white d-none" id="btnLimpiarFiltro_completo" onclick="limpiarFiltroPeriodo('completo')" title="Limpiar filtro">
+                        <i class="bi bi-eraser-fill text-muted"></i>
                     </button>
                 </div>
             </div>
-
-            <!-- Estado del botón carga académica -->
-            <div id="estadoCargaAcademica" class="mb-3"></div>
-
-            <div class="row mb-4">
-                <div class="col-md-5">
-                    <label class="form-label text-muted small fw-bold"><i class="bi bi-funnel-fill me-1 text-success"></i>Selecciona el Periodo:</label>
-                    <div class="d-flex gap-2">
-                        <select class="form-select border-0 shadow-sm bg-white flex-grow-1" id="filtroPeriodo_registros" onchange="cargarListaRegistros()">
-                            <option value="" selected disabled>Selecciona un periodo...</option>
-                        </select>
-                        <button class="btn btn-white border shadow-sm d-none bg-white" id="btnLimpiarFiltro_registros" onclick="limpiarFiltroRegistros()" title="Limpiar filtro">
-                            <i class="bi bi-eraser-fill text-muted"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
-            <div id="contenedorListaRegistros"></div>
+            <div class="row" id="contenedorTarjetas_completo"></div>
         </div>
 
     </div>
 
+    <!-- SECCIÓN ENVÍO -->
+    <div id="seccionCerrarCarga" class="d-none mt-5">
+        <div class="seccion-envio" id="panelEnvio">
+            <div class="d-flex align-items-center justify-content-between flex-wrap gap-4">
+                <div class="d-flex align-items-center gap-4">
+                    <div class="icono-envio" id="iconoEnvio">
+                        <i class="bi bi-send-fill text-white" style="font-size:1.2rem;"></i>
+                    </div>
+                    <div>
+                        <div class="fw-bold text-dark mb-1" id="tituloEnvio">Enviar división a Secretaría Académica</div>
+                        <div class="text-muted" style="font-size:.83rem; max-width:480px; line-height:1.6;" id="textoEnvio">
+                            Cuando confirmes todas las carreras de tu división, usa este botón para marcarla como entregada.
+                        </div>
+                    </div>
+                </div>
+                <button class="btn-enviar-division" onclick="cerrarCargaDivision()" id="btnEnviarDivision">
+                    <i class="bi bi-send-fill me-2"></i>Enviar a Secretaría Académica
+                </button>
+            </div>
+        </div>
+    </div>
+
+</div>
+</div>
+
+<!-- BOTÓN RESET GLOBAL -->
+<button class="btn-reset-global" onclick="resetearStatusPruebas()" title="Resetear datos (debug)">
+    <i class="bi bi-arrow-counterclockwise"></i>
+</button>
+
+
+<!-- ══════════════════════════════════
+     MODALES
+══════════════════════════════════ -->
+
 <!-- MODAL BORRADOR -->
 <div class="modal fade" id="modalConfirmarBorrador" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
     <div class="modal-dialog modal-dialog-centered" style="max-width:440px;">
-        <div class="modal-content border-0 rounded-4 shadow-lg overflow-hidden">
-            <div class="modal-header border-0 flex-column align-items-center text-center pt-4 pb-3 px-4 position-relative" style="background-color:#d97706;">
-                <div class="rounded-circle d-flex align-items-center justify-content-center mb-3" style="width:52px;height:52px;background:rgba(255,255,255,0.15);">
+        <div class="modal-content border-0 shadow-lg overflow-hidden">
+            <div class="modal-header border-0 flex-column align-items-center text-center pt-4 pb-3 px-4 position-relative" style="background:#d97706;">
+                <div class="rounded-circle d-flex align-items-center justify-content-center mb-3" style="width:52px;height:52px;background:rgba(255,255,255,.15);">
                     <i class="bi bi-exclamation-triangle-fill fs-4 text-white"></i>
                 </div>
-                <h5 class="modal-title fw-bold text-white m-0" style="font-size:1.05rem;">Asignaciones Incompletas</h5>
-                <button type="button" class="position-absolute border-0 d-flex align-items-center justify-content-center" data-bs-dismiss="modal" aria-label="Cerrar"
-                    style="top:14px;right:14px;width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,0.15);color:white;font-size:1rem;cursor:pointer;transition:background 0.2s;"
-                    onmouseover="this.style.background='rgba(220,38,38,0.75)'" onmouseout="this.style.background='rgba(255,255,255,0.15)'">✕</button>
+                <h5 class="modal-title fw-bold text-white m-0">Asignaciones Incompletas</h5>
+                <button type="button" class="position-absolute border-0 d-flex align-items-center justify-content-center" data-bs-dismiss="modal"
+                    style="top:14px;right:14px;width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,.15);color:white;font-size:1rem;cursor:pointer;">✕</button>
             </div>
             <div class="modal-body px-4 pt-4 pb-3 text-center">
-                <p class="fw-semibold text-dark mb-2" style="font-size:0.95rem;">Aún faltan profesores por asignar.</p>
-                <p class="text-secondary mb-4" style="font-size:0.875rem;line-height:1.6;">Algunas celdas de la tabla siguen vacías.</p>
+                <p class="fw-semibold text-dark mb-2">Aún faltan profesores o tutores por asignar.</p>
+                <p class="text-secondary mb-4" style="font-size:.875rem;line-height:1.6;">Algunas celdas o tutores siguen sin asignar.</p>
                 <div class="d-flex align-items-start gap-2 text-start rounded-3 p-3" style="background:#fffbeb;border:1px solid #fcd34d;">
                     <i class="bi bi-info-circle-fill mt-1 flex-shrink-0" style="color:#b45309;"></i>
-                    <p class="mb-0 small" style="color:#92400e;line-height:1.5;">¿Deseas <strong>regresar a completarlo</strong> o prefieres guardarlo como borrador por ahora?</p>
+                    <p class="mb-0 small" style="color:#92400e;line-height:1.5;">¿Deseas <strong>completarlo</strong> o guardarlo como <strong>borrador</strong> por ahora?</p>
                 </div>
             </div>
             <div class="modal-footer border-0 px-4 pb-4 pt-2 d-flex gap-2 justify-content-center">
                 <button type="button" class="btn fw-semibold flex-fill" style="border:1.5px solid #e2e8f0;border-radius:10px;padding:11px;color:#64748b;background:white;" data-bs-dismiss="modal">Completar</button>
-                <button type="button" class="btn fw-bold flex-fill" style="border-radius:10px;padding:11px;background:#f59e0b;border:none;color:#78350f;" onclick="ejecutarGuardado('borrador')">Guardar borrador</button>
+                <button type="button" class="btn fw-bold flex-fill" style="border-radius:10px;padding:11px;background:#f59e0b;border:none;color:#78350f;" onclick="ejecutarGuardado('borrador')">Borrador</button>
             </div>
         </div>
     </div>
@@ -462,27 +616,26 @@
 <!-- MODAL COMPLETO -->
 <div class="modal fade" id="modalConfirmarCompleto" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
     <div class="modal-dialog modal-dialog-centered" style="max-width:440px;">
-        <div class="modal-content border-0 rounded-4 shadow-lg overflow-hidden">
-            <div class="modal-header border-0 flex-column align-items-center text-center pt-4 pb-3 px-4 position-relative" style="background-color:#004b87;">
-                <div class="rounded-circle d-flex align-items-center justify-content-center mb-3" style="width:52px;height:52px;background:rgba(255,255,255,0.15);">
+        <div class="modal-content border-0 shadow-lg overflow-hidden">
+            <div class="modal-header border-0 flex-column align-items-center text-center pt-4 pb-3 px-4 position-relative" style="background:var(--green);">
+                <div class="rounded-circle d-flex align-items-center justify-content-center mb-3" style="width:52px;height:52px;background:rgba(255,255,255,.15);">
                     <i class="bi bi-check-circle-fill fs-4 text-white"></i>
                 </div>
-                <h5 class="modal-title fw-bold text-white m-0" style="font-size:1.05rem;">Confirmar Resumen de Grado</h5>
-                <button type="button" class="position-absolute border-0 d-flex align-items-center justify-content-center" data-bs-dismiss="modal" aria-label="Cerrar"
-                    style="top:14px;right:14px;width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,0.15);color:white;font-size:1rem;cursor:pointer;transition:background 0.2s;"
-                    onmouseover="this.style.background='rgba(220,38,38,0.75)'" onmouseout="this.style.background='rgba(255,255,255,0.15)'">✕</button>
+                <h5 class="modal-title fw-bold text-white m-0">Confirmar Asignación</h5>
+                <button type="button" class="position-absolute border-0 d-flex align-items-center justify-content-center" data-bs-dismiss="modal"
+                    style="top:14px;right:14px;width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,.15);color:white;font-size:1rem;cursor:pointer;">✕</button>
             </div>
             <div class="modal-body px-4 pt-4 pb-3 text-center">
-                <p class="fw-semibold text-dark mb-2" style="font-size:0.95rem;">El resumen de este grado está completo.</p>
-                <p class="text-secondary mb-4" style="font-size:0.875rem;line-height:1.6;">Una vez confirmado, este grado quedará <strong>bloqueado para edición</strong>. Podrás seguir configurando otros grados de tu división.</p>
+                <p class="fw-semibold text-dark mb-2">Esta asignación está completa.</p>
+                <p class="text-secondary mb-4" style="font-size:.875rem;line-height:1.6;">Una vez confirmado, este grado quedará <strong>bloqueado para edición</strong>.</p>
                 <div class="d-flex align-items-start gap-2 text-start rounded-3 p-3" style="background:#eff6ff;border:1px solid #bfdbfe;">
-                    <i class="bi bi-info-circle-fill mt-1 flex-shrink-0" style="color:#1d4ed8;"></i>
-                    <p class="mb-0 small" style="color:#1e40af;line-height:1.5;">Cuando termines <strong>todos los grados</strong> de tu división, podrás enviarla a Secretaría con el botón que aparece al final de la página.</p>
+                    <i class="bi bi-info-circle-fill mt-1 flex-shrink-0" style="color:var(--blue);"></i>
+                    <p class="mb-0 small" style="color:#1e40af;line-height:1.5;">Cuando termines todas las carreras de tu división, podrás enviarlo a Secretaría Académica.</p>
                 </div>
             </div>
             <div class="modal-footer border-0 px-4 pb-4 pt-2 d-flex gap-2 justify-content-center">
                 <button type="button" class="btn fw-semibold flex-fill" style="border-radius:10px;padding:11px;background:#f59e0b;border:none;color:#78350f;" onclick="ejecutarGuardado('borrador')">Guardar borrador</button>
-                <button type="button" class="btn fw-bold flex-fill text-white" style="border-radius:10px;padding:11px;background:#16a34a;border:none;" onclick="ejecutarGuardado('completo')">Confirmar grado <i class="bi bi-check-lg ms-1"></i></button>
+                <button type="button" class="btn fw-bold flex-fill text-white" style="border-radius:10px;padding:11px;background:var(--green);border:none;" onclick="ejecutarGuardado('completo')">Confirmar <i class="bi bi-check-lg ms-1"></i></button>
             </div>
         </div>
     </div>
@@ -491,14 +644,14 @@
 <!-- MODAL DETALLE -->
 <div class="modal fade" id="modalTablaRegistro" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-xl modal-dialog-centered">
-        <div class="modal-content border-0 rounded-4 shadow-lg">
+        <div class="modal-content border-0 shadow-lg">
             <div class="modal-header border-bottom-0 pb-0 pt-4 px-4">
                 <div class="d-flex align-items-center w-100">
                     <div class="bg-primary bg-opacity-10 text-primary p-2 rounded-3 me-3"><i class="bi bi-table fs-5"></i></div>
-                    <h5 class="modal-title fw-bold mb-0 me-3" style="color:#004b87;" id="modalTituloGral">Detalle de Asignación</h5>
+                    <h5 class="modal-title fw-bold mb-0 me-3" style="color:var(--navy);" id="modalTituloGral">Detalle de Asignación</h5>
                     <div id="modalBadgeEstado"></div>
                 </div>
-                <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body p-4 pt-3 pb-0">
                 <div class="bg-light p-3 rounded-3 mb-4 row align-items-center">
@@ -523,654 +676,724 @@
     </div>
 </div>
 
-<!-- MODAL CONFIRMAR EDITAR -->
-<div class="modal fade" id="modalConfirmarEditar" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
-    <div class="modal-dialog modal-dialog-centered" style="max-width:440px;">
-        <div class="modal-content border-0 rounded-4 shadow-lg overflow-hidden">
-            <div class="modal-header border-0 flex-column align-items-center text-center pt-4 pb-3 px-4 position-relative" style="background-color:#374151;">
-                <div class="rounded-circle d-flex align-items-center justify-content-center mb-3" style="width:52px;height:52px;background:rgba(255,255,255,0.15);">
-                    <i class="bi bi-pencil-square fs-4 text-white"></i>
+<!-- MODAL CIERRE DIVISIÓN -->
+<div class="modal fade" id="modalCerrarCarga" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered" style="max-width:460px;">
+        <div class="modal-content border-0 shadow-lg overflow-hidden">
+            <div class="modal-header border-0 flex-column align-items-center text-center pt-4 pb-3 px-4 position-relative" style="background:var(--navy);">
+                <div class="rounded-circle d-flex align-items-center justify-content-center mb-3" style="width:56px;height:56px;background:rgba(255,255,255,.15);">
+                    <i class="bi bi-send-fill fs-4 text-white"></i>
                 </div>
-                <h5 class="modal-title fw-bold text-white m-0" style="font-size:1.05rem;">Editar Registro</h5>
-                <button type="button" class="position-absolute border-0 d-flex align-items-center justify-content-center" data-bs-dismiss="modal" aria-label="Cerrar"
-                    style="top:14px;right:14px;width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,0.15);color:white;font-size:1rem;cursor:pointer;transition:background 0.2s;"
-                    onmouseover="this.style.background='rgba(220,38,38,0.75)'" onmouseout="this.style.background='rgba(255,255,255,0.15)'">✕</button>
+                <h5 class="modal-title fw-bold text-white m-0">Enviar División a Secretaría</h5>
+                <p class="text-white small mt-1 mb-0" style="opacity:.75;">División de Sistemas Productivos y Mantenimiento Industrial</p>
+                <button type="button" class="position-absolute border-0 d-flex align-items-center justify-content-center" data-bs-dismiss="modal"
+                    style="top:14px;right:14px;width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,.15);color:white;font-size:1rem;cursor:pointer;">✕</button>
             </div>
             <div class="modal-body px-4 pt-4 pb-3 text-center">
-                <p class="fw-semibold text-dark mb-2" style="font-size:0.95rem;">Serás redirigido a la pestaña de Configuración.</p>
-                <p class="text-secondary mb-4" style="font-size:0.875rem;line-height:1.6;">Se cargarán todos los datos capturados de este registro para que puedas modificarlos. El registro actual será eliminado y reemplazado cuando guardes de nuevo.</p>
-                <div class="d-flex align-items-start gap-2 text-start rounded-3 p-3" style="background:#f1f5f9;border:1px solid #cbd5e1;">
-                    <i class="bi bi-info-circle-fill mt-1 flex-shrink-0" style="color:#475569;"></i>
-                    <p class="mb-0 small" style="color:#334155;line-height:1.5;">¿Deseas continuar y cargar el registro en el formulario de configuración?</p>
+                <p class="fw-semibold text-dark mb-2">¿Confirmas que terminaste de capturar toda la división?</p>
+                <p class="text-secondary mb-4" style="font-size:.875rem;line-height:1.6;">Secretaría Académica podrá procesar los registros a partir de este momento.</p>
+                <div id="resumenGradosCierre" class="text-start rounded-3 p-3 mb-3" style="background:#f0fdf4;border:1px solid #86efac;max-height:180px;overflow-y:auto;"></div>
+                <div class="d-flex align-items-start gap-2 text-start rounded-3 p-3" style="background:#fff7ed;border:1px solid #fed7aa;">
+                    <i class="bi bi-exclamation-triangle-fill mt-1 flex-shrink-0" style="color:#c2410c;"></i>
+                    <p class="mb-0 small" style="color:#9a3412;line-height:1.5;">Esta acción <strong>no se puede deshacer</strong>.</p>
                 </div>
             </div>
             <div class="modal-footer border-0 px-4 pb-4 pt-2 d-flex gap-2 justify-content-center">
                 <button type="button" class="btn fw-semibold flex-fill" style="border:1.5px solid #e2e8f0;border-radius:10px;padding:11px;color:#64748b;background:white;" data-bs-dismiss="modal">Cancelar</button>
-                <button type="button" id="btnConfirmarEditarOk" class="btn fw-bold flex-fill text-white" style="border-radius:10px;padding:11px;background:#374151;border:none;">
-                    <i class="bi bi-pencil-fill me-2"></i>Sí, editar
+                <button type="button" class="btn fw-bold flex-fill text-white" style="border-radius:10px;padding:11px;background:var(--navy);border:none;" onclick="ejecutarCierreDivision()">
+                    <i class="bi bi-send-fill me-2"></i>Confirmar envío
                 </button>
             </div>
         </div>
     </div>
 </div>
 
-<!-- MODAL CONFIRMAR BORRAR -->
-<div class="modal fade" id="modalConfirmarBorrar" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
-    <div class="modal-dialog modal-dialog-centered" style="max-width:420px;">
-        <div class="modal-content border-0 rounded-4 shadow-lg overflow-hidden">
-            <div class="modal-header border-0 flex-column align-items-center text-center pt-4 pb-3 px-4 position-relative" style="background-color:#dc2626;">
-                <div class="rounded-circle d-flex align-items-center justify-content-center mb-3" style="width:52px;height:52px;background:rgba(255,255,255,0.15);">
-                    <i class="bi bi-trash3-fill fs-4 text-white"></i>
-                </div>
-                <h5 class="modal-title fw-bold text-white m-0" style="font-size:1.05rem;">Eliminar Registro</h5>
-                <button type="button" class="position-absolute border-0 d-flex align-items-center justify-content-center" data-bs-dismiss="modal" aria-label="Cerrar"
-                    style="top:14px;right:14px;width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,0.15);color:white;font-size:1rem;cursor:pointer;transition:background 0.2s;"
-                    onmouseover="this.style.background='rgba(220,38,38,0.75)'" onmouseout="this.style.background='rgba(255,255,255,0.15)'">✕</button>
-            </div>
-            <div class="modal-body px-4 pt-4 pb-3 text-center">
-                <p class="fw-semibold text-dark mb-2" style="font-size:0.95rem;">¿Estás seguro de que deseas eliminar este registro?</p>
-                <div class="d-flex align-items-start gap-2 text-start rounded-3 p-3 mt-3" style="background:#fef2f2;border:1px solid #fecaca;">
-                    <i class="bi bi-exclamation-triangle-fill mt-1 flex-shrink-0" style="color:#dc2626;"></i>
-                    <p class="mb-0 small" style="color:#991b1b;line-height:1.5;">Esta acción <strong>no se puede deshacer</strong>. El registro será eliminado permanentemente y no podrás recuperarlo.</p>
-                </div>
-            </div>
-            <div class="modal-footer border-0 px-4 pb-4 pt-2 d-flex gap-2 justify-content-center">
-                <button type="button" class="btn fw-semibold flex-fill" style="border:1.5px solid #e2e8f0;border-radius:10px;padding:11px;color:#64748b;background:white;" data-bs-dismiss="modal">Cancelar</button>
-                <button type="button" id="btnConfirmarBorrarOk" class="btn fw-bold flex-fill text-white" style="border-radius:10px;padding:11px;background:#dc2626;border:none;">
-                    <i class="bi bi-trash3-fill me-2"></i>Eliminar
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-    const DIVISION_ID = 'sistemas_productivos';
-    const DIVISION_NOMBRE = 'División de Sistemas Productivos y Mantenimiento Industrial';
+// ─── CONSTANTES ───────────────────────────────────────────────────────────────
+const DIVISION_ID     = 'sistemas_productivos';
+const DIVISION_NOMBRE = 'División de Sistemas Productivos y Mantenimiento Industrial';
 
-    const materiasFalsas = [
-        { nombre: "INGLES I" },
-        { nombre: "FUNDAMENTOS MATEMÁTICOS" },
-        { nombre: "COMUNICACIÓN Y HABILIDADES DIGITALES" },
-        { nombre: "DESARROLLO HUMANO Y VALORES" },
-        { nombre: "DIBUJO INDUSTRIAL" },
-        { nombre: "QUÍMICA BÁSICA" },
-        { nombre: "METROLOGÍA" }
-    ];
+// Semanas con defaults aleatorios fijos (inicio/fin/total)
+const MATERIAS_DATA = [
+    { nombre:"INGLES I",                             inicio:1,  fin:14, total:14, horas:5, programa:"LIC" },
+    { nombre:"FUNDAMENTOS MATEMÁTICOS",              inicio:1,  fin:7,  total:7,  horas:5, programa:"LIC" },
+    { nombre:"COMUNICACIÓN Y HABILIDADES DIGITALES", inicio:7,  fin:14, total:8,  horas:4, programa:"LIC" },
+    { nombre:"DESARROLLO HUMANO Y VALORES",          inicio:1,  fin:14, total:14, horas:4, programa:"LIC" },
+    { nombre:"DIBUJO INDUSTRIAL",                    inicio:1,  fin:7,  total:7,  horas:5, programa:"TSU" },
+    { nombre:"QUÍMICA BÁSICA",                       inicio:7,  fin:14, total:8,  horas:4, programa:"TSU" },
+    { nombre:"METROLOGÍA",                           inicio:1,  fin:14, total:14, horas:5, programa:"TSU" }
+];
 
-    let datosTemporalesListosParaGuardar = null;
-    let _idRegistroEditar = null;
-    let _idRegistroBorrar = null;
+let datosTemporalesListosParaGuardar = null;
 
-    window.addEventListener('DOMContentLoaded', () => {
-        actualizarBtnCargaAcademica();
-    });
+// ─── INIT ─────────────────────────────────────────────────────────────────────
+window.addEventListener('DOMContentLoaded', () => {
+    actualizarUIEstadoDivision();
+    actualizarBtnGuardarEstado();
+});
 
-    /* ── Habilitación del botón Carga Académica ── */
-    function actualizarBtnCargaAcademica() {
-        const registros = JSON.parse(localStorage.getItem('registrosResumenCargas')) || [];
-        const tieneCompletos = registros.some(r => r.estado === 'completo' && r.division === DIVISION_ID);
-        const tieneBorradores = registros.some(r => r.estado === 'borrador' && r.division === DIVISION_ID);
-        const btn = document.getElementById('btnCargaAcademica');
-        const estadoEl = document.getElementById('estadoCargaAcademica');
+// ─── ESTADO DIVISIÓN ─────────────────────────────────────────────────────────
+function obtenerEstadoDivision() {
+    const data = JSON.parse(localStorage.getItem('estadoDivisiones') || '{}');
+    return data[DIVISION_ID] || null;
+}
 
-        if (tieneCompletos && !tieneBorradores) {
-            btn.classList.remove('disabled');
-            // Dejamos el contenedor vacío para que no muestre el estatus verde
-            if (estadoEl) estadoEl.innerHTML = ''; 
-        } else {
-            btn.classList.add('disabled');
-            if (estadoEl) {
-                let motivos = [];
-                if (tieneBorradores) motivos.push('Hay registros en estado <strong>Borrador</strong> sin confirmar.');
-                estadoEl.innerHTML = `
-                    <div class="d-flex align-items-start gap-2 mb-2 p-2 rounded-3" style="background:#fff7ed;border:1px solid #fed7aa;max-width:fit-content;">
-                        <i class="bi bi-lock-fill mt-1 flex-shrink-0" style="color:#c2410c;"></i>
-            }
-        }
-    }
+function actualizarUIEstadoDivision() {
+    const estado     = obtenerEstadoDivision();
+    const container  = document.getElementById('statusBadgeContainer');
+    const pill       = document.getElementById('divisionStatusPill');
+    const statusText = document.getElementById('statusTexto');
+    const seccionC   = document.getElementById('seccionCerrarCarga');
+    const panelEnvio = document.getElementById('panelEnvio');
+    const iconoEnvio = document.getElementById('iconoEnvio');
+    const tituloEnvio= document.getElementById('tituloEnvio');
+    const textoEnvio = document.getElementById('textoEnvio');
+    const btnEnviar  = document.getElementById('btnEnviarDivision');
+    const btnIrCont  = document.getElementById('btnIrCargaContainer');
+    const btnIrCarga = document.getElementById('btnIrCarga');
 
-   function irACargaAcademica() {
-        const btn = document.getElementById('btnCargaAcademica');
-        if (btn.classList.contains('disabled')) return;
-        
-        mostrarAlerta('Redirigiendo a Carga Académica...', 'success');
-        
-        // Activamos la redirección apuntando exactamente a tu archivo local
-        window.location.href = 'carga_academica.html';
-    }
+    const registros       = JSON.parse(localStorage.getItem('registrosResumenCargas') || '[]');
+    const tieneCompletos  = registros.some(r => r.estado === 'completo' && r.division === DIVISION_ID);
+    const tieneBorradores = registros.some(r => r.estado === 'borrador' && r.division === DIVISION_ID);
 
-        // Si NO hay borradores, desbloqueamos el botón
+    if (estado === 'entregado') {
+        container.classList.add('d-none');
+        seccionC.classList.add('d-none');
+        // Activar botón Ir a Carga Académica SOLO cuando no hay borradores
         if (!tieneBorradores) {
-            btn.classList.remove('disabled');
-            if (estadoEl) estadoEl.innerHTML = '';
+            btnIrCont.classList.remove('d-none');
+            btnIrCarga.removeAttribute('disabled');
+            btnIrCarga.style.opacity = '1';
+            btnIrCarga.style.pointerEvents = 'auto';
         } else {
-            // Si hay borradores, lo bloqueamos y mostramos el aviso
-            btn.classList.add('disabled');
-            if (estadoEl) {
-                estadoEl.innerHTML = `
-                    <div class="d-flex align-items-start gap-2 mb-2 p-2 rounded-3" style="background:#fff7ed;border:1px solid #fed7aa;max-width:fit-content;">
-                        <i class="bi bi-lock-fill mt-1 flex-shrink-0" style="color:#c2410c;"></i>
-                        <span class="small text-warning-emphasis">Hay registros en estado <strong>Borrador</strong> sin confirmar </span>
-                    </div>`;
-            }
+            btnIrCont.classList.add('d-none');
         }
-    
-
-    function bloquearFormulario(bloquear) {
-        ['selPeriodo','selCarrera','selPlan','btnProfesorDropdown','btnTutorDropdown','selGrupoTutor'].forEach(id => {
-            const el = document.getElementById(id);
-            if (el) el.disabled = bloquear;
-        });
-        const btnGuardar = document.querySelector('.btn-guardar');
-        if (btnGuardar) {
-            btnGuardar.disabled = bloquear;
-            btnGuardar.style.opacity = bloquear ? '0.5' : '1';
-            if (bloquear) btnGuardar.title = 'La carga de esta división ya fue entregada a Secretaría.';
-        }
+        bloquearFormulario(true);
+        return;
     }
 
-    function obtenerGruposActuales() {
-        const select = document.getElementById('selGrupoTutor');
-        return Array.from(select.options).filter(opt => opt.value !== "").map(opt => opt.value);
+    // Si hay completos Y no hay borradores → mostrar botón de ir a carga
+    if (tieneCompletos && !tieneBorradores) {
+        btnIrCont.classList.remove('d-none');
+        btnIrCarga.removeAttribute('disabled');
+        btnIrCarga.style.opacity = '1';
+        btnIrCarga.style.pointerEvents = 'auto';
+    } else {
+        btnIrCont.classList.add('d-none');
     }
 
-    function verificarSelects() {
-        const periodo = document.getElementById('selPeriodo').value;
-        const carrera = document.getElementById('selCarrera').value;
-        const plan = document.getElementById('selPlan').value;
-        if (periodo && carrera && plan) {
-            document.getElementById('leyendaDisponibles').innerHTML = `<span style="color:#004b87;">GRADOS DISPONIBLES</span>`;
-            document.getElementById('seccionGrados').classList.remove('d-none');
+    if (tieneCompletos) {
+        container.classList.remove('d-none');
+        pill.className = 'division-status-pill en-proceso';
+        statusText.textContent = 'En proceso — captura activa';
+        seccionC.classList.remove('d-none');
+
+        if (tieneBorradores) {
+            panelEnvio.className = 'seccion-envio bloqueada';
+            iconoEnvio.className = 'icono-envio bloqueado';
+            iconoEnvio.innerHTML = '<i class="bi bi-lock-fill text-white" style="font-size:1.2rem;"></i>';
+            tituloEnvio.textContent = 'Envío pendiente — hay borradores sin confirmar';
+            textoEnvio.textContent  = 'Tienes borradores incompletos. Confírmalos o elimínalos antes de enviar.';
+            btnEnviar.disabled = true;
         } else {
-            document.getElementById('seccionGrados').classList.add('d-none');
-            document.getElementById('seccionConfiguracion').classList.add('d-none');
+            panelEnvio.className = 'seccion-envio';
+            iconoEnvio.className = 'icono-envio';
+            iconoEnvio.innerHTML = '<i class="bi bi-send-fill text-white" style="font-size:1.2rem;"></i>';
+            tituloEnvio.textContent = 'Enviar división a Secretaría Académica';
+            textoEnvio.textContent  = 'Cuando completes todos los grados, usa este botón para marcar tu división como entregada.';
+            btnEnviar.disabled = false;
         }
+    } else {
+        container.classList.add('d-none');
+        seccionC.classList.add('d-none');
     }
+}
 
-    function seleccionarGrado(btnElement, nombreGrado) {
-        document.querySelectorAll('.btn-grado').forEach(btn => {
-            btn.classList.remove('bg-primary','text-white');
-            btn.classList.add('btn-outline-primary');
-            btn.style.backgroundColor = '';
-            btn.style.color = '';
-        });
-        if (btnElement) {
-            btnElement.classList.remove('btn-outline-primary');
-            btnElement.style.backgroundColor = '#0d6efd';
-            btnElement.style.color = 'white';
-        }
-        document.getElementById('selGrupoTutor').value = "";
-        document.getElementById('tutorActivo').value = "";
-        document.getElementById('btnTutorDropdown').innerHTML = "Selecciona...";
-        document.getElementById('btnTutorDropdown').classList.remove('border-success');
-        document.getElementById('profesorActivo').value = "";
-        document.getElementById('btnProfesorDropdown').innerHTML = "Despliega o busca un profesor...";
-        document.getElementById('btnProfesorDropdown').classList.remove('border-success');
-        document.getElementById('seccionConfiguracion').classList.remove('d-none');
-        document.getElementById('tituloTablaGrado').innerText = nombreGrado;
-        const comboCarrera = document.getElementById('selCarrera');
-        document.getElementById('badgeCarrera').innerText = comboCarrera.options[comboCarrera.selectedIndex].text;
-        document.getElementById('badgePeriodo').innerText = document.getElementById('selPeriodo').value;
-        dibujarTabla();
+function bloquearFormulario(bloquear) {
+    ['selPeriodo','selCarrera','selPlan','btnProfesorDropdown','btnTutorDropdown','selGrupoTutor'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.disabled = bloquear;
+    });
+    const btnG = document.getElementById('btnGuardar');
+    if (btnG) { btnG.disabled = bloquear; btnG.style.opacity = bloquear ? '0.5' : '1'; }
+}
+
+// ─── SELECTS ─────────────────────────────────────────────────────────────────
+function obtenerGruposActuales() {
+    const select = document.getElementById('selGrupoTutor');
+    return Array.from(select.options).filter(o => o.value !== "").map(o => o.value);
+}
+
+function verificarSelects() {
+    const periodo = document.getElementById('selPeriodo').value;
+    const carrera = document.getElementById('selCarrera').value;
+    const plan    = document.getElementById('selPlan').value;
+    if (periodo && carrera && plan) {
+        document.getElementById('seccionGrados').classList.remove('d-none');
+    } else {
+        document.getElementById('seccionGrados').classList.add('d-none');
+        document.getElementById('seccionConfiguracion').classList.add('d-none');
     }
+}
 
-    function filtrarTutores() {
-        const filtro = document.getElementById('buscadorTutores').value.toLowerCase();
-        document.querySelectorAll('#listaOpcionesTutores a.dropdown-item').forEach(item => {
-            item.parentElement.style.display = item.textContent.toLowerCase().includes(filtro) ? '' : 'none';
-        });
+function seleccionarGrado(btnElement, nombreGrado) {
+    document.querySelectorAll('.btn-grado').forEach(btn => btn.classList.remove('selected'));
+    if (btnElement) btnElement.classList.add('selected');
+
+    document.getElementById('selGrupoTutor').value        = "";
+    document.getElementById('tutorActivo').value           = "";
+    document.getElementById('btnTutorDropdown').innerHTML  = "Selecciona...";
+    document.getElementById('btnTutorDropdown').classList.remove('border-success');
+    document.getElementById('profesorActivo').value        = "";
+    document.getElementById('btnProfesorDropdown').innerHTML = "Despliega o busca un profesor...";
+    document.getElementById('btnProfesorDropdown').classList.remove('border-success');
+
+    document.getElementById('seccionConfiguracion').classList.remove('d-none');
+    document.getElementById('tituloTablaGrado').innerText = nombreGrado;
+
+    const comboCarrera = document.getElementById('selCarrera');
+    document.getElementById('badgeCarrera').innerText = comboCarrera.options[comboCarrera.selectedIndex].text;
+    document.getElementById('badgePeriodo').innerText = document.getElementById('selPeriodo').value;
+    dibujarTabla();
+    actualizarBtnGuardarEstado();
+}
+
+// ─── TUTORES ─────────────────────────────────────────────────────────────────
+function filtrarTutores() {
+    const f = document.getElementById('buscadorTutores').value.toLowerCase();
+    document.querySelectorAll('#listaOpcionesTutores a.dropdown-item').forEach(item => {
+        item.parentElement.style.display = item.textContent.toLowerCase().includes(f) ? '' : 'none';
+    });
+}
+
+function seleccionarTutor(nombre, event) {
+    event.preventDefault();
+    document.getElementById('btnTutorDropdown').innerHTML = `<i class="bi bi-person-check-fill text-success me-2"></i>${nombre}`;
+    document.getElementById('btnTutorDropdown').classList.add('border-success');
+    document.getElementById('tutorActivo').value = nombre;
+    document.getElementById('buscadorTutores').value = '';
+    filtrarTutores();
+}
+
+function asignarTutor() {
+    const grupo = document.getElementById('selGrupoTutor').value;
+    const tutor = document.getElementById('tutorActivo').value.trim();
+    if (!grupo || !tutor) { alert("Selecciona un grupo y un tutor primero."); return; }
+    const span = document.getElementById(`tutor-${grupo}`);
+    if (span) {
+        span.innerText = tutor;
+        span.className = 'badge-tutor shadow-sm';
+        mostrarAlerta('Tutor asignado al grupo ' + grupo, 'success');
+        actualizarBtnGuardarEstado();
     }
+}
 
-    function seleccionarTutor(nombre, event) {
-        event.preventDefault();
-        document.getElementById('btnTutorDropdown').innerHTML = `<i class="bi bi-person-check-fill text-success me-2"></i> ${nombre}`;
-        document.getElementById('btnTutorDropdown').classList.add('border-success');
-        document.getElementById('tutorActivo').value = nombre;
-        document.getElementById('buscadorTutores').value = '';
-        filtrarTutores();
-    }
+// ─── PROFESORES ───────────────────────────────────────────────────────────────
+function filtrarProfesores() {
+    const f = document.getElementById('buscadorProfesores').value.toLowerCase();
+    document.querySelectorAll('#listaOpcionesProfesores a.dropdown-item').forEach(item => {
+        item.parentElement.style.display = item.textContent.toLowerCase().includes(f) ? '' : 'none';
+    });
+}
 
-    function asignarTutor() {
-        const grupo = document.getElementById('selGrupoTutor').value;
-        const tutor = document.getElementById('tutorActivo').value.trim();
-        if (!grupo || !tutor) { alert("Selecciona un grupo y un tutor primero."); return; }
-        const partes = tutor.split(' ');
-        let corto = partes[0];
-        if (partes.length > 1) corto += ' ' + partes[1];
-        const span = document.getElementById(`tutor-${grupo}`);
-        if (span) {
-            span.innerText = corto;
-            span.className = 'badge-tutor shadow-sm';
-            mostrarAlerta('Tutor asignado al grupo ' + grupo, 'success');
-        }
-    }
+function seleccionarProfesor(nombre, event) {
+    event.preventDefault();
+    document.getElementById('btnProfesorDropdown').innerHTML = `<i class="bi bi-person-check-fill text-success me-2"></i>${nombre}`;
+    document.getElementById('btnProfesorDropdown').classList.add('border-success');
+    document.getElementById('profesorActivo').value = nombre;
+    document.getElementById('buscadorProfesores').value = '';
+    filtrarProfesores();
+}
 
-    function filtrarProfesores() {
-        const filtro = document.getElementById('buscadorProfesores').value.toLowerCase();
-        document.querySelectorAll('#listaOpcionesProfesores a.dropdown-item').forEach(item => {
-            item.parentElement.style.display = item.textContent.toLowerCase().includes(filtro) ? '' : 'none';
-        });
-    }
-
-    function seleccionarProfesor(nombre, event) {
-        event.preventDefault();
-        document.getElementById('btnProfesorDropdown').innerHTML = `<i class="bi bi-person-check-fill text-success me-2"></i> ${nombre}`;
-        document.getElementById('btnProfesorDropdown').classList.add('border-success');
-        document.getElementById('profesorActivo').value = nombre;
-        document.getElementById('buscadorProfesores').value = '';
-        filtrarProfesores();
-    }
-
-    function dibujarTabla() {
-        const grupos = obtenerGruposActuales();
-        const thead = document.getElementById('cabeceraTabla');
-        let th = `<tr>
-            <th class="text-start ps-3" style="width:35%;">Asignatura / Grupo</th>`;
-        const w = 65 / (grupos.length || 1);
-        grupos.forEach(g => {
-            th += `<th style="width:${w}%;">
-                <div class="fs-6 text-dark mb-1">${g}</div>
-                <div class="fw-normal text-muted" style="font-size:0.75rem;">
-                    <i class="bi bi-person-video me-1"></i>Tutor:<br>
-                    <span id="tutor-${g}" class="text-muted fw-medium">Sin asignar</span>
-                </div>
-            </th>`;
-        });
-        thead.innerHTML = th + `</tr>`;
-        const tbody = document.getElementById('cuerpoTabla');
-        tbody.innerHTML = '';
-        materiasFalsas.forEach(m => {
-            const tr = document.createElement('tr');
-            const tdM = document.createElement('td');
-            tdM.className = 'text-start materia-texto ps-3';
-            tdM.innerText = m.nombre;
-            tr.appendChild(tdM);
-            grupos.forEach(() => {
-                const td = document.createElement('td');
-                td.className = 'celda-interactiva';
-                td.style.cursor = 'pointer';
-                td.onclick = function() { asignarMaestroEnCelda(this); };
-                tr.appendChild(td);
-            });
-            tbody.appendChild(tr);
-        });
-    }
-
-    function asignarMaestroEnCelda(celda) {
-        if (celda.classList.contains('celda-asignada')) {
-            if (celda.classList.contains('permitir-borrado')) {
-                celda.innerHTML = '';
-                celda.classList.remove('celda-asignada','permitir-borrado');
-            }
-            return;
-        }
-        const prof = document.getElementById('profesorActivo').value.trim();
-        if (!prof) { alert('Despliega la lista y selecciona el profesor que vas a asignar.'); return; }
-        const partes = prof.split(' ');
-        let nombre = partes[0];
-        if (partes.length > 1) nombre += ' ' + partes[1];
-        celda.innerHTML = `<div class="prof-badge shadow-sm"><span class="nombre-prof">${nombre}</span><i class="bi bi-trash3-fill icon-borrar"></i></div>`;
-        celda.classList.add('celda-asignada');
-        celda.addEventListener('mouseleave', function() {
-            if (this.classList.contains('celda-asignada')) this.classList.add('permitir-borrado');
-        }, { once: true });
-    }
-
-    function mostrarAlerta(mensaje, tipo = 'success') {
-        const existing = document.getElementById('toastFlotante');
-        if (existing) existing.remove();
-        const config = {
-            success: { icono: 'bi-check-circle-fill', color: '#16a34a' },
-            info:    { icono: 'bi-exclamation-triangle-fill', color: '#f59e0b' },
-            error:   { icono: 'bi-x-circle-fill', color: '#dc2626' }
-        };
-        const c = config[tipo] || config.success;
-        const toast = document.createElement('div');
-        toast.id = 'toastFlotante';
-        toast.style.cssText = `position:fixed;top:20px;right:24px;z-index:9999;display:flex;align-items:center;gap:12px;background:#ffffff;border:1px solid #e2e8f0;border-left:4px solid ${c.color};border-radius:10px;padding:14px 16px;box-shadow:0 4px 16px rgba(0,0,0,0.08);font-family:'Inter',sans-serif;font-size:0.875rem;font-weight:500;max-width:300px;animation:slideInToast 0.3s cubic-bezier(0.34,1.56,0.64,1);`;
-        toast.innerHTML = `
-            <div style="width:26px;height:26px;border-radius:50%;background:${c.color};display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-                <i class="bi ${c.icono}" style="color:white;font-size:0.8rem;"></i>
+// ─── TABLA ────────────────────────────────────────────────────────────────────
+function dibujarTabla() {
+    const grupos = obtenerGruposActuales();
+    const thead  = document.getElementById('cabeceraTabla');
+    let th = `<tr><th class="text-start ps-3" style="width:38%;">Asignatura</th>`;
+    const w = 62 / (grupos.length || 1);
+    grupos.forEach(g => {
+        th += `<th style="width:${w}%;">
+            <div class="text-dark mb-1" style="font-size:.8rem;">${g}</div>
+            <div class="fw-normal text-muted" style="font-size:.7rem;">
+                Tutor: <span id="tutor-${g}" class="text-muted fw-medium">Sin asignar</span>
             </div>
-            <span style="flex:1;color:#1e293b;">${mensaje}</span>
-            <button onclick="this.parentElement.remove()" style="background:none;border:none;color:#94a3b8;cursor:pointer;font-size:1rem;padding:0 0 0 6px;line-height:1;flex-shrink:0;">✕</button>`;
-        document.body.appendChild(toast);
-        setTimeout(() => {
-            if (toast && toast.parentElement) {
-                toast.style.animation = 'fadeOutToast 0.25s ease forwards';
-                setTimeout(() => toast.remove(), 250);
-            }
-        }, 3500);
-    }
+        </th>`;
+    });
+    thead.innerHTML = th + `</tr>`;
 
-    function validarGuardado() {
-        if (obtenerEstadoDivision() === 'entregado') {
-            mostrarAlerta('Esta división ya fue entregada. No puedes agregar más registros.', 'error');
-            return;
+    const tbody = document.getElementById('cuerpoTabla');
+    tbody.innerHTML = '';
+    MATERIAS_DATA.forEach(m => {
+        const tr   = document.createElement('tr');
+        const tdM  = document.createElement('td');
+        tdM.className = 'text-start ps-3';
+        tdM.innerHTML = `<div class="materia-texto">${m.nombre}</div>
+            <div>
+                <span class="semana-badge"><i class="bi bi-calendar-week me-1"></i>Sem. ${m.inicio}–${m.fin}</span>
+                <span class="semana-badge ms-1">${m.total} semanas</span>
+            </div>`;
+        tr.appendChild(tdM);
+        grupos.forEach(() => {
+            const td = document.createElement('td');
+            td.className = 'celda-interactiva';
+            td.onclick = function() { asignarMaestroEnCelda(this); };
+            tr.appendChild(td);
+        });
+        tbody.appendChild(tr);
+    });
+    observarCambiosTabla();
+}
+
+function asignarMaestroEnCelda(celda) {
+    if (celda.classList.contains('celda-asignada')) {
+        if (celda.classList.contains('permitir-borrado')) {
+            celda.innerHTML = '';
+            celda.classList.remove('celda-asignada', 'permitir-borrado');
+            actualizarBtnGuardarEstado();
         }
-        const periodo = document.getElementById('selPeriodo').value;
-        const carrera = document.getElementById('selCarrera').options[document.getElementById('selCarrera').selectedIndex].text;
-        const plan = document.getElementById('selPlan').value;
-        const grado = document.getElementById('tituloTablaGrado').innerText;
-        const grupos = obtenerGruposActuales();
-        const tutores = {};
-        grupos.forEach(g => {
-            const t = document.getElementById(`tutor-${g}`);
-            tutores[g] = t ? t.innerText : 'Sin asignar';
+        return;
+    }
+    const prof = document.getElementById('profesorActivo').value.trim();
+    if (!prof) { alert('Selecciona primero el profesor a asignar.'); return; }
+    celda.innerHTML = `<div class="prof-badge"><span class="nombre-prof">${prof}</span><i class="bi bi-trash3-fill icon-borrar"></i></div>`;
+    celda.classList.add('celda-asignada');
+    celda.addEventListener('mouseleave', function() {
+        if (this.classList.contains('celda-asignada')) this.classList.add('permitir-borrado');
+    }, { once: true });
+    actualizarBtnGuardarEstado();
+}
+
+function observarCambiosTabla() {
+    const tbody = document.getElementById('cuerpoTabla');
+    if (!tbody) return;
+    const obs = new MutationObserver(() => actualizarBtnGuardarEstado());
+    obs.observe(tbody, { subtree:true, childList:true, attributes:true, attributeFilter:['class'] });
+}
+
+// ─── ESTADO BOTÓN GUARDAR ─────────────────────────────────────────────────────
+function actualizarBtnGuardarEstado() {
+    const btn = document.getElementById('btnGuardar');
+    const lbl = document.getElementById('lblBtnGuardar');
+    if (!btn) return;
+    const { llenas, total, tutoresOk } = calcularEstadoFormulario();
+    const completo = (llenas === total && total > 0 && tutoresOk);
+    if (completo) {
+        btn.className = 'btn btn-guardar completo border-0';
+        lbl.textContent = 'Guardar Registro';
+        btn.querySelector('i').className = 'bi bi-check-circle-fill me-2';
+    } else {
+        btn.className = 'btn btn-guardar incompleto border-0';
+        lbl.textContent = 'Guardar Borrador';
+        btn.querySelector('i').className = 'bi bi-floppy-fill me-2';
+    }
+}
+
+function calcularEstadoFormulario() {
+    const grupos = obtenerGruposActuales();
+    const filas  = document.querySelectorAll('#cuerpoTabla tr');
+    let total = filas.length * grupos.length, llenas = 0;
+    filas.forEach(fila => {
+        grupos.forEach((g, idx) => {
+            const celda = fila.cells[idx + 1];
+            const pn    = celda ? celda.querySelector('.nombre-prof') : null;
+            if (pn && pn.innerText !== '---') llenas++;
         });
-        const asignaciones = [];
-        const filas = document.querySelectorAll('#cuerpoTabla tr');
-        let total = filas.length * grupos.length, llenas = 0;
-        filas.forEach(fila => {
-            const d = { materia: fila.cells[0].innerText };
-            grupos.forEach((g, idx) => {
-                const celda = fila.cells[idx + 1];
-                const pn = celda ? celda.querySelector('.nombre-prof') : null;
-                const p = pn ? pn.innerText : '---';
-                if (p !== '---') llenas++;
-                d[g] = p;
-            });
-            asignaciones.push(d);
-        });
-        if (llenas === 0) { alert("No has asignado ningún profesor en la tabla todavía."); return; }
-        datosTemporalesListosParaGuardar = {
-            id: Date.now(), fecha: new Date().toLocaleDateString('es-MX'),
-            periodo, carrera, plan, grado, division: DIVISION_ID,
-            gruposRegistrados: grupos, tutores, asignaciones
+    });
+    let tutoresOk = grupos.length > 0;
+    grupos.forEach(g => {
+        const span = document.getElementById(`tutor-${g}`);
+        if (!span || span.innerText === 'Sin asignar') tutoresOk = false;
+    });
+    return { llenas, total, tutoresOk };
+}
+
+// ─── GUARDAR ─────────────────────────────────────────────────────────────────
+function validarGuardado() {
+    if (obtenerEstadoDivision() === 'entregado') {
+        mostrarAlerta('Esta división ya fue entregada.', 'error'); return;
+    }
+    const periodo   = document.getElementById('selPeriodo').value;
+    const carreraEl = document.getElementById('selCarrera');
+    const carrera   = carreraEl.options[carreraEl.selectedIndex].text;
+    const plan      = document.getElementById('selPlan').value;
+    const grado     = document.getElementById('tituloTablaGrado').innerText;
+    const grupos    = obtenerGruposActuales();
+    const tutores   = {};
+    grupos.forEach(g => {
+        const t = document.getElementById(`tutor-${g}`);
+        tutores[g] = t ? t.innerText : 'Sin asignar';
+    });
+    const asignaciones = [];
+    const filas = document.querySelectorAll('#cuerpoTabla tr');
+    let total = filas.length * grupos.length, llenas = 0;
+    filas.forEach((fila, fi) => {
+        const matData = MATERIAS_DATA[fi] || {};
+        const d = {
+            materia: fila.cells[0].querySelector('.materia-texto').innerText,
+            inicio: matData.inicio, fin: matData.fin,
+            total: matData.total, horas: matData.horas, programa: matData.programa
         };
-        if (llenas < total) {
-            new bootstrap.Modal(document.getElementById('modalConfirmarBorrador')).show();
-        } else {
-            new bootstrap.Modal(document.getElementById('modalConfirmarCompleto')).show();
-        }
-    }
-
-    function ejecutarGuardado(estado) {
-        if (!datosTemporalesListosParaGuardar) return;
-        datosTemporalesListosParaGuardar.estado = estado;
-        let registros = JSON.parse(localStorage.getItem('registrosResumenCargas')) || [];
-        registros.push(datosTemporalesListosParaGuardar);
-        localStorage.setItem('registrosResumenCargas', JSON.stringify(registros));
-        ['modalConfirmarBorrador','modalConfirmarCompleto'].forEach(id => {
-            const m = bootstrap.Modal.getInstance(document.getElementById(id));
-            if (m) m.hide();
+        grupos.forEach((g, idx) => {
+            const celda = fila.cells[idx + 1];
+            const pn    = celda ? celda.querySelector('.nombre-prof') : null;
+            const p     = pn ? pn.innerText : '---';
+            if (p !== '---') llenas++;
+            d[g] = p;
         });
-        mostrarAlerta(estado === 'completo' ? 'Grado confirmado correctamente.' : 'Guardado como borrador.', 'success');
-        datosTemporalesListosParaGuardar = null;
-        setTimeout(() => { actualizarBtnCargaAcademica(); dibujarTabla(); }, 400);
+        asignaciones.push(d);
+    });
+    if (llenas === 0) { alert("No has asignado ningún profesor todavía."); return; }
+    const tutoresOk = grupos.every(g => tutores[g] !== 'Sin asignar');
+    datosTemporalesListosParaGuardar = {
+        id: Date.now(), fecha: new Date().toLocaleDateString('es-MX'),
+        periodo, carrera, plan, grado, division: DIVISION_ID,
+        gruposRegistrados: grupos, tutores, asignaciones
+    };
+    if (llenas < total || !tutoresOk) {
+        new bootstrap.Modal(document.getElementById('modalConfirmarBorrador')).show();
+    } else {
+        new bootstrap.Modal(document.getElementById('modalConfirmarCompleto')).show();
     }
+}
 
-    /* ── REGISTROS TAB ── */
-    function inicializarVistaRegistros() {
-        const registros = JSON.parse(localStorage.getItem('registrosResumenCargas')) || [];
-        const select = document.getElementById('filtroPeriodo_registros');
-        const contenedor = document.getElementById('contenedorListaRegistros');
-        const btnL = document.getElementById('btnLimpiarFiltro_registros');
+function ejecutarGuardado(estado) {
+    if (!datosTemporalesListosParaGuardar) return;
+    datosTemporalesListosParaGuardar.estado = estado;
+    let registros = JSON.parse(localStorage.getItem('registrosResumenCargas') || '[]');
+    registros.push(datosTemporalesListosParaGuardar);
+    localStorage.setItem('registrosResumenCargas', JSON.stringify(registros));
+    ['modalConfirmarBorrador','modalConfirmarCompleto'].forEach(id => {
+        const m = bootstrap.Modal.getInstance(document.getElementById(id));
+        if (m) m.hide();
+    });
+    mostrarAlerta(estado === 'completo' ? 'Asignación confirmada.' : 'Guardado como borrador.', 'success');
+    datosTemporalesListosParaGuardar = null;
+    setTimeout(() => { actualizarUIEstadoDivision(); dibujarTabla(); actualizarBtnGuardarEstado(); }, 400);
+}
 
-        actualizarBtnCargaAcademica();
+// ─── ELIMINAR REGISTRO ───────────────────────────────────────────────────────
+function eliminarRegistro(idRegistro, event) {
+    event.stopPropagation();
+    if (!confirm('¿Eliminar este registro?')) return;
+    let registros = JSON.parse(localStorage.getItem('registrosResumenCargas') || '[]');
+    registros = registros.filter(r => r.id !== idRegistro);
+    localStorage.setItem('registrosResumenCargas', JSON.stringify(registros));
+    mostrarAlerta('Registro eliminado.', 'info');
+    actualizarUIEstadoDivision();
+    inicializarVistaRegistros();
+}
 
-        if (registros.length === 0) {
-            select.innerHTML = '<option value="" selected disabled>No hay periodos registrados</option>';
-            select.disabled = true;
-            btnL.classList.add('d-none');
-            contenedor.innerHTML = `<div class="text-center py-5 text-muted bg-white rounded-4 border"><i class="bi bi-folder-x fs-1 opacity-50 mb-3 d-block"></i><p class="mb-0">Aún no hay registros guardados.</p></div>`;
-            return;
-        }
-        select.disabled = false;
-        const periodos = [...new Set(registros.map(r => r.periodo))];
-        const actual = select.value;
-        const forzar = !periodos.includes(actual);
-        select.innerHTML = `<option value="" disabled ${forzar ? 'selected' : ''}>Selecciona un periodo...</option>` +
-            periodos.map(p => `<option value="${p}" ${p === actual && !forzar ? 'selected' : ''}>${p}</option>`).join('');
-        cargarListaRegistros();
+// ─── CIERRE DIVISIÓN ─────────────────────────────────────────────────────────
+function cerrarCargaDivision() {
+    const registros  = JSON.parse(localStorage.getItem('registrosResumenCargas') || '[]');
+    const completos  = registros.filter(r => r.estado === 'completo'  && r.division === DIVISION_ID);
+    const borradores = registros.filter(r => r.estado === 'borrador'  && r.division === DIVISION_ID);
+    if (borradores.length > 0) { mostrarAlerta('Tienes borradores pendientes. Confírmalos antes de enviar.', 'error'); return; }
+    if (completos.length === 0) { mostrarAlerta('No hay registros confirmados para enviar.', 'error'); return; }
+    const porCarrera = {};
+    completos.forEach(r => { if (!porCarrera[r.carrera]) porCarrera[r.carrera] = []; porCarrera[r.carrera].push(r.grado); });
+    let html = `<p class="mb-2 small fw-bold" style="color:#166534;"><i class="bi bi-check-circle-fill me-1"></i>Carreras y Grados que se enviarán:</p>`;
+    for (const c in porCarrera) html += `<div class="small text-dark mb-1"><span class="fw-semibold">${c}:</span> ${porCarrera[c].join(', ')}</div>`;
+    document.getElementById('resumenGradosCierre').innerHTML = html;
+    new bootstrap.Modal(document.getElementById('modalCerrarCarga')).show();
+}
+
+function ejecutarCierreDivision() {
+    const est = JSON.parse(localStorage.getItem('estadoDivisiones') || '{}');
+    est[DIVISION_ID] = 'entregado';
+    est[`${DIVISION_ID}_fecha`] = new Date().toLocaleDateString('es-MX');
+    localStorage.setItem('estadoDivisiones', JSON.stringify(est));
+    const m = bootstrap.Modal.getInstance(document.getElementById('modalCerrarCarga'));
+    if (m) m.hide();
+    mostrarAlerta('División enviada a Secretaría Académica.', 'success');
+    setTimeout(() => actualizarUIEstadoDivision(), 400);
+}
+
+// ─── VER REGISTROS ───────────────────────────────────────────────────────────
+function inicializarVistaRegistros() {
+    const registros   = JSON.parse(localStorage.getItem('registrosResumenCargas') || '[]');
+    const delDivision = registros.filter(r => r.division === DIVISION_ID);
+    const contenedor  = document.getElementById('contenedorRegistrosCombinados');
+    const aviso       = document.getElementById('avisoBorradores');
+    const tieneBorr   = delDivision.some(r => r.estado === 'borrador');
+    aviso.style.display = tieneBorr ? 'flex' : 'none';
+
+    if (delDivision.length === 0) {
+        contenedor.innerHTML = `<div class="col-12 text-center py-5 text-muted bg-white rounded-4 border"><i class="bi bi-folder-x fs-1 opacity-50 mb-3 d-block"></i><p class="mb-0">Aún no hay registros.</p></div>`;
+        return;
     }
+    const porCarrera = {};
+    delDivision.forEach(r => { if (!porCarrera[r.carrera]) porCarrera[r.carrera] = []; porCarrera[r.carrera].push(r); });
+    let html = '';
+    for (const carrera in porCarrera) {
+        const regs = porCarrera[carrera].slice().reverse();
+        const grados = regs.map(r => {
+            const esBorrador = r.estado === 'borrador';
+            const colorIcon  = esBorrador ? 'text-warning' : 'text-primary';
+            return `
+            <div class="btn-grado-registro w-100 mb-2 d-flex justify-content-between align-items-center p-3">
+                <span class="fw-bold text-dark grado-label"><i class="bi bi-bookmark-fill ${colorIcon} me-2"></i>${r.grado}</span>
+                <span class="btn-actions">
+                    <button class="btn btn-sm btn-outline-primary rounded-pill px-3" onclick="event.stopPropagation();abrirModalDetalle(${r.id})">
+                        <i class="bi bi-eye me-1"></i>Ver
+                    </button>
+                    <button class="btn btn-sm btn-outline-secondary rounded-pill px-3" onclick="event.stopPropagation();editarBorrador(${r.id})">
+                        <i class="bi bi-pencil me-1"></i>Editar
+                    </button>
+                </span>
+                <span class="ms-auto me-2 ${esBorrador ? 'badge-estado-incompleto' : 'badge-estado-completo'}">${esBorrador ? 'Incompleto' : 'Completo'}</span>
+                <button class="btn-eliminar-registro ms-2" onclick="eliminarRegistro(${r.id}, event)" title="Eliminar registro">
+                    <i class="bi bi-trash3-fill"></i>
+                </button>
+            </div>`;
+        }).join('');
 
-    function limpiarFiltroRegistros() {
-        document.getElementById('filtroPeriodo_registros').value = "";
-        cargarListaRegistros();
-    }
+        const hayBorr    = regs.some(r => r.estado === 'borrador');
+        const hayCompleto= regs.some(r => r.estado === 'completo');
+        const badgeHtml  = hayBorr && hayCompleto
+            ? `<span class="badge-estado-incompleto me-1"><i class="bi bi-clock-history me-1"></i>En proceso</span>`
+            : hayBorr
+                ? `<span class="badge-estado-incompleto"><i class="bi bi-clock-history me-1"></i>Incompleto</span>`
+                : `<span class="badge-estado-completo"><i class="bi bi-check-circle-fill me-1"></i>Completo</span>`;
 
-    function cargarListaRegistros() {
-        const select = document.getElementById('filtroPeriodo_registros');
-        const valor = select.value;
-        const contenedor = document.getElementById('contenedorListaRegistros');
-        const btnL = document.getElementById('btnLimpiarFiltro_registros');
-
-        if (!valor) {
-            btnL.classList.add('d-none');
-            contenedor.innerHTML = `<div class="text-center py-5 text-muted bg-white rounded-4 border" style="border-style:dashed !important;"><i class="bi bi-hand-index-thumb fs-1 opacity-50 mb-3 d-block text-success"></i><p class="mb-0 fw-medium">Selecciona un periodo para mostrar.</p></div>`;
-            return;
-        }
-        btnL.classList.remove('d-none');
-
-        const registros = JSON.parse(localStorage.getItem('registrosResumenCargas')) || [];
-        const aMostrar = registros.filter(r => r.periodo === valor);
-
-        if (aMostrar.length === 0) {
-            contenedor.innerHTML = `<div class="text-center py-5 text-muted bg-white rounded-4 border"><i class="bi bi-inbox fs-1 opacity-50 mb-3 d-block"></i><p class="mb-0">No hay registros para este periodo.</p></div>`;
-            return;
-        }
-
-        const agrupadosPorCarrera = {};
-        aMostrar.forEach(r => {
-            if (!agrupadosPorCarrera[r.carrera]) agrupadosPorCarrera[r.carrera] = [];
-            agrupadosPorCarrera[r.carrera].push(r);
-        });
-
-        let html = '<div class="row g-4">';
-
-        for (const [carrera, grados] of Object.entries(agrupadosPorCarrera)) {
-            const completosCount = grados.filter(g => g.estado === 'completo').length;
-            const esCarreraCompleta = completosCount === grados.length;
-
-            let gradosHtml = '';
-            grados.sort((a, b) => a.grado.localeCompare(b.grado)).forEach(r => {
-                const esCompleto = r.estado === 'completo';
-                const claseEstado = esCompleto ? 'completo' : 'incompleto';
-                const iconEstado = esCompleto
-                    ? '<i class="bi bi-check-circle-fill text-success fs-6"></i>'
-                    : '<i class="bi bi-clock-history text-warning fs-6"></i>';
-
-                gradosHtml += `
-                    <div class="grado-btn ${claseEstado} d-flex justify-content-between align-items-center" style="cursor: default; padding: 8px 12px;" onclick="event.stopPropagation();">
-                        <span class="fw-bold text-dark text-nowrap"><i class="bi bi-bookmark-fill text-muted me-2 opacity-50"></i>${r.grado}</span>
-                        <div class="d-flex align-items-center gap-2">
-                            <button class="btn btn-outline-primary p-0 d-flex align-items-center justify-content-center"
-                                style="width:30px;height:30px;border-radius:8px;border-width:1.5px;"
-                                onclick="abrirModalDetalle(${r.id});" title="Ver detalle">
-                                <i class="bi bi-eye-fill" style="font-size:1.1rem;"></i>
-                            </button>
-                            <button class="btn btn-outline-secondary p-0 d-flex align-items-center justify-content-center"
-                                style="width:30px;height:30px;border-radius:8px;border-width:1.5px;"
-                                onclick="confirmarEditar(${r.id});" title="Editar">
-                                <i class="bi bi-pencil-fill" style="font-size:1.1rem;"></i>
-                            </button>
-                            <button class="btn btn-outline-danger p-0 d-flex align-items-center justify-content-center"
-                                style="width:30px;height:30px;border-radius:8px;border-width:1.5px;"
-                                onclick="confirmarBorrar(${r.id});" title="Borrar">
-                                <i class="bi bi-trash3-fill" style="font-size:1.1rem;"></i>
-                            </button>
-                            <div class="vr bg-secondary opacity-25 ms-2 me-1" style="width:2px;"></div>
-                            ${iconEstado}
+        html += `
+        <div class="col-md-4 col-sm-6 mb-4">
+            <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front text-center pt-3">
+                        <div class="mb-3">${badgeHtml}</div>
+                        <div class="bg-primary bg-opacity-10 text-primary p-3 rounded-circle mb-3 d-inline-block"><i class="bi bi-briefcase-fill fs-3"></i></div>
+                        <h5 class="fw-bold px-2" style="color:var(--navy);font-size:.92rem;font-family:'Arial',sans-serif;">${carrera}</h5>
+                        <span class="badge bg-light text-secondary border mt-1 px-3 py-2 rounded-pill">${regs.length} resúmenes</span>
+                        <div class="mt-auto pt-3 text-muted small w-100 border-top"><i class="bi bi-arrow-repeat me-1"></i>Clic para girar</div>
+                    </div>
+                    <div class="flip-card-back" onclick="event.stopPropagation()">
+                        <div class="d-flex justify-content-between align-items-center mb-3 pb-3 border-bottom">
+                            <h6 class="m-0 fw-bold text-dark">Grados Registrados</h6>
+                            <button class="btn btn-sm btn-light border rounded-circle py-0 px-2 text-muted" onclick="this.closest('.flip-card').classList.remove('flipped')"><i class="bi bi-x fs-5"></i></button>
                         </div>
-                    </div>`;
-            });
-
-            html += `
-            <div class="col-md-6 col-lg-4">
-                <div class="flip-card-container">
-                    <div class="flip-card" onclick="this.classList.toggle('flipped')">
-                        <div class="flip-card-inner">
-                            <div class="flip-card-front">
-                                <div class="p-3 rounded-circle mb-3 shadow-sm d-inline-flex" style="background:${esCarreraCompleta ? '#f0fdf4' : '#fffbeb'}; color:${esCarreraCompleta ? '#16a34a' : '#d97706'};">
-                                    <i class="bi bi-${esCarreraCompleta ? 'mortarboard-fill' : 'journal-text'} fs-2"></i>
-                                </div>
-                                <h6 class="fw-bold text-dark mb-2 lh-base" style="font-size:0.95rem;">${carrera}</h6>
-                                <span class="badge bg-light text-secondary border px-3 py-2 mb-3 shadow-sm">
-                                    ${grados.length} Grado(s)
-                                </span>
-                                <div class="mt-auto text-primary small fw-semibold" style="opacity:0.8;">
-                                    <i class="bi bi-arrow-repeat me-1"></i>Clic para ver grados
-                                </div>
-                            </div>
-                            <div class="flip-card-back">
-                                <div class="flip-back-title">Grados Registrados</div>
-                                <div class="grado-btn-grid mb-3">
-                                    ${gradosHtml}
-                                </div>
-                                <div class="mt-auto text-center text-muted w-100" style="font-size:0.75rem;">
-                                    <i class="bi bi-arrow-return-left"></i> Voltear tarjeta
-                                </div>
-                            </div>
-                        </div>
+                        <div class="flex-grow-1 overflow-auto custom-scrollbar pe-1">${grados}</div>
                     </div>
                 </div>
-            </div>`;
+            </div>
+        </div>`;
+    }
+    contenedor.innerHTML = html;
+}
+
+// ─── FINALIZADOS ─────────────────────────────────────────────────────────────
+function inicializarVistaTarjetas(tipo) {
+    const registros = JSON.parse(localStorage.getItem('registrosResumenCargas') || '[]');
+    const delTipo   = registros.filter(r => r.estado === tipo);
+    const select    = document.getElementById(`filtroPeriodo_${tipo}`);
+    const contenedor= document.getElementById(`contenedorTarjetas_${tipo}`);
+    const btnL      = document.getElementById(`btnLimpiarFiltro_${tipo}`);
+    if (delTipo.length === 0) {
+        select.innerHTML = '<option value="" selected disabled>No hay periodos registrados</option>';
+        select.disabled  = true;
+        btnL.classList.add('d-none');
+        contenedor.innerHTML = `<div class="col-12 text-center py-5 text-muted bg-white rounded-4 border"><i class="bi bi-folder-x fs-1 opacity-50 mb-3 d-block"></i><p class="mb-0">Aún no hay registros finalizados.</p></div>`;
+        return;
+    }
+    select.disabled = false;
+    const periodos = [...new Set(delTipo.map(r => r.periodo))];
+    const actual   = select.value;
+    const forzar   = !periodos.includes(actual);
+    select.innerHTML = `<option value="" disabled ${forzar ? 'selected' : ''}>Selecciona un periodo...</option>` +
+        periodos.map(p => `<option value="${p}" ${p === actual && !forzar ? 'selected' : ''}>${p}</option>`).join('');
+    cargarTarjetas(tipo);
+}
+
+function limpiarFiltroPeriodo(tipo) {
+    document.getElementById(`filtroPeriodo_${tipo}`).value = "";
+    cargarTarjetas(tipo);
+}
+
+function cargarTarjetas(tipo) {
+    const select    = document.getElementById(`filtroPeriodo_${tipo}`);
+    const valor     = select.value;
+    const contenedor= document.getElementById(`contenedorTarjetas_${tipo}`);
+    const btnL      = document.getElementById(`btnLimpiarFiltro_${tipo}`);
+    if (!valor) {
+        btnL.classList.add('d-none');
+        contenedor.innerHTML = `<div class="col-12 text-center py-5 text-muted bg-white rounded-4 border" style="border-style:dashed!important;"><i class="bi bi-hand-index-thumb fs-1 opacity-50 mb-3 d-block" style="color:var(--purple);"></i><p class="mb-0 fw-medium">Selecciona un periodo.</p></div>`;
+        return;
+    }
+    btnL.classList.remove('d-none');
+    const registros = JSON.parse(localStorage.getItem('registrosResumenCargas') || '[]');
+    const aMostrar  = registros.filter(r => r.estado === tipo && r.periodo === valor);
+    const porCarrera= {};
+    aMostrar.forEach(r => { if (!porCarrera[r.carrera]) porCarrera[r.carrera] = []; porCarrera[r.carrera].push(r); });
+    let html = '';
+    for (const carrera in porCarrera) {
+        const regs   = porCarrera[carrera].slice().reverse();
+        const grados = regs.map(r => `
+            <div class="btn-grado-registro w-100 mb-2 d-flex justify-content-between align-items-center p-3">
+                <span class="fw-bold text-dark" onclick="abrirModalDetalle(${r.id})">
+                    <i class="bi bi-bookmark-fill text-primary me-2"></i>${r.grado}
+                </span>
+                <div class="d-flex align-items-center gap-2 ms-auto">
+                    <span class="badge bg-light text-secondary border">${r.fecha}</span>
+                    <button class="btn-eliminar-registro" onclick="eliminarRegistroFinalizado(${r.id},'${tipo}',event)" title="Eliminar">
+                        <i class="bi bi-trash3-fill"></i>
+                    </button>
+                </div>
+            </div>`).join('');
+        html += `
+        <div class="col-md-4 col-sm-6 mb-4">
+            <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front text-center pt-3">
+                        <div class="mb-3"><span class="badge-estado-completo"><i class="bi bi-check-circle-fill me-1"></i>Finalizado</span></div>
+                        <div class="p-3 rounded-circle mb-3 d-inline-block" style="background:#f3e8ff;"><i class="bi bi-briefcase-fill fs-3" style="color:var(--purple);"></i></div>
+                        <h5 class="fw-bold px-2" style="color:var(--navy);font-size:.92rem;font-family:'Arial',sans-serif;">${carrera}</h5>
+                        <span class="badge bg-light text-secondary border mt-1 px-3 py-2 rounded-pill">${regs.length} grados</span>
+                        <div class="mt-auto pt-3 text-muted small w-100 border-top"><i class="bi bi-arrow-repeat me-1"></i>Clic para girar</div>
+                    </div>
+                    <div class="flip-card-back" onclick="event.stopPropagation()">
+                        <div class="d-flex justify-content-between align-items-center mb-3 pb-3 border-bottom">
+                            <h6 class="m-0 fw-bold text-dark">Grados</h6>
+                            <button class="btn btn-sm btn-light border rounded-circle py-0 px-2 text-muted" onclick="this.closest('.flip-card').classList.remove('flipped')"><i class="bi bi-x fs-5"></i></button>
+                        </div>
+                        <div class="flex-grow-1 overflow-auto custom-scrollbar pe-1">${grados}</div>
+                    </div>
+                </div>
+            </div>
+        </div>`;
+    }
+    contenedor.innerHTML = html;
+}
+
+function eliminarRegistroFinalizado(idRegistro, tipo, event) {
+    event.stopPropagation();
+    if (!confirm('¿Eliminar este registro finalizado?')) return;
+    let registros = JSON.parse(localStorage.getItem('registrosResumenCargas') || '[]');
+    registros = registros.filter(r => r.id !== idRegistro);
+    localStorage.setItem('registrosResumenCargas', JSON.stringify(registros));
+    mostrarAlerta('Registro eliminado.', 'info');
+    actualizarUIEstadoDivision();
+    inicializarVistaTarjetas(tipo);
+}
+
+// ─── MODAL DETALLE ────────────────────────────────────────────────────────────
+function abrirModalDetalle(idRegistro) {
+    const registros = JSON.parse(localStorage.getItem('registrosResumenCargas') || '[]');
+    const reg = registros.find(r => r.id === idRegistro);
+    if (!reg) return;
+    document.getElementById('modalTituloGral').innerText = `${reg.carrera} — ${reg.grado}`;
+    document.getElementById('modalPeriodo').innerText    = reg.periodo;
+    document.getElementById('modalBadgeEstado').innerHTML = reg.estado === 'borrador'
+        ? `<span class="badge-estado-incompleto"><i class="bi bi-clock-history me-1"></i>Incompleto</span>`
+        : `<span class="badge-estado-completo"><i class="bi bi-check-circle-fill me-1"></i>Completo</span>`;
+    document.getElementById('modalTutoresContainer').innerHTML = reg.gruposRegistrados
+        .map(g => `<span class="badge-tutor-registro me-1">${g}: ${reg.tutores[g] || 'Sin asignar'}</span>`).join('');
+    document.getElementById('modalCabeceraTabla').innerHTML =
+        `<tr><th class="text-start py-3 ps-3">Materia</th>` +
+        reg.gruposRegistrados.map(g => `<th class="py-3">${g}</th>`).join('') + `</tr>`;
+    document.getElementById('modalCuerpoTabla').innerHTML = reg.asignaciones.map(a => {
+        const tds = reg.gruposRegistrados.map(g =>
+            `<td class="text-primary align-middle">${a[g] !== '---' ? a[g] : '<span class="text-muted opacity-25">-</span>'}</td>`).join('');
+        return `<tr><td class="text-start fw-medium ps-3 text-dark align-middle">${a.materia}</td>${tds}</tr>`;
+    }).join('');
+    const footer = document.getElementById('modalFooterDetalle');
+    if (reg.estado === 'borrador') {
+        footer.innerHTML = `<button class="btn btn-primary fw-bold px-4" onclick="editarBorrador(${reg.id})"><i class="bi bi-pencil-square me-2"></i>Editar Borrador</button>`;
+        footer.classList.remove('d-none'); footer.classList.add('d-flex');
+    } else {
+        footer.innerHTML = ''; footer.classList.add('d-none'); footer.classList.remove('d-flex');
+    }
+    new bootstrap.Modal(document.getElementById('modalTablaRegistro')).show();
+}
+
+function editarBorrador(idRegistro) {
+    let registros = JSON.parse(localStorage.getItem('registrosResumenCargas') || '[]');
+    const reg = registros.find(r => r.id === idRegistro);
+    if (!reg) return;
+    const mi = bootstrap.Modal.getInstance(document.getElementById('modalTablaRegistro'));
+    if (mi) mi.hide();
+    bootstrap.Tab.getOrCreateInstance(document.querySelector('#pills-config-tab')).show();
+    document.getElementById('selPeriodo').value = reg.periodo;
+    document.getElementById('selPlan').value    = reg.plan;
+    const opts = document.getElementById('selCarrera').options;
+    for (let i = 0; i < opts.length; i++) {
+        if (opts[i].text === reg.carrera) { document.getElementById('selCarrera').selectedIndex = i; break; }
+    }
+    verificarSelects();
+    let btn = null;
+    document.querySelectorAll('.btn-grado').forEach(b => { if (b.innerText.includes(reg.grado)) btn = b; });
+    seleccionarGrado(btn, reg.grado);
+    reg.gruposRegistrados.forEach(g => {
+        const s = document.getElementById(`tutor-${g}`);
+        if (s && reg.tutores[g] && reg.tutores[g] !== 'Sin asignar') { s.innerText = reg.tutores[g]; s.className = 'badge-tutor shadow-sm'; }
+    });
+    const filas = document.getElementById('cuerpoTabla').querySelectorAll('tr');
+    reg.asignaciones.forEach((a, i) => {
+        if (filas[i]) {
+            reg.gruposRegistrados.forEach((g, ci) => {
+                if (a[g] && a[g] !== '---') {
+                    const celda = filas[i].cells[ci + 1];
+                    if (!celda) return;
+                    celda.innerHTML = `<div class="prof-badge"><span class="nombre-prof">${a[g]}</span><i class="bi bi-trash3-fill icon-borrar"></i></div>`;
+                    celda.classList.add('celda-asignada');
+                    celda.addEventListener('mouseleave', function() { if (this.classList.contains('celda-asignada')) this.classList.add('permitir-borrado'); }, { once: true });
+                }
+            });
         }
+    });
+    localStorage.setItem('registrosResumenCargas', JSON.stringify(registros.filter(r => r.id !== idRegistro)));
+    mostrarAlerta('Borrador cargado. No olvides guardar tus cambios.', 'info');
+    actualizarUIEstadoDivision();
+    actualizarBtnGuardarEstado();
+}
 
-        html += '</div>';
-        contenedor.innerHTML = html;
+function limpiarMemoria(tipo) {
+    if (confirm(`¿Seguro que quieres borrar todos los registros de tipo '${tipo}'?`)) {
+        const registros = JSON.parse(localStorage.getItem('registrosResumenCargas') || '[]');
+        localStorage.setItem('registrosResumenCargas', JSON.stringify(registros.filter(r => r.estado !== tipo)));
+        if (document.getElementById(`filtroPeriodo_${tipo}`))
+            document.getElementById(`filtroPeriodo_${tipo}`).value = '';
+        inicializarVistaTarjetas(tipo);
+        mostrarAlerta('Registros borrados.', 'info');
+        actualizarUIEstadoDivision();
     }
+}
 
-    /* ── Editar con modal de confirmación ── */
-    function confirmarEditar(idRegistro) {
-        _idRegistroEditar = idRegistro;
-        const modal = new bootstrap.Modal(document.getElementById('modalConfirmarEditar'));
-        document.getElementById('btnConfirmarEditarOk').onclick = function() {
-            modal.hide();
-            setTimeout(() => ejecutarEdicion(_idRegistroEditar), 300);
-        };
-        modal.show();
-    }
-
-    function ejecutarEdicion(idRegistro) {
-        let registros = JSON.parse(localStorage.getItem('registrosResumenCargas')) || [];
-        const reg = registros.find(r => r.id === idRegistro);
-        if (!reg) return;
-
-        const mi = bootstrap.Modal.getInstance(document.getElementById('modalTablaRegistro'));
-        if (mi) mi.hide();
-
-        bootstrap.Tab.getOrCreateInstance(document.querySelector('#pills-config-tab')).show();
-
-        document.getElementById('selPeriodo').value = reg.periodo;
-        document.getElementById('selPlan').value = reg.plan;
-        const opts = document.getElementById('selCarrera').options;
-        for (let i = 0; i < opts.length; i++) {
-            if (opts[i].text === reg.carrera) { document.getElementById('selCarrera').selectedIndex = i; break; }
-        }
-        verificarSelects();
-
-        let btn = null;
-        document.querySelectorAll('.btn-grado').forEach(b => { if (b.innerText.includes(reg.grado)) btn = b; });
-        seleccionarGrado(btn, reg.grado);
-
-        reg.gruposRegistrados.forEach(g => {
-            const s = document.getElementById(`tutor-${g}`);
-            if (s && reg.tutores[g] !== 'Sin asignar') {
-                s.innerText = reg.tutores[g];
-                s.className = 'badge-tutor shadow-sm';
-            }
-        });
-
-        const filas = document.getElementById('cuerpoTabla').querySelectorAll('tr');
-        reg.asignaciones.forEach((a, i) => {
-            if (filas[i]) {
-                reg.gruposRegistrados.forEach((g, ci) => {
-                    if (a[g] && a[g] !== '---') {
-                        const celda = filas[i].cells[ci + 1];
-                        celda.innerHTML = `<div class="prof-badge shadow-sm"><span class="nombre-prof">${a[g]}</span><i class="bi bi-trash3-fill icon-borrar"></i></div>`;
-                        celda.classList.add('celda-asignada');
-                        celda.addEventListener('mouseleave', function() {
-                            if (this.classList.contains('celda-asignada')) this.classList.add('permitir-borrado');
-                        }, { once: true });
-                    }
-                });
-            }
-        });
-
-        localStorage.setItem('registrosResumenCargas', JSON.stringify(registros.filter(r => r.id !== idRegistro)));
-        mostrarAlerta('Registro cargado. Realiza tus cambios y guarda de nuevo.', 'info');
-        actualizarBtnCargaAcademica();
-    }
-
-    /* ── Borrar con modal de confirmación ── */
-    function confirmarBorrar(idRegistro) {
-        _idRegistroBorrar = idRegistro;
-        const modal = new bootstrap.Modal(document.getElementById('modalConfirmarBorrar'));
-        document.getElementById('btnConfirmarBorrarOk').onclick = function() {
-            modal.hide();
-            setTimeout(() => ejecutarBorrado(_idRegistroBorrar), 300);
-        };
-        modal.show();
-    }
-
-    function ejecutarBorrado(idRegistro) {
-        let registros = JSON.parse(localStorage.getItem('registrosResumenCargas')) || [];
-        registros = registros.filter(r => r.id !== idRegistro);
-        localStorage.setItem('registrosResumenCargas', JSON.stringify(registros));
-        mostrarAlerta('Registro eliminado.', 'info');
-        inicializarVistaRegistros();
-        cargarListaRegistros();
-    }
-
-    function editarRegistro(idRegistro) { confirmarEditar(idRegistro); }
-    function borrarRegistro(idRegistro) { confirmarBorrar(idRegistro); }
-
-    function abrirModalDetalle(idRegistro) {
-        const registros = JSON.parse(localStorage.getItem('registrosResumenCargas')) || [];
-        const reg = registros.find(r => r.id === idRegistro);
-        if (!reg) return;
-        document.getElementById('modalTituloGral').innerText = `${reg.carrera} - ${reg.grado}`;
-        document.getElementById('modalPeriodo').innerText = reg.periodo;
-        document.getElementById('modalBadgeEstado').innerHTML = reg.estado === 'borrador'
-            ? `<span class="badge-estado-incompleto"><i class="bi bi-clock-history me-1"></i>Incompleto</span>`
-            : `<span class="badge-estado-completo"><i class="bi bi-check-circle-fill me-1"></i>Completo</span>`;
-        document.getElementById('modalTutoresContainer').innerHTML = reg.gruposRegistrados
-            .map(g => `<span class="badge-tutor-registro shadow-sm me-1">${g}: ${reg.tutores[g] || 'Sin asignar'}</span>`).join('');
-        document.getElementById('modalCabeceraTabla').innerHTML =
-            `<tr><th class="text-start py-3 ps-3">Materia</th>` +
-            reg.gruposRegistrados.map(g => `<th class="py-3">${g}</th>`).join('') + `</tr>`;
-        document.getElementById('modalCuerpoTabla').innerHTML = reg.asignaciones.map(a => {
-            const tds = reg.gruposRegistrados.map(g =>
-                `<td class="text-primary align-middle">${a[g] !== '---' ? a[g] : '<span class="text-muted opacity-25">-</span>'}</td>`).join('');
-            return `<tr><td class="text-start fw-medium ps-3 text-dark align-middle">${a.materia}</td>${tds}</tr>`;
-        }).join('');
-        const footer = document.getElementById('modalFooterDetalle');
-        if (reg.estado === 'borrador') {
-            footer.innerHTML = `<button class="btn btn-primary fw-bold px-4 shadow-sm" onclick="editarBorrador(${reg.id})"><i class="bi bi-pencil-square me-2"></i>Editar Borrador</button>`;
-            footer.classList.remove('d-none'); footer.classList.add('d-flex');
-        } else {
-            footer.innerHTML = ''; footer.classList.add('d-none'); footer.classList.remove('d-flex');
-        }
-        new bootstrap.Modal(document.getElementById('modalTablaRegistro')).show();
-    }
-
-    function editarBorrador(idRegistro) {
-        const mi = bootstrap.Modal.getInstance(document.getElementById('modalTablaRegistro'));
-        if (mi) mi.hide();
-        setTimeout(() => confirmarEditar(idRegistro), 300);
-    }
-
-    function limpiarTodosRegistros() {
-        if (confirm("¿Seguro que quieres borrar todos los registros?")) {
-            localStorage.removeItem('registrosResumenCargas');
-            inicializarVistaRegistros();
-            mostrarAlerta('Registros borrados correctamente.', 'info');
-            actualizarBtnCargaAcademica();
-        }
-    }
-
-    window.resetearStatusPruebas = function() {
-        if (confirm("MODO PRUEBAS: ¿Deseas resetear el status de la división?")) {
-            const est = JSON.parse(localStorage.getItem('estadoDivisiones')) || {};
-            delete est[DIVISION_ID];
-            localStorage.setItem('estadoDivisiones', JSON.stringify(est));
-            location.reload();
-        }
+// ─── TOAST ────────────────────────────────────────────────────────────────────
+function mostrarAlerta(mensaje, tipo = 'success') {
+    const existing = document.getElementById('toastFlotante');
+    if (existing) existing.remove();
+    const config = {
+        success: { icono:'bi-check-circle-fill',        color:'#16a34a' },
+        info:    { icono:'bi-exclamation-triangle-fill', color:'#f59e0b' },
+        error:   { icono:'bi-x-circle-fill',             color:'#dc2626' }
     };
+    const c = config[tipo] || config.success;
+    const toast = document.createElement('div');
+    toast.id = 'toastFlotante';
+    toast.style.cssText = `position:fixed;top:20px;right:24px;z-index:9999;display:flex;align-items:center;gap:12px;background:#fff;border:1px solid #e2e8f0;border-left:4px solid ${c.color};border-radius:12px;padding:14px 16px;box-shadow:0 8px 32px rgba(10,37,64,.12);font-family:'Inter','Arial',sans-serif;font-size:.875rem;font-weight:500;max-width:310px;animation:slideInToast .3s cubic-bezier(.34,1.56,.64,1);`;
+    toast.innerHTML = `
+        <div style="width:28px;height:28px;border-radius:50%;background:${c.color};display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <i class="bi ${c.icono}" style="color:white;font-size:.8rem;"></i>
+        </div>
+        <span style="flex:1;color:#1e293b;">${mensaje}</span>
+        <button onclick="this.parentElement.remove()" style="background:none;border:none;color:#94a3b8;cursor:pointer;font-size:1rem;padding:0 0 0 6px;line-height:1;flex-shrink:0;">✕</button>`;
+    document.body.appendChild(toast);
+    setTimeout(() => {
+        if (toast && toast.parentElement) { toast.style.animation='fadeOutToast .25s ease forwards'; setTimeout(()=>toast.remove(),250); }
+    }, 3500);
+}
+
+// ─── RESET ────────────────────────────────────────────────────────────────────
+window.resetearStatusPruebas = function() {
+    if (confirm("¿Resetear TODOS los datos? (registros, estado división, etc.)")) {
+        localStorage.removeItem('estadoDivisiones');
+        localStorage.removeItem('registrosResumenCargas');
+        localStorage.removeItem('actividadesProfesores');
+        location.reload();
+    }
+};
 </script>
 </body>
 </html>
