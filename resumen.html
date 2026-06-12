@@ -41,33 +41,37 @@
             font-size: 14px;
         }
 
-        /* ── HEADER ── */
+        /* ── HEADER (ESTILO LIMPIO) ── */
         .app-header {
-            background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 60%, #1e4d8c 100%);
-            padding: 28px 40px 24px;
-            border-radius: 0 0 28px 28px;
+            background: #ffffff;
+            padding: 24px 40px;
+            border-radius: 20px;
             margin-bottom: 32px;
-            box-shadow: 0 8px 32px rgba(10,37,64,.18);
+            box-shadow: 0 4px 16px rgba(10,37,64,.06);
+            border: 1px solid var(--gray-200);
         }
         .app-header h2 {
             font-family: 'Arial', sans-serif;
             font-weight: 800;
             font-size: 1.55rem;
-            color: #fff;
+            color: var(--navy);
             letter-spacing: -0.3px;
             margin: 0;
         }
         .app-header .subtitle {
-            color: rgba(255,255,255,.62);
-            font-size: .82rem;
+            color: var(--gray-600);
+            font-size: .85rem;
             margin-top: 4px;
+            font-weight: 500;
         }
         .header-icon-wrap {
             width: 52px; height: 52px; border-radius: 16px;
-            background: rgba(255,255,255,.13);
+            background: var(--blue-light);
             display: flex; align-items: center; justify-content: center;
             flex-shrink: 0;
-            backdrop-filter: blur(4px);
+        }
+        .header-icon-wrap i {
+            color: var(--blue) !important;
         }
 
         /* ── STATUS PILL ── */
@@ -77,10 +81,8 @@
             font-size: .78rem; font-weight: 600;
             border: 1.5px solid; transition: all .3s;
         }
-        .division-status-pill.en-proceso { background:#f0fdf4; border-color:#86efac; color:#15803d; }
         .division-status-pill.entregada  { background:#eff6ff; border-color:#93c5fd; color:var(--blue); }
         .division-status-pill .status-dot { width:8px; height:8px; border-radius:50%; }
-        .division-status-pill.en-proceso .status-dot { background:var(--green); }
         .division-status-pill.entregada  .status-dot { background:#3b82f6; }
 
         /* ── IR A CARGA ── */
@@ -101,7 +103,7 @@
         }
         .nav-pills .nav-link.active { background: var(--blue); color: white; box-shadow: 0 4px 12px var(--blue-glow); }
         #pills-registros-tab.active { background: #0891b2 !important; box-shadow: 0 4px 12px rgba(8,145,178,.22) !important; }
-        #pills-finalizados-tab.active { background: var(--purple) !important; box-shadow: 0 4px 12px rgba(124,58,237,.22) !important; }
+    
 
         /* ── PANEL CONFIG ── */
         .config-panel {
@@ -221,7 +223,6 @@
         .badge-estado-incompleto { background: #fef3c7; color: #92400e; border-radius: 6px; padding: 4px 12px; font-size: .72rem; font-weight: 700; text-transform: uppercase; }
         .badge-estado-completo   { background: #dcfce7; color: #166534; border-radius: 6px; padding: 4px 12px; font-size: .72rem; font-weight: 700; text-transform: uppercase; }
 
-        
         .seccion-envio.bloqueada { background: #fffbeb; border-color: #fde68a; }
         .icono-envio {
             width: 52px; height: 52px; border-radius: 14px;
@@ -324,17 +325,13 @@
 </head>
 <body>
 
-<!-- ══════════════════════════════════
-     VISTA PRINCIPAL
-══════════════════════════════════ -->
 <div id="ventanaPrincipal">
 <div class="container py-4" style="max-width:1200px;">
 
-    <!-- HEADER -->
     <div class="app-header d-flex justify-content-between align-items-center flex-wrap gap-3">
         <div class="d-flex align-items-center gap-3">
             <div class="header-icon-wrap">
-                <i class="bi bi-journal-text fs-3 text-white"></i>
+                <i class="bi bi-journal-text fs-3 text-primary"></i>
             </div>
             <div>
                 <h2>Asignación de Materias</h2>
@@ -358,7 +355,6 @@
         </div>
     </div>
 
-    <!-- TABS -->
     <ul class="nav nav-pills mb-4" id="pills-tab" role="tablist">
         <li class="nav-item" role="presentation">
             <button class="nav-link active" id="pills-config-tab" data-bs-toggle="pill" data-bs-target="#pills-config" type="button" role="tab">
@@ -370,16 +366,10 @@
                 <i class="bi bi-journal-check me-2"></i>Ver Registros
             </button>
         </li>
-        <li class="nav-item" role="presentation">
-            <button class="nav-link" id="pills-finalizados-tab" data-bs-toggle="pill" data-bs-target="#pills-finalizados" type="button" role="tab" onclick="inicializarVistaTarjetas('completo')">
-                <i class="bi bi-archive-fill me-2"></i>Registros Finalizados
-            </button>
-        </li>
     </ul>
 
     <div class="tab-content" id="pills-tabContent">
 
-        <!-- TAB CONFIGURAR -->
         <div class="tab-pane fade show active" id="pills-config" role="tabpanel">
             <div class="config-panel">
                 <div class="row g-3">
@@ -419,7 +409,6 @@
             </div>
 
             <div class="d-none" id="seccionConfiguracion">
-                <!-- TUTORES -->
                 <div class="section-panel">
                     <div class="section-title"><i class="bi bi-people-fill me-2"></i>Asignar Tutores</div>
                     <div class="row g-2 align-items-end">
@@ -435,7 +424,10 @@
                         <div class="col-md-8">
                             <div class="panel-label">Tutor</div>
                             <div class="dropdown w-100">
-                                <button class="form-select bg-white text-start text-truncate" type="button" id="btnTutorDropdown" data-bs-toggle="dropdown" aria-expanded="false">Selecciona...</button>
+                                <button class="form-select bg-white text-start d-flex justify-content-between align-items-center" type="button" id="btnTutorDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <span class="text-truncate">Selecciona...</span>
+                                    <i class="bi bi-chevron-down text-muted ms-2 flex-shrink-0"></i>
+                                </button>
                                 <ul class="dropdown-menu w-100 p-2 dropdown-menu-profesores" id="listaOpcionesTutores">
                                     <li class="px-2 pb-2">
                                         <input type="text" class="form-control" id="buscadorTutores" placeholder="Buscar..." onkeyup="filtrarTutores()" onclick="event.stopPropagation()">
@@ -458,12 +450,14 @@
                     </div>
                 </div>
 
-                <!-- PROFESORES -->
                 <div class="section-panel-alt">
                     <div class="section-title"><i class="bi bi-person-badge-fill me-2"></i>Profesor a impartir</div>
                     <div class="panel-label mb-2">Selecciona el profesor que colocarás en la tabla:</div>
                     <div class="dropdown w-100">
-                        <button class="form-select bg-white text-start text-truncate" type="button" id="btnProfesorDropdown" data-bs-toggle="dropdown" aria-expanded="false">Despliega o busca un profesor...</button>
+                        <button class="form-select bg-white text-start d-flex justify-content-between align-items-center" type="button" id="btnProfesorDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            <span class="text-truncate">Despliega o busca un profesor...</span>
+                            <i class="bi bi-chevron-down text-muted ms-2 flex-shrink-0"></i>
+                        </button>
                         <ul class="dropdown-menu w-100 p-2 dropdown-menu-profesores" id="listaOpcionesProfesores">
                             <li class="px-2 pb-2">
                                 <input type="text" class="form-control" id="buscadorProfesores" placeholder="Buscar..." onkeyup="filtrarProfesores()" onclick="event.stopPropagation()">
@@ -481,7 +475,6 @@
                     <input type="hidden" id="profesorActivo" value="">
                 </div>
 
-                <!-- TABLA -->
                 <div class="tabla-contenedor">
                     <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
                         <div class="d-flex align-items-center flex-wrap gap-3">
@@ -510,55 +503,35 @@
             </div>
         </div>
 
-        <!-- TAB VER REGISTROS -->
         <div class="tab-pane fade" id="pills-registros" role="tabpanel">
-            <div class="aviso-borradores" id="avisoBorradores">
-                <i class="bi bi-exclamation-triangle-fill fs-5 flex-shrink-0" style="color:#c2410c;"></i>
-                <span>Concluye todos tus registros para continuar. <strong>No puedes tener borradores activos.</strong></span>
-            </div>
-            <div id="contenedorRegistrosCombinados" class="row"></div>
-        </div>
+    <div class="aviso-borradores" id="avisoBorradores">
+        <i class="bi bi-exclamation-triangle-fill fs-5 flex-shrink-0" style="color:#c2410c;"></i>
+        <span>Concluye todos tus registros para continuar. <strong>No puedes tener borradores activos.</strong></span>
+    </div>
 
-        <!-- TAB REGISTROS FINALIZADOS -->
-        <div class="tab-pane fade" id="pills-finalizados" role="tabpanel">
-            <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
-                <h5 class="m-0 fw-bold" style="color:var(--purple); font-family:'Arial',sans-serif;">
-                    <i class="bi bi-archive-fill me-2"></i>Registros Finalizados
-                </h5>
-                <button class="btn btn-outline-danger btn-sm rounded-pill px-3 fw-medium" onclick="limpiarMemoria('completo')">
-                    <i class="bi bi-trash3 me-1"></i>Borrar todo
-                </button>
-            </div>
-            <div class="filter-periodo-wrap">
-                <div class="panel-label"><i class="bi bi-funnel-fill me-1" style="color:var(--purple);"></i>Filtrar por Periodo</div>
-                <div class="d-flex gap-2">
-                    <select class="form-select border-0 bg-white" style="max-width:360px; box-shadow: var(--card-shadow);" id="filtroPeriodo_completo" onchange="cargarTarjetas('completo')">
-                        <option value="" selected disabled>Selecciona un periodo...</option>
-                    </select>
-                    <button class="btn btn-white border bg-white d-none" id="btnLimpiarFiltro_completo" onclick="limpiarFiltroPeriodo('completo')" title="Limpiar filtro">
-                        <i class="bi bi-eraser-fill text-muted"></i>
-                    </button>
-                </div>
-            </div>
-            <div class="row" id="contenedorTarjetas_completo"></div>
+    <div class="filter-periodo-wrap" id="filtroRegistrosContainer" style="display: none;">
+        <div class="panel-label"><i class="bi bi-funnel-fill me-1" style="color:var(--blue);"></i>Filtrar por Periodo</div>
+        <div class="d-flex gap-2">
+            <select class="form-select border-0 bg-white" style="max-width:360px; box-shadow: var(--card-shadow);" id="filtroPeriodo_registros" onchange="aplicarFiltroRegistros()">
+                </select>
+            <button class="btn btn-white border bg-white d-none" id="btnLimpiarFiltro_registros" onclick="limpiarFiltroRegistros()" title="Limpiar filtro">
+                <i class="bi bi-eraser-fill text-muted"></i>
+            </button>
         </div>
+    </div>
 
+    <div id="contenedorRegistrosCombinados" class="row"></div>
+</div>
     </div>
 
 </div>
 </div>
 
-<!-- BOTÓN RESET GLOBAL -->
 <button class="btn-reset-global" onclick="resetearStatusPruebas()" title="Resetear datos (debug)">
     <i class="bi bi-arrow-counterclockwise"></i>
 </button>
 
 
-<!-- ══════════════════════════════════
-     MODALES
-══════════════════════════════════ -->
-
-<!-- MODAL BORRADOR -->
 <div class="modal fade" id="modalConfirmarBorrador" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
     <div class="modal-dialog modal-dialog-centered" style="max-width:440px;">
         <div class="modal-content border-0 shadow-lg overflow-hidden">
@@ -586,7 +559,6 @@
     </div>
 </div>
 
-<!-- MODAL COMPLETO -->
 <div class="modal fade" id="modalConfirmarCompleto" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
     <div class="modal-dialog modal-dialog-centered" style="max-width:440px;">
         <div class="modal-content border-0 shadow-lg overflow-hidden">
@@ -614,7 +586,6 @@
     </div>
 </div>
 
-<!-- MODAL DETALLE -->
 <div class="modal fade" id="modalTablaRegistro" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-xl modal-dialog-centered">
         <div class="modal-content border-0 shadow-lg">
@@ -653,7 +624,6 @@
 
 const DIVISION_ID     = 'sistemas_productivos';
 const DIVISION_NOMBRE = 'División de Sistemas Productivos y Mantenimiento Industrial';
-
 
 const MATERIAS_DATA = [
     { nombre:"INGLES I",                             inicio:1,  fin:14, total:14, horas:5, programa:"LIC" },
@@ -698,8 +668,10 @@ function actualizarUIEstadoDivision() {
     const tieneBorradores = registros.some(r => r.estado === 'borrador' && r.division === DIVISION_ID);
 
     if (estado === 'entregado') {
-        container.classList.add('d-none');
-        seccionC.classList.add('d-none');
+        container.classList.remove('d-none');
+        pill.className = 'division-status-pill entregada';
+        statusText.textContent = 'Entregada';
+        if(seccionC) seccionC.classList.add('d-none');
         // Activar botón Ir a Carga Académica SOLO cuando no hay borradores
         if (!tieneBorradores) {
             btnIrCont.classList.remove('d-none');
@@ -713,6 +685,9 @@ function actualizarUIEstadoDivision() {
         return;
     }
 
+    // Se quitó el pill de "en proceso" ocultando siempre el container si no está entregado
+    container.classList.add('d-none');
+
     // Si hay completos Y no hay borradores → mostrar botón de ir a carga
     if (tieneCompletos && !tieneBorradores) {
         btnIrCont.classList.remove('d-none');
@@ -724,29 +699,26 @@ function actualizarUIEstadoDivision() {
     }
 
     if (tieneCompletos) {
-        container.classList.remove('d-none');
-        pill.className = 'division-status-pill en-proceso';
-        statusText.textContent = 'En proceso — captura activa';
-        seccionC.classList.remove('d-none');
-
-        if (tieneBorradores) {
-            panelEnvio.className = 'seccion-envio bloqueada';
-            iconoEnvio.className = 'icono-envio bloqueado';
-            iconoEnvio.innerHTML = '<i class="bi bi-lock-fill text-white" style="font-size:1.2rem;"></i>';
-            tituloEnvio.textContent = 'Envío pendiente — hay borradores sin confirmar';
-            textoEnvio.textContent  = 'Tienes borradores incompletos. Confírmalos o elimínalos antes de enviar.';
-            btnEnviar.disabled = true;
-        } else {
-            panelEnvio.className = 'seccion-envio';
-            iconoEnvio.className = 'icono-envio';
-            iconoEnvio.innerHTML = '<i class="bi bi-send-fill text-white" style="font-size:1.2rem;"></i>';
-            tituloEnvio.textContent = 'Enviar división a Secretaría Académica';
-            textoEnvio.textContent  = 'Cuando completes todos los grados, usa este botón para marcar tu división como entregada.';
-            btnEnviar.disabled = false;
+        if(seccionC) seccionC.classList.remove('d-none');
+        if(panelEnvio) {
+            if (tieneBorradores) {
+                panelEnvio.className = 'seccion-envio bloqueada';
+                iconoEnvio.className = 'icono-envio bloqueado';
+                iconoEnvio.innerHTML = '<i class="bi bi-lock-fill text-white" style="font-size:1.2rem;"></i>';
+                tituloEnvio.textContent = 'Envío pendiente — hay borradores sin confirmar';
+                textoEnvio.textContent  = 'Tienes borradores incompletos. Confírmalos o elimínalos antes de enviar.';
+                btnEnviar.disabled = true;
+            } else {
+                panelEnvio.className = 'seccion-envio';
+                iconoEnvio.className = 'icono-envio';
+                iconoEnvio.innerHTML = '<i class="bi bi-send-fill text-white" style="font-size:1.2rem;"></i>';
+                tituloEnvio.textContent = 'Enviar división a Secretaría Académica';
+                textoEnvio.textContent  = 'Cuando completes todos los grados, usa este botón para marcar tu división como entregada.';
+                btnEnviar.disabled = false;
+            }
         }
     } else {
-        container.classList.add('d-none');
-        seccionC.classList.add('d-none');
+        if(seccionC) seccionC.classList.add('d-none');
     }
 }
 
@@ -783,10 +755,10 @@ function seleccionarGrado(btnElement, nombreGrado) {
 
     document.getElementById('selGrupoTutor').value        = "";
     document.getElementById('tutorActivo').value           = "";
-    document.getElementById('btnTutorDropdown').innerHTML  = "Selecciona...";
+    document.getElementById('btnTutorDropdown').innerHTML  = '<span class="text-truncate">Selecciona...</span><i class="bi bi-chevron-down text-muted ms-2 flex-shrink-0"></i>';
     document.getElementById('btnTutorDropdown').classList.remove('border-success');
     document.getElementById('profesorActivo').value        = "";
-    document.getElementById('btnProfesorDropdown').innerHTML = "Despliega o busca un profesor...";
+    document.getElementById('btnProfesorDropdown').innerHTML = '<span class="text-truncate">Despliega o busca un profesor...</span><i class="bi bi-chevron-down text-muted ms-2 flex-shrink-0"></i>';
     document.getElementById('btnProfesorDropdown').classList.remove('border-success');
 
     document.getElementById('seccionConfiguracion').classList.remove('d-none');
@@ -809,7 +781,7 @@ function filtrarTutores() {
 
 function seleccionarTutor(nombre, event) {
     event.preventDefault();
-    document.getElementById('btnTutorDropdown').innerHTML = `<i class="bi bi-person-check-fill text-success me-2"></i>${nombre}`;
+    document.getElementById('btnTutorDropdown').innerHTML = `<div class="text-truncate"><i class="bi bi-person-check-fill text-success me-2"></i>${nombre}</div><i class="bi bi-chevron-down text-muted ms-2 flex-shrink-0"></i>`;
     document.getElementById('btnTutorDropdown').classList.add('border-success');
     document.getElementById('tutorActivo').value = nombre;
     document.getElementById('buscadorTutores').value = '';
@@ -839,7 +811,7 @@ function filtrarProfesores() {
 
 function seleccionarProfesor(nombre, event) {
     event.preventDefault();
-    document.getElementById('btnProfesorDropdown').innerHTML = `<i class="bi bi-person-check-fill text-success me-2"></i>${nombre}`;
+    document.getElementById('btnProfesorDropdown').innerHTML = `<div class="text-truncate"><i class="bi bi-person-check-fill text-success me-2"></i>${nombre}</div><i class="bi bi-chevron-down text-muted ms-2 flex-shrink-0"></i>`;
     document.getElementById('btnProfesorDropdown').classList.add('border-success');
     document.getElementById('profesorActivo').value = nombre;
     document.getElementById('buscadorProfesores').value = '';
@@ -1024,48 +996,71 @@ function eliminarRegistro(idRegistro, event) {
     inicializarVistaRegistros();
 }
 
-// ─── CIERRE DIVISIÓN ─────────────────────────────────────────────────────────
-function cerrarCargaDivision() {
-    const registros  = JSON.parse(localStorage.getItem('registrosResumenCargas') || '[]');
-    const completos  = registros.filter(r => r.estado === 'completo'  && r.division === DIVISION_ID);
-    const borradores = registros.filter(r => r.estado === 'borrador'  && r.division === DIVISION_ID);
-    if (borradores.length > 0) { mostrarAlerta('Tienes borradores pendientes. Confírmalos antes de enviar.', 'error'); return; }
-    if (completos.length === 0) { mostrarAlerta('No hay registros confirmados para enviar.', 'error'); return; }
-    const porCarrera = {};
-    completos.forEach(r => { if (!porCarrera[r.carrera]) porCarrera[r.carrera] = []; porCarrera[r.carrera].push(r.grado); });
-    let html = `<p class="mb-2 small fw-bold" style="color:#166534;"><i class="bi bi-check-circle-fill me-1"></i>Carreras y Grados que se enviarán:</p>`;
-    for (const c in porCarrera) html += `<div class="small text-dark mb-1"><span class="fw-semibold">${c}:</span> ${porCarrera[c].join(', ')}</div>`;
-    document.getElementById('resumenGradosCierre').innerHTML = html;
-    new bootstrap.Modal(document.getElementById('modalCerrarCarga')).show();
-}
-
-function ejecutarCierreDivision() {
-    const est = JSON.parse(localStorage.getItem('estadoDivisiones') || '{}');
-    est[DIVISION_ID] = 'entregado';
-    est[`${DIVISION_ID}_fecha`] = new Date().toLocaleDateString('es-MX');
-    localStorage.setItem('estadoDivisiones', JSON.stringify(est));
-    const m = bootstrap.Modal.getInstance(document.getElementById('modalCerrarCarga'));
-    if (m) m.hide();
-    mostrarAlerta('División enviada a Secretaría Académica.', 'success');
-    setTimeout(() => actualizarUIEstadoDivision(), 400);
-}
-
-// ─── VER REGISTROS ───────────────────────────────────────────────────────────
+// ─── VER REGISTROS CON FILTRO ────────────────────────────────────────────────
 function inicializarVistaRegistros() {
-    const registros   = JSON.parse(localStorage.getItem('registrosResumenCargas') || '[]');
+    const registros = JSON.parse(localStorage.getItem('registrosResumenCargas') || '[]');
     const delDivision = registros.filter(r => r.division === DIVISION_ID);
-    const contenedor  = document.getElementById('contenedorRegistrosCombinados');
-    const aviso       = document.getElementById('avisoBorradores');
-    const tieneBorr   = delDivision.some(r => r.estado === 'borrador');
-    aviso.style.display = tieneBorr ? 'flex' : 'none';
+    const select = document.getElementById('filtroPeriodo_registros');
+    const filtroContainer = document.getElementById('filtroRegistrosContainer');
 
     if (delDivision.length === 0) {
-        contenedor.innerHTML = `<div class="col-12 text-center py-5 text-muted bg-white rounded-4 border"><i class="bi bi-folder-x fs-1 opacity-50 mb-3 d-block"></i><p class="mb-0">Aún no hay registros.</p></div>`;
+        filtroContainer.style.display = 'none';
+        document.getElementById('contenedorRegistrosCombinados').innerHTML = `<div class="col-12 text-center py-5 text-muted bg-white rounded-4 border"><i class="bi bi-folder-x fs-1 opacity-50 mb-3 d-block"></i><p class="mb-0">Aún no hay registros.</p></div>`;
+        document.getElementById('avisoBorradores').style.display = 'none';
         return;
     }
+
+    // Mostrar el contenedor del filtro si hay registros
+    filtroContainer.style.display = 'block';
+
+    // Obtener periodos únicos y poblar el select
+    const periodos = [...new Set(delDivision.map(r => r.periodo))];
+    const actual = select.value;
+    const forzar = !periodos.includes(actual);
+    
+    select.innerHTML = `<option value="" ${forzar ? 'selected' : ''}>Todos los periodos</option>` +
+        periodos.map(p => `<option value="${p}" ${p === actual && !forzar ? 'selected' : ''}>${p}</option>`).join('');
+
+    // Aplicar el filtro inmediatamente
+    aplicarFiltroRegistros();
+}
+
+function aplicarFiltroRegistros() {
+    const select = document.getElementById('filtroPeriodo_registros');
+    const valor = select.value;
+    const btnL = document.getElementById('btnLimpiarFiltro_registros');
+    const contenedor = document.getElementById('contenedorRegistrosCombinados');
+    const aviso = document.getElementById('avisoBorradores');
+
+    // Mostrar u ocultar el botón de limpiar filtro
+    if (!valor) {
+        btnL.classList.add('d-none');
+    } else {
+        btnL.classList.remove('d-none');
+    }
+
+    let registros = JSON.parse(localStorage.getItem('registrosResumenCargas') || '[]');
+    let delDivision = registros.filter(r => r.division === DIVISION_ID);
+    
+    // Filtrar por periodo si hay un valor seleccionado
+    if (valor) {
+        delDivision = delDivision.filter(r => r.periodo === valor);
+    }
+
+    const tieneBorr = delDivision.some(r => r.estado === 'borrador');
+    aviso.style.display = tieneBorr ? 'flex' : 'none';
+
+    // Si no hay resultados para el filtro seleccionado
+    if (delDivision.length === 0) {
+         contenedor.innerHTML = `<div class="col-12 text-center py-5 text-muted bg-white rounded-4 border" style="border-style:dashed!important;"><i class="bi bi-search fs-1 opacity-50 mb-3 d-block"></i><p class="mb-0 fw-medium">No hay registros para este periodo.</p></div>`;
+         return;
+    }
+
+    // Agrupar por carrera y renderizar tarjetas
     const porCarrera = {};
     delDivision.forEach(r => { if (!porCarrera[r.carrera]) porCarrera[r.carrera] = []; porCarrera[r.carrera].push(r); });
     let html = '';
+    
     for (const carrera in porCarrera) {
         const regs = porCarrera[carrera].slice().reverse();
         const grados = regs.map(r => {
@@ -1122,98 +1117,9 @@ function inicializarVistaRegistros() {
     contenedor.innerHTML = html;
 }
 
-// ─── FINALIZADOS ─────────────────────────────────────────────────────────────
-function inicializarVistaTarjetas(tipo) {
-    const registros = JSON.parse(localStorage.getItem('registrosResumenCargas') || '[]');
-    const delTipo   = registros.filter(r => r.estado === tipo);
-    const select    = document.getElementById(`filtroPeriodo_${tipo}`);
-    const contenedor= document.getElementById(`contenedorTarjetas_${tipo}`);
-    const btnL      = document.getElementById(`btnLimpiarFiltro_${tipo}`);
-    if (delTipo.length === 0) {
-        select.innerHTML = '<option value="" selected disabled>No hay periodos registrados</option>';
-        select.disabled  = true;
-        btnL.classList.add('d-none');
-        contenedor.innerHTML = `<div class="col-12 text-center py-5 text-muted bg-white rounded-4 border"><i class="bi bi-folder-x fs-1 opacity-50 mb-3 d-block"></i><p class="mb-0">Aún no hay registros finalizados.</p></div>`;
-        return;
-    }
-    select.disabled = false;
-    const periodos = [...new Set(delTipo.map(r => r.periodo))];
-    const actual   = select.value;
-    const forzar   = !periodos.includes(actual);
-    select.innerHTML = `<option value="" disabled ${forzar ? 'selected' : ''}>Selecciona un periodo...</option>` +
-        periodos.map(p => `<option value="${p}" ${p === actual && !forzar ? 'selected' : ''}>${p}</option>`).join('');
-    cargarTarjetas(tipo);
-}
-
-function limpiarFiltroPeriodo(tipo) {
-    document.getElementById(`filtroPeriodo_${tipo}`).value = "";
-    cargarTarjetas(tipo);
-}
-
-function cargarTarjetas(tipo) {
-    const select    = document.getElementById(`filtroPeriodo_${tipo}`);
-    const valor     = select.value;
-    const contenedor= document.getElementById(`contenedorTarjetas_${tipo}`);
-    const btnL      = document.getElementById(`btnLimpiarFiltro_${tipo}`);
-    if (!valor) {
-        btnL.classList.add('d-none');
-        contenedor.innerHTML = `<div class="col-12 text-center py-5 text-muted bg-white rounded-4 border" style="border-style:dashed!important;"><i class="bi bi-hand-index-thumb fs-1 opacity-50 mb-3 d-block" style="color:var(--purple);"></i><p class="mb-0 fw-medium">Selecciona un periodo.</p></div>`;
-        return;
-    }
-    btnL.classList.remove('d-none');
-    const registros = JSON.parse(localStorage.getItem('registrosResumenCargas') || '[]');
-    const aMostrar  = registros.filter(r => r.estado === tipo && r.periodo === valor);
-    const porCarrera= {};
-    aMostrar.forEach(r => { if (!porCarrera[r.carrera]) porCarrera[r.carrera] = []; porCarrera[r.carrera].push(r); });
-    let html = '';
-    for (const carrera in porCarrera) {
-        const regs   = porCarrera[carrera].slice().reverse();
-        const grados = regs.map(r => `
-            <div class="btn-grado-registro w-100 mb-2 d-flex justify-content-between align-items-center p-3">
-                <span class="fw-bold text-dark" onclick="abrirModalDetalle(${r.id})">
-                    <i class="bi bi-bookmark-fill text-primary me-2"></i>${r.grado}
-                </span>
-                <div class="d-flex align-items-center gap-2 ms-auto">
-                    <span class="badge bg-light text-secondary border">${r.fecha}</span>
-                    <button class="btn-eliminar-registro" onclick="eliminarRegistroFinalizado(${r.id},'${tipo}',event)" title="Eliminar">
-                        <i class="bi bi-trash3-fill"></i>
-                    </button>
-                </div>
-            </div>`).join('');
-        html += `
-        <div class="col-md-4 col-sm-6 mb-4">
-            <div class="flip-card" onclick="this.classList.toggle('flipped')">
-                <div class="flip-card-inner">
-                    <div class="flip-card-front text-center pt-3">
-                        <div class="mb-3"><span class="badge-estado-completo"><i class="bi bi-check-circle-fill me-1"></i>Finalizado</span></div>
-                        <div class="p-3 rounded-circle mb-3 d-inline-block" style="background:#f3e8ff;"><i class="bi bi-briefcase-fill fs-3" style="color:var(--purple);"></i></div>
-                        <h5 class="fw-bold px-2" style="color:var(--navy);font-size:.92rem;font-family:'Arial',sans-serif;">${carrera}</h5>
-                        <span class="badge bg-light text-secondary border mt-1 px-3 py-2 rounded-pill">${regs.length} grados</span>
-                        <div class="mt-auto pt-3 text-muted small w-100 border-top"><i class="bi bi-arrow-repeat me-1"></i>Clic para girar</div>
-                    </div>
-                    <div class="flip-card-back" onclick="event.stopPropagation()">
-                        <div class="d-flex justify-content-between align-items-center mb-3 pb-3 border-bottom">
-                            <h6 class="m-0 fw-bold text-dark">Grados</h6>
-                            <button class="btn btn-sm btn-light border rounded-circle py-0 px-2 text-muted" onclick="this.closest('.flip-card').classList.remove('flipped')"><i class="bi bi-x fs-5"></i></button>
-                        </div>
-                        <div class="flex-grow-1 overflow-auto custom-scrollbar pe-1">${grados}</div>
-                    </div>
-                </div>
-            </div>
-        </div>`;
-    }
-    contenedor.innerHTML = html;
-}
-
-function eliminarRegistroFinalizado(idRegistro, tipo, event) {
-    event.stopPropagation();
-    if (!confirm('¿Eliminar este registro finalizado?')) return;
-    let registros = JSON.parse(localStorage.getItem('registrosResumenCargas') || '[]');
-    registros = registros.filter(r => r.id !== idRegistro);
-    localStorage.setItem('registrosResumenCargas', JSON.stringify(registros));
-    mostrarAlerta('Registro eliminado.', 'info');
-    actualizarUIEstadoDivision();
-    inicializarVistaTarjetas(tipo);
+function limpiarFiltroRegistros() {
+    document.getElementById('filtroPeriodo_registros').value = "";
+    aplicarFiltroRegistros();
 }
 
 // ─── MODAL DETALLE ────────────────────────────────────────────────────────────
