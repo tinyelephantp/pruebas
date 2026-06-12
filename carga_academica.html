@@ -12,7 +12,7 @@
   --blue:       #004b87;
   --blue-mid:   #1565c0;
   --blue-light: #e8f0fe;
-  --green:      #2e7d32;
+  --green:      #00a680;
   --green-light:#e8f5e9;
   --amber:      #e65100;
   --amber-light:#fff3e0;
@@ -40,34 +40,43 @@ body {
   min-height: 100vh;
 }
 
-/* ── LAYOUT ── */
 .app-shell {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
 }
 
+/* ── TOPBAR ── */
 .topbar {
-  background: var(--blue);
-  color: white;
-  padding: 0 40px;
-  height: 60px;
+  background: var(--white);
+  border-bottom: 1px solid var(--gray-200);
+  padding: 14px 32px;
   display: flex;
   align-items: center;
   gap: 16px;
   position: sticky;
   top: 0;
   z-index: 100;
-  box-shadow: 0 2px 8px rgba(0,0,0,.2);
+  box-shadow: 0 1px 4px rgba(0,0,0,.07);
 }
-.topbar-logo { font-size: 1rem; font-weight: 700; letter-spacing: -.3px; }
-.topbar-div  { font-size: .78rem; opacity: .7; margin-left: 4px; }
+.topbar-icon-box {
+  width: 44px; height: 44px;
+  border-radius: var(--radius-md);
+  background: var(--blue-light);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--blue); font-size: 1.35rem; flex-shrink: 0;
+}
+.topbar-logo { font-size: 1rem; font-weight: 700; color: var(--blue); line-height: 1.2; }
+.topbar-div  { font-size: .78rem; color: var(--gray-400); margin-top: 2px; }
 .topbar-sep  { flex: 1; }
 
+/* ── LAYOUT ── */
 .main-wrap {
   display: flex;
   flex: 1;
   min-height: 0;
+  height: calc(100vh - 73px); /* topbar height */
+  overflow: hidden;
 }
 
 /* ── SIDEBAR ── */
@@ -79,486 +88,473 @@ body {
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  height: 100%;
 }
 .sidebar-header {
-  padding: 20px 20px 14px;
+  padding: 16px 16px 12px;
   border-bottom: 1px solid var(--gray-200);
   background: var(--gray-50);
+  flex-shrink: 0;
 }
 .sidebar-title {
-  font-size: .75rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: .6px;
-  color: var(--gray-400);
-  margin-bottom: 10px;
+  font-size: .72rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: .6px; color: var(--gray-400); margin-bottom: 8px;
 }
-.search-box {
-  position: relative;
-}
+.search-box { position: relative; }
 .search-box input {
-  width: 100%;
-  padding: 8px 12px 8px 34px;
-  border: 1px solid var(--gray-200);
-  border-radius: var(--radius-sm);
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: .85rem;
-  background: var(--white);
-  color: var(--gray-800);
-  outline: none;
-  transition: border-color .15s;
+  width: 100%; padding: 7px 10px 7px 30px;
+  border: 1px solid var(--gray-200); border-radius: var(--radius-sm);
+  font-family: Arial, Helvetica, sans-serif; font-size: .82rem;
+  background: var(--white); color: var(--gray-800);
+  outline: none; transition: border-color .15s;
 }
 .search-box input:focus { border-color: var(--blue); }
 .search-box .search-icon {
-  position: absolute;
-  left: 10px; top: 50%;
-  transform: translateY(-50%);
-  color: var(--gray-400);
-  font-size: .85rem;
-  pointer-events: none;
+  position: absolute; left: 9px; top: 50%;
+  transform: translateY(-50%); color: var(--gray-400);
+  font-size: .82rem; pointer-events: none;
 }
+
+/* ── SIDEBAR TABS ── */
+.sidebar-tabs {
+  display: flex; background: var(--gray-50);
+  border-bottom: 1px solid var(--gray-200); flex-shrink: 0;
+}
+.sidebar-tab {
+  flex: 1; text-align: center; padding: 10px 4px;
+  font-size: .68rem; font-weight: 700; color: var(--gray-400);
+  cursor: pointer; border-bottom: 2px solid transparent;
+  text-transform: uppercase; transition: all .15s;
+}
+.sidebar-tab:hover { color: var(--gray-600); }
+.sidebar-tab.active { color: var(--blue); border-bottom-color: var(--blue); background: var(--white); }
+
+/* ── LISTA SCROLLABLE ── */
 .sidebar-list {
   flex: 1;
   overflow-y: auto;
-  padding: 10px 10px;
+  padding: 8px 8px;
+  /* Scrollbar siempre visible para indicar que hay más contenido */
+  scrollbar-width: thin;
+  scrollbar-color: var(--gray-200) transparent;
 }
-.sidebar-list::-webkit-scrollbar { width: 4px; }
-.sidebar-list::-webkit-scrollbar-track { background: transparent; }
+.sidebar-list::-webkit-scrollbar { width: 5px; }
+.sidebar-list::-webkit-scrollbar-track { background: var(--gray-50); }
 .sidebar-list::-webkit-scrollbar-thumb { background: var(--gray-200); border-radius: 4px; }
+.sidebar-list::-webkit-scrollbar-thumb:hover { background: var(--gray-400); }
 
 .prof-item {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 11px 12px;
-  border-radius: var(--radius-md);
-  cursor: pointer;
-  transition: background .12s, transform .12s;
-  margin-bottom: 4px;
-  border: 1.5px solid transparent;
+  display: flex; align-items: center; gap: 10px;
+  padding: 9px 10px; border-radius: var(--radius-md);
+  cursor: pointer; transition: background .12s;
+  margin-bottom: 3px; border: 1.5px solid transparent;
 }
-.prof-item:hover   { background: var(--blue-light); border-color: #c5d8f8; }
-.prof-item.active  { background: var(--blue-light); border-color: var(--blue); }
+.prof-item:hover  { background: var(--blue-light); border-color: #c5d8f8; }
+.prof-item.active { background: var(--blue-light); border-color: var(--blue); }
+
 .prof-avatar {
-  width: 38px; height: 38px; min-width: 38px;
-  border-radius: 50%;
-  background: var(--blue);
-  color: white;
-  font-weight: 700;
-  font-size: 1rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  width: 34px; height: 34px; min-width: 34px;
+  border-radius: 50%; background: var(--blue); color: white;
+  font-weight: 700; font-size: .9rem;
+  display: flex; align-items: center; justify-content: center;
 }
-.prof-item.active .prof-avatar { background: var(--blue); }
 .prof-info { flex: 1; min-width: 0; }
-.prof-name  { font-size: .88rem; font-weight: 700; color: var(--gray-800); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.prof-meta  { font-size: .74rem; color: var(--gray-400); margin-top: 2px; }
-.prof-status {
-  width: 8px; height: 8px; border-radius: 50%;
-  background: var(--amber);
+.prof-name { font-size: .84rem; font-weight: 700; color: var(--gray-800); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.prof-meta { font-size: .7rem; color: var(--gray-400); margin-top: 1px; }
+
+/* Acciones inline en la tarjeta del profesor (editar/borrar) */
+.prof-actions {
+  display: none;
+  gap: 3px;
   flex-shrink: 0;
 }
-.prof-status.capturado { background: var(--green); }
+.prof-item:hover .prof-actions,
+.prof-item.active .prof-actions { display: flex; }
+
+.prof-action-btn {
+  width: 24px; height: 24px; border-radius: var(--radius-sm);
+  border: 1px solid var(--gray-200); background: var(--white);
+  color: var(--gray-400); cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  font-size: .75rem; transition: all .15s;
+}
+.prof-action-btn:hover { background: var(--red-light); border-color: #e57373; color: var(--red); }
+.prof-action-btn.edit:hover { background: var(--blue-light); border-color: var(--blue); color: var(--blue); }
+
+.prof-status {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--amber); flex-shrink: 0;
+}
+.prof-status.capturado { background: #16a34a; }
 
 .sidebar-empty {
-  padding: 32px 20px;
-  text-align: center;
-  color: var(--gray-400);
-  font-size: .85rem;
+  padding: 28px 16px; text-align: center;
+  color: var(--gray-400); font-size: .82rem;
 }
 
 /* ── CONTENT AREA ── */
 .content-area {
-  flex: 1;
-  overflow-y: auto;
-  padding: 32px 40px;
-  min-width: 0;
+  flex: 1; overflow-y: auto; padding: 28px 36px;
+  min-width: 0; height: 100%;
 }
 .content-area::-webkit-scrollbar { width: 6px; }
 .content-area::-webkit-scrollbar-track { background: transparent; }
 .content-area::-webkit-scrollbar-thumb { background: var(--gray-200); border-radius: 4px; }
 
-/* Empty state */
 .empty-state {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 60vh;
-  color: var(--gray-400);
-  gap: 12px;
-  text-align: center;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  height: 60vh; color: var(--gray-400); gap: 12px; text-align: center;
 }
-.empty-state i  { font-size: 3rem; opacity: .3; }
-.empty-state p  { font-size: .95rem; }
+.empty-state i { font-size: 3rem; opacity: .3; }
+.empty-state p { font-size: .95rem; }
 
-/* ── PROF HEADER CARD ── */
+/* ── PROF HEADER COMPACTO ── */
 .prof-header-card {
   background: var(--white);
   border: 1px solid var(--gray-200);
   border-radius: var(--radius-lg);
-  padding: 24px 28px;
-  margin-bottom: 24px;
+  padding: 14px 20px;
   box-shadow: var(--shadow-sm);
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 14px;
+  margin-bottom: 20px;
 }
-.prof-avatar-lg {
-  width: 60px; height: 60px; min-width: 60px;
-  border-radius: var(--radius-md);
-  background: var(--blue);
-  color: white;
-  font-size: 1.5rem;
-  font-weight: 700;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.prof-avatar-md {
+  width: 46px; height: 46px; min-width: 46px;
+  border-radius: 50%;
+  background: var(--blue-light);
+  color: var(--blue);
+  border: 2px solid var(--blue);
+  font-size: 1.4rem;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
 }
 .prof-header-name {
-  font-size: 1.3rem;
-  font-weight: 700;
-  color: var(--blue);
-  line-height: 1.2;
+  font-size: 1.05rem; font-weight: 700; color: var(--blue); line-height: 1.2;
 }
 .prof-header-sub {
-  font-size: .8rem;
-  color: var(--gray-400);
-  margin-top: 3px;
-  display: flex;
-  align-items: center;
-  gap: 6px;
+  font-size: .72rem; color: var(--gray-400); margin-top: 2px;
+  display: flex; align-items: center; gap: 5px; flex-wrap: wrap;
 }
-.header-stats {
-  margin-left: auto;
-  display: flex;
-  gap: 12px;
+.per-badge {
+  display: inline-block; padding: 1px 8px; border-radius: 20px;
+  font-size: .68rem; font-weight: 700;
+  background: #e8f0fe; color: var(--blue-mid);
+  border: 1px solid #c5d8f8;
 }
-.stat-chip {
-  text-align: center;
-  background: var(--gray-50);
-  border: 1px solid var(--gray-200);
-  border-radius: var(--radius-md);
-  padding: 10px 18px;
-  min-width: 90px;
-}
-.stat-chip-val   { font-size: 1.2rem; font-weight: 700; color: var(--blue); }
-.stat-chip-label { font-size: .68rem; color: var(--gray-400); text-transform: uppercase; letter-spacing: .4px; margin-top: 2px; }
 
-/* ── SECTION ── */
+/* ── SECTION CARD ── */
 .section-card {
-  background: var(--white);
-  border: 1px solid var(--gray-200);
-  border-radius: var(--radius-lg);
-  margin-bottom: 20px;
-  overflow: hidden;
-  box-shadow: var(--shadow-sm);
+  background: var(--white); border: 1px solid var(--gray-200);
+  border-radius: var(--radius-lg); margin-bottom: 18px;
+  overflow: hidden; box-shadow: var(--shadow-sm);
 }
 .section-title {
-  background: var(--gray-50);
-  border-bottom: 1px solid var(--gray-200);
-  padding: 14px 20px;
-  font-size: .85rem;
-  font-weight: 700;
-  color: var(--blue);
-  display: flex;
-  align-items: center;
-  gap: 8px;
+  background: var(--gray-50); border-bottom: 1px solid var(--gray-200);
+  padding: 12px 18px; font-size: .83rem; font-weight: 700; color: var(--blue);
+  display: flex; align-items: center; gap: 8px;
 }
 .section-title .sec-action { margin-left: auto; }
 
 /* ── TABLE ── */
-.tbl {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: .85rem;
-}
+.tbl { width: 100%; border-collapse: collapse; font-size: .84rem; }
 .tbl thead th {
-  padding: 11px 14px;
-  text-align: left;
-  font-size: .72rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: .4px;
-  color: var(--gray-400);
+  padding: 10px 12px; text-align: left;
+  font-size: .7rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: .4px; color: var(--gray-400);
   border-bottom: 1px solid var(--gray-200);
-  background: var(--gray-50);
-  white-space: nowrap;
+  background: var(--gray-50); white-space: nowrap;
 }
 .tbl thead th.center { text-align: center; }
 .tbl tbody td {
-  padding: 11px 14px;
-  border-bottom: 1px solid var(--gray-100);
-  vertical-align: middle;
-  color: var(--gray-800);
+  padding: 10px 12px; border-bottom: 1px solid var(--gray-100);
+  vertical-align: middle; color: var(--gray-800);
 }
 .tbl tbody td.center { text-align: center; }
 .tbl tbody tr:last-child td { border-bottom: none; }
 .tbl tbody tr:hover td { background: var(--gray-50); }
 
 .tag-prog {
-  display: inline-block;
-  padding: 2px 8px;
-  border-radius: 4px;
-  font-size: .7rem;
-  font-weight: 700;
-  background: var(--blue-light);
-  color: var(--blue);
+  display: inline-block; padding: 2px 7px; border-radius: 4px;
+  font-size: .68rem; font-weight: 700;
+  background: var(--blue-light); color: var(--blue);
 }
-.hrs-val {
-  font-size: .95rem;
-  font-weight: 700;
-  color: var(--blue);
-}
-.materia-name { font-weight: 600; font-size: .88rem; }
-.materia-sub  { font-size: .75rem; color: var(--gray-400); margin-top: 2px; }
+.hrs-val { font-size: .9rem; font-weight: 700; color: var(--blue); }
+.materia-name { font-weight: 600; font-size: .86rem; }
+.materia-sub  { font-size: .72rem; color: var(--gray-400); margin-top: 1px; }
 
-/* ── SUBTOTAL ROW ── */
+/* ── SUBTOTAL BAR ── */
 .subtotal-bar {
-  display: flex;
-  gap: 0;
-  border-top: 2px solid var(--gray-200);
-  background: var(--gray-50);
+  display: flex; border-top: 2px solid var(--gray-200); background: var(--gray-50);
 }
 .subtotal-item {
-  flex: 1;
-  padding: 12px 20px;
-  border-right: 1px solid var(--gray-200);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
+  flex: 1; padding: 10px 18px; border-right: 1px solid var(--gray-200);
+  display: flex; align-items: center; justify-content: space-between; gap: 8px;
 }
 .subtotal-item:last-child { border-right: none; }
-.subtotal-label { font-size: .78rem; font-weight: 600; color: var(--gray-600); }
-.subtotal-value { font-size: 1rem; font-weight: 700; color: var(--blue); }
+.subtotal-label { font-size: .75rem; font-weight: 600; color: var(--gray-600); }
+.subtotal-value { font-size: .95rem; font-weight: 700; color: var(--blue); }
 
-/* ── ACTIVITIES TABLE ── */
+/* ── ACT INPUTS ── */
 .act-input {
-  border: 1px solid var(--gray-200);
-  border-radius: var(--radius-sm);
-  padding: 6px 8px;
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: .82rem;
-  width: 100%;
-  text-align: center;
-  background: var(--white);
-  color: var(--gray-800);
-  outline: none;
-  transition: border-color .15s;
+  border: 1px solid var(--gray-200); border-radius: var(--radius-sm);
+  padding: 5px 7px; font-family: Arial, Helvetica, sans-serif;
+  font-size: .8rem; width: 100%; text-align: center;
+  background: var(--white); color: var(--gray-800);
+  outline: none; transition: border-color .15s;
 }
 .act-input:focus { border-color: var(--blue); }
 .act-input[readonly] { background: var(--gray-100); color: var(--gray-600); cursor: default; }
+.act-input::-webkit-outer-spin-button,
+.act-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+.act-input[type=number] { -moz-appearance: textfield; }
+
 .act-select {
-  border: 1px solid var(--gray-200);
-  border-radius: var(--radius-sm);
-  padding: 6px 8px;
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: .82rem;
-  width: 100%;
-  background: var(--white);
-  color: var(--gray-800);
-  outline: none;
-  cursor: pointer;
+  border: 1px solid var(--gray-200); border-radius: var(--radius-sm);
+  padding: 5px 7px; font-family: Arial, Helvetica, sans-serif;
+  font-size: .8rem; width: 100%; background: var(--white);
+  color: var(--gray-800); outline: none; cursor: pointer;
 }
 .act-select:focus { border-color: var(--blue); }
-.tbl tbody td.act-cell { padding: 7px 10px; }
+.tbl tbody td.act-cell { padding: 6px 8px; }
 
 .btn-del-act {
-  width: 28px; height: 28px;
-  border-radius: 50%;
-  border: 1px solid var(--gray-200);
-  background: var(--white);
-  color: var(--gray-400);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: .85rem;
-  transition: all .15s;
-  margin: 0 auto;
+  width: 26px; height: 26px; border-radius: 50%;
+  border: 1px solid var(--gray-200); background: var(--white);
+  color: var(--gray-400); cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  font-size: .8rem; transition: all .15s; margin: 0 auto;
 }
 .btn-del-act:hover { background: var(--red-light); border-color: #e57373; color: var(--red); }
 
-/* ── BTN ADD ── */
+/* ── BUTTONS ── */
 .btn-add-act {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  padding: 7px 16px;
-  background: var(--blue);
-  color: white;
-  border: none;
-  border-radius: var(--radius-sm);
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: .8rem;
-  font-weight: 700;
-  cursor: pointer;
-  transition: background .15s;
+  display: flex; align-items: center; gap: 5px;
+  padding: 6px 14px; background: var(--blue); color: white;
+  border: none; border-radius: var(--radius-sm);
+  font-family: Arial, Helvetica, sans-serif; font-size: .78rem;
+  font-weight: 700; cursor: pointer; transition: background .15s;
 }
 .btn-add-act:hover { background: #003a6b; }
 
-/* ── RESUMEN / TOTALES ── */
+/* ── RESUMEN ── */
 .resumen-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  display: grid; grid-template-columns: repeat(2, 1fr);
   border-bottom: 1px solid var(--gray-200);
 }
 .resumen-cell {
-  padding: 16px 20px;
-  border-right: 1px solid var(--gray-100);
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
+  padding: 14px 18px; border-right: 1px solid var(--gray-100);
+  display: flex; flex-direction: column; gap: 6px;
 }
 .resumen-cell:last-child { border-right: none; }
+.resumen-row { display: flex; justify-content: space-between; align-items: center; }
 .resumen-cell-label { font-size: .7rem; font-weight: 700; color: var(--gray-400); text-transform: uppercase; letter-spacing: .5px; }
-.resumen-cell-val   { font-size: 1.05rem; font-weight: 700; color: var(--gray-800); }
+.resumen-cell-val   { font-size: 1rem; font-weight: 700; color: var(--gray-800); }
 
 .totales-bar {
-  display: flex;
-  background: var(--blue);
+  display: flex; background: var(--blue);
   border-radius: 0 0 var(--radius-lg) var(--radius-lg);
 }
 .totales-item {
-  flex: 1;
-  padding: 18px 24px;
+  flex: 1; padding: 16px 20px;
   border-right: 1px solid rgba(255,255,255,.15);
 }
 .totales-item:last-child { border-right: none; }
-.totales-label { font-size: .7rem; font-weight: 700; color: rgba(255,255,255,.65); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 4px; }
-.totales-val   { font-size: 1.4rem; font-weight: 700; color: white; }
+.totales-label { font-size: .68rem; font-weight: 700; color: rgba(255,255,255,.65); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 3px; }
+.totales-val   { font-size: 1.3rem; font-weight: 700; color: white; }
 .totales-val.warn { color: #ffcc80; }
 
-/* ── ESTADO EMPTY ── */
 .act-empty {
-  padding: 20px;
-  text-align: center;
-  font-size: .83rem;
-  color: var(--gray-400);
+  padding: 18px; text-align: center;
+  font-size: .81rem; color: var(--gray-400);
 }
 
-/* ── BADGE ESTADO ── */
-.badge-sin {
-  display: inline-flex; align-items: center; gap: 5px;
-  padding: 3px 10px; border-radius: 20px; font-size: .7rem; font-weight: 700;
-  background: var(--amber-light); color: var(--amber); border: 1px solid #ffcc80;
-}
-.badge-cap {
-  display: inline-flex; align-items: center; gap: 5px;
-  padding: 3px 10px; border-radius: 20px; font-size: .7rem; font-weight: 700;
-  background: var(--green-light); color: var(--green); border: 1px solid #a5d6a7;
-}
-
-/* ── SAVE BTN ── */
+/* ── SAVE BAR ── */
 .save-bar {
-  position: sticky;
-  bottom: 0;
-  background: var(--white);
-  border-top: 1px solid var(--gray-200);
-  padding: 14px 40px;
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 12px;
-  box-shadow: 0 -4px 12px rgba(0,0,0,.06);
+  position: sticky; bottom: 0;
+  background: var(--white); border-top: 1px solid var(--gray-200);
+  padding: 12px 36px; display: flex;
+  align-items: center; justify-content: flex-end; gap: 10px;
+  box-shadow: 0 -4px 12px rgba(0,0,0,.06); flex-shrink: 0;
 }
-.save-hint { font-size: .8rem; color: var(--gray-400); }
+.save-hint { font-size: .78rem; color: var(--gray-400); margin-right: auto; }
+
 .btn-save {
-  padding: 10px 28px;
-  background: var(--blue);
-  color: white;
-  border: none;
-  border-radius: var(--radius-md);
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: .88rem;
-  font-weight: 700;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 8px;
+  padding: 9px 22px; background: var(--blue); color: white;
+  border: none; border-radius: var(--radius-md);
+  font-family: Arial, Helvetica, sans-serif; font-size: .85rem;
+  font-weight: 700; cursor: pointer;
+  display: flex; align-items: center; gap: 7px;
   transition: background .15s, transform .1s;
   box-shadow: 0 4px 12px rgba(0,75,135,.25);
 }
 .btn-save:hover  { background: #003a6b; transform: translateY(-1px); }
 .btn-save:active { transform: translateY(0); }
 
-/* ── PERIODO FILTER ── */
-.periodo-filter {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 10px 20px 14px;
-  background: var(--gray-50);
-  border-bottom: 1px solid var(--gray-200);
+.btn-revisar {
+  padding: 9px 22px;
+  background: var(--green); color: white;
+  border: none; border-radius: var(--radius-md);
+  font-family: Arial, Helvetica, sans-serif; font-size: .85rem;
+  font-weight: 700; cursor: pointer;
+  display: flex; align-items: center; gap: 7px;
+  transition: background .15s, transform .1s;
+  box-shadow: 0 4px 12px rgba(0,166,128,.25);
 }
-.periodo-filter label { font-size: .75rem; font-weight: 700; color: var(--gray-400); text-transform: uppercase; white-space: nowrap; }
-.periodo-select {
-  border: 1px solid var(--gray-200);
-  border-radius: var(--radius-sm);
-  padding: 6px 10px;
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: .82rem;
-  background: var(--white);
-  color: var(--gray-800);
-  outline: none;
-  cursor: pointer;
-  min-width: 220px;
-}
-.periodo-select:focus { border-color: var(--blue); }
+.btn-revisar:hover  { background: #008060; transform: translateY(-1px); }
+.btn-revisar:active { transform: translateY(0); }
 
-/* ── TOAST ── */
-#toast {
-  position: fixed;
-  bottom: 24px; right: 24px;
-  background: var(--white);
-  border: 1px solid var(--gray-200);
-  border-left: 4px solid var(--green);
+/* ── CAMBIOS PENDIENTES INDICATOR ── */
+.cambios-badge {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 4px 10px; background: var(--amber-light);
+  border: 1px solid #ffe0b2; border-radius: 20px;
+  font-size: .72rem; font-weight: 700; color: var(--amber);
+}
+
+/* ── MODAL DE REVISIÓN ── */
+.modal-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,.45); z-index: 500;
+  display: flex; align-items: flex-start; justify-content: center;
+  padding: 32px 24px; overflow-y: auto;
+}
+.modal-box {
+  background: var(--white); border-radius: var(--radius-lg);
+  width: 100%; max-width: 1100px;
+  box-shadow: 0 20px 60px rgba(0,0,0,.2);
+  animation: fadeUp .25s ease;
+  overflow: hidden;
+}
+.modal-header {
+  background: var(--blue); padding: 20px 28px;
+  display: flex; align-items: center; gap: 14px;
+}
+.modal-header-icon {
+  width: 42px; height: 42px;
+  background: rgba(255,255,255,.15);
   border-radius: var(--radius-md);
-  padding: 14px 18px;
-  box-shadow: var(--shadow-lg);
-  font-size: .85rem;
-  font-weight: 500;
-  color: var(--gray-800);
-  z-index: 9999;
-  display: none;
-  align-items: center;
-  gap: 10px;
-  max-width: 300px;
-  animation: slideIn .25s ease;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.3rem; color: white;
 }
-@keyframes slideIn { from{opacity:0;transform:translateX(20px)} to{opacity:1;transform:translateX(0)} }
+.modal-header-title { font-size: 1.05rem; font-weight: 700; color: white; }
+.modal-header-sub   { font-size: .78rem; color: rgba(255,255,255,.7); margin-top: 2px; }
+.modal-close {
+  margin-left: auto; width: 34px; height: 34px;
+  border-radius: 50%; border: 1px solid rgba(255,255,255,.25);
+  background: transparent; color: white; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1rem; transition: background .15s;
+}
+.modal-close:hover { background: rgba(255,255,255,.15); }
 
-/* ── PERIODO BADGE ── */
-.per-badge {
-  display: inline-block;
-  padding: 2px 10px;
-  border-radius: 20px;
-  font-size: .72rem;
-  font-weight: 700;
-  background: #e8f0fe;
-  color: var(--blue-mid);
-  border: 1px solid #c5d8f8;
+.modal-body { padding: 24px 28px; }
+
+.modal-stats {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 12px; margin-bottom: 24px;
 }
+.modal-stat-card {
+  background: var(--gray-50); border: 1px solid var(--gray-200);
+  border-radius: var(--radius-md); padding: 14px 18px;
+}
+.modal-stat-label { font-size: .68rem; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; color: var(--gray-400); margin-bottom: 4px; }
+.modal-stat-val   { font-size: 1.5rem; font-weight: 700; color: var(--blue); }
+
+/* Tabla de revisión */
+.rev-table { width: 100%; border-collapse: collapse; font-size: .83rem; }
+.rev-table thead th {
+  padding: 10px 12px; text-align: left;
+  font-size: .68rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: .4px; color: var(--gray-400);
+  border-bottom: 2px solid var(--gray-200); background: var(--gray-50);
+  position: sticky; top: 0;
+}
+.rev-table thead th.center { text-align: center; }
+.rev-table tbody td {
+  padding: 10px 12px; border-bottom: 1px solid var(--gray-100);
+  vertical-align: top;
+}
+.rev-table tbody td.center { text-align: center; }
+.rev-table tbody tr.prof-group-row { background: #f0f6ff; }
+.rev-table tbody tr.prof-group-row td { font-weight: 700; color: var(--blue); border-top: 2px solid var(--blue-light); }
+.rev-table tbody tr:hover td { background: var(--gray-50); }
+
+.rev-tag-act {
+  display: inline-block; padding: 2px 7px; border-radius: 4px;
+  font-size: .67rem; font-weight: 700;
+  background: var(--green-light); color: var(--green);
+  border: 1px solid #b2dfdb;
+}
+.rev-tag-mat {
+  display: inline-block; padding: 2px 7px; border-radius: 4px;
+  font-size: .67rem; font-weight: 700;
+  background: var(--blue-light); color: var(--blue);
+}
+.rev-empty {
+  padding: 40px; text-align: center; color: var(--gray-400);
+  font-size: .88rem;
+}
+
+/* Scrollable area within modal */
+.modal-table-wrap {
+  max-height: 55vh; overflow-y: auto;
+  border: 1px solid var(--gray-200); border-radius: var(--radius-md);
+}
+.modal-table-wrap::-webkit-scrollbar { width: 6px; }
+.modal-table-wrap::-webkit-scrollbar-track { background: var(--gray-50); }
+.modal-table-wrap::-webkit-scrollbar-thumb { background: var(--gray-200); border-radius: 4px; }
 
 /* ── NO DATA BANNER ── */
 .no-data-banner {
-  background: var(--amber-light);
-  border: 1px solid #ffe0b2;
-  border-radius: var(--radius-md);
-  padding: 16px 20px;
-  margin-bottom: 24px;
-  display: flex;
-  align-items: flex-start;
-  gap: 12px;
-  font-size: .88rem;
+  background: var(--amber-light); border: 1px solid #ffe0b2;
+  border-radius: var(--radius-md); padding: 14px 18px; margin-bottom: 20px;
+  display: flex; align-items: flex-start; gap: 10px; font-size: .86rem;
 }
-.no-data-banner i { color: var(--amber); font-size: 1.1rem; margin-top: 1px; }
+.no-data-banner i { color: var(--amber); font-size: 1rem; margin-top: 1px; }
 
-/* fade in */
+/* ── TOAST ── */
+#toast {
+  position: fixed; bottom: 24px; right: 24px;
+  background: var(--white); border: 1px solid var(--gray-200);
+  border-left: 4px solid #16a34a; border-radius: var(--radius-md);
+  padding: 12px 16px; box-shadow: var(--shadow-lg);
+  font-size: .83rem; font-weight: 500; color: var(--gray-800);
+  z-index: 9999; display: none; align-items: center; gap: 9px;
+  max-width: 280px; animation: slideIn .25s ease;
+}
+@keyframes slideIn { from{opacity:0;transform:translateX(20px)} to{opacity:1;transform:translateX(0)} }
+
 .fade-in { animation: fadeUp .25s ease; }
 @keyframes fadeUp { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+
+/* ── CONFIRM MODAL ── */
+.confirm-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,.5);
+  z-index: 600; display: flex; align-items: center; justify-content: center;
+}
+.confirm-box {
+  background: var(--white); border-radius: var(--radius-lg);
+  padding: 24px 28px; max-width: 380px; width: 90%;
+  box-shadow: var(--shadow-lg);
+}
+.confirm-title { font-size: 1rem; font-weight: 700; color: var(--gray-800); margin-bottom: 8px; }
+.confirm-body  { font-size: .85rem; color: var(--gray-600); margin-bottom: 20px; line-height: 1.5; }
+.confirm-btns  { display: flex; gap: 10px; justify-content: flex-end; }
+.btn-confirm-cancel {
+  padding: 8px 18px; background: var(--gray-100); color: var(--gray-800);
+  border: 1px solid var(--gray-200); border-radius: var(--radius-sm);
+  font-family: Arial, Helvetica, sans-serif; font-size: .83rem;
+  font-weight: 600; cursor: pointer;
+}
+.btn-confirm-ok {
+  padding: 8px 18px; background: var(--red); color: white;
+  border: none; border-radius: var(--radius-sm);
+  font-family: Arial, Helvetica, sans-serif; font-size: .83rem;
+  font-weight: 700; cursor: pointer;
+}
 </style>
 </head>
 <body>
@@ -567,15 +563,18 @@ body {
 
   <!-- TOPBAR -->
   <div class="topbar">
-    <i class="bi bi-journal-bookmark-fill" style="font-size:1.2rem;opacity:.85;"></i>
-    <div>
-      <div class="topbar-logo">Carga Académica</div>
-      <div class="topbar-div">División de Sistemas Productivos y Mantenimiento Industrial</div>
+    <div class="topbar-icon-box">
+      <i class="bi bi-calendar-week-fill"></i>
+    </div>
+    <div class="topbar-texts">
+      <div class="topbar-logo">Carga Académica — División de Sistemas Productivos</div>
+      <div class="topbar-div">Asignar actividades de profesores por periodo</div>
     </div>
     <div class="topbar-sep"></div>
-    <div id="topPeriodoBadge" style="font-size:.78rem;opacity:.75;"></div>
+    <div id="topPeriodoBadge" style="font-size:.78rem;color:var(--gray-400);"></div>
   </div>
 
+  <!-- MAIN -->
   <div class="main-wrap">
 
     <!-- SIDEBAR -->
@@ -587,12 +586,10 @@ body {
           <input type="text" id="searchProf" placeholder="Buscar profesor..." oninput="filtrarProfesores()">
         </div>
       </div>
-      <!-- periodo filter -->
-      <div class="periodo-filter">
-        <label><i class="bi bi-funnel-fill me-1"></i>Periodo</label>
-        <select class="periodo-select" id="selPeriodo" onchange="cargarDatos()">
-          <option value="">Todos los periodos</option>
-        </select>
+      <div class="sidebar-tabs">
+        <div class="sidebar-tab active" onclick="cambiarTab('todos', this)">Todos</div>
+        <div class="sidebar-tab" onclick="cambiarTab('pendientes', this)">Pendientes</div>
+        <div class="sidebar-tab" onclick="cambiarTab('registrados', this)">Registrados</div>
       </div>
       <div class="sidebar-list" id="sidebarList">
         <div class="sidebar-empty">Cargando...</div>
@@ -600,34 +597,86 @@ body {
     </div>
 
     <!-- CONTENT -->
-    <div class="content-area" id="contentArea">
-      <div class="empty-state" id="emptyState">
-        <i class="bi bi-person-lines-fill"></i>
-        <p>Selecciona un profesor para ver su carga académica</p>
+    <div style="flex:1;display:flex;flex-direction:column;min-width:0;overflow:hidden;">
+      <div class="content-area" id="contentArea">
+        <div class="empty-state" id="emptyState">
+          <i class="bi bi-person-lines-fill"></i>
+          <p>Selecciona un profesor para ver su carga académica</p>
+        </div>
+        <div id="profView" style="display:none;" class="fade-in"></div>
       </div>
-      <div id="profView" style="display:none;" class="fade-in"></div>
+
+      <!-- SAVE BAR -->
+      <div class="save-bar" id="saveBar" style="display:none;">
+        <div id="cambiosBadge" class="cambios-badge" style="display:none;">
+          <i class="bi bi-pencil-fill"></i> Cambios sin guardar
+        </div>
+        <span class="save-hint" id="saveHint"></span>
+        <button class="btn-revisar" id="btnRevisar" style="display:none;" onclick="abrirRevision()">
+          <i class="bi bi-table"></i> Revisar carga académica
+        </button>
+        <button class="btn-save" onclick="guardarActividades()">
+          <i class="bi bi-floppy-fill"></i> Guardar actividades
+        </button>
+      </div>
     </div>
 
   </div>
-
-  <!-- SAVE BAR -->
-  <div class="save-bar" id="saveBar" style="display:none;">
-    <span class="save-hint" id="saveHint">Los cambios se guardan automáticamente</span>
-    <button class="btn-save" onclick="guardarActividades()">
-      <i class="bi bi-floppy-fill"></i> Guardar actividades
-    </button>
-  </div>
-
 </div>
 
-<!-- TOAST -->
+<!-- MODAL REVISIÓN -->
+<div id="modalRevision" class="modal-overlay" style="display:none;" onclick="cerrarRevisionFondo(event)">
+  <div class="modal-box">
+    <div class="modal-header">
+      <div class="modal-header-icon"><i class="bi bi-table"></i></div>
+      <div>
+        <div class="modal-header-title">Revisión de Carga Académica</div>
+        <div class="modal-header-sub">División de Sistemas Productivos y Mantenimiento Industrial</div>
+      </div>
+      <button class="modal-close" onclick="cerrarRevision()"><i class="bi bi-x-lg"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-stats" id="modalStats"></div>
+      <div class="modal-table-wrap">
+        <table class="rev-table">
+          <thead>
+            <tr>
+              <th style="width:18%;">Profesor</th>
+              <th style="width:22%;">Asignatura / Actividad</th>
+              <th style="width:14%;">Carrera</th>
+              <th class="center" style="width:7%;">Grupo</th>
+              <th class="center" style="width:7%;">Prog</th>
+              <th class="center" style="width:7%;">Hrs</th>
+              <th class="center" style="width:8%;">Sem Inicio</th>
+              <th class="center" style="width:8%;">Sem Fin</th>
+              <th class="center" style="width:9%;">Total Sem</th>
+            </tr>
+          </thead>
+          <tbody id="revTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CONFIRM MODAL -->
+<div id="confirmModal" class="confirm-overlay" style="display:none;">
+  <div class="confirm-box">
+    <div class="confirm-title" id="confirmTitle">¿Confirmar acción?</div>
+    <div class="confirm-body" id="confirmBody"></div>
+    <div class="confirm-btns">
+      <button class="btn-confirm-cancel" onclick="cerrarConfirm()">Cancelar</button>
+      <button class="btn-confirm-ok" id="confirmOkBtn">Eliminar</button>
+    </div>
+  </div>
+</div>
+
 <div id="toast">
-  <i class="bi bi-check-circle-fill" style="color:var(--green);"></i>
+  <i class="bi bi-check-circle-fill" style="color:#16a34a;"></i>
   <span id="toastMsg">Guardado</span>
 </div>
 
 <script>
-// ── CONSTANTES ────────────────────────────────────────────────────────────────
 const DIVISION_ID = 'sistemas_productivos';
 const ACTIVIDADES_OPTS = [
   "Tutoría grupal","Asesoría académica","Investigación",
@@ -635,67 +684,73 @@ const ACTIVIDADES_OPTS = [
   "Estadías","Proyecto integrador","Otra"
 ];
 
-// ── ESTADO ────────────────────────────────────────────────────────────────────
-let profMap   = {};       // { nombreProf: { materias: [...] } }
-let periodos  = [];
-let profActivo= null;
-let actAct    = [];       // actividades del profesor activo
+let profMap        = {};
+let periodos       = [];
+let profActivo     = null;
+let actAct         = [];
+let hayChangesPendientes = false;
+let filtroTabActual     = 'todos';
 
 // ── INIT ──────────────────────────────────────────────────────────────────────
 window.addEventListener('DOMContentLoaded', () => {
   cargarDatos();
 });
 
-// ── LEER LOCALSTORAGE ─────────────────────────────────────────────────────────
 function cargarDatos() {
   const registros = JSON.parse(localStorage.getItem('registrosResumenCargas')) || [];
   const completos = registros.filter(r => r.estado === 'completo' && r.division === DIVISION_ID);
 
-  // periodos únicos
   periodos = [...new Set(completos.map(r => r.periodo))];
-  const selPer = document.getElementById('selPeriodo');
-  const actual = selPer.value;
-  selPer.innerHTML = `<option value="">Todos los periodos</option>` +
-    periodos.map(p => `<option value="${p}" ${p===actual?'selected':''}>${p}</option>`).join('');
-  const periodoFiltro = selPer.value;
-
-  // filtrar
-  const filtrados = periodoFiltro
-    ? completos.filter(r => r.periodo === periodoFiltro)
-    : completos;
-
-  // topbar badge
   document.getElementById('topPeriodoBadge').textContent =
-    periodoFiltro ? periodoFiltro : (periodos.length ? periodos.join(' · ') : 'Sin datos');
+    periodos.length ? periodos.join(' · ') : 'Sin datos';
 
-  // construir profMap
   profMap = {};
-  filtrados.forEach(reg => {
+  completos.forEach(reg => {
     reg.asignaciones.forEach(a => {
       reg.gruposRegistrados.forEach(g => {
         const prof = a[g];
         if (prof && prof !== '---') {
           if (!profMap[prof]) profMap[prof] = { materias: [] };
           profMap[prof].materias.push({
-            materia: a.materia,
-            grupo: g,
-            carrera: reg.carrera,
-            grado: reg.grado,
+            materia: a.materia, grupo: g,
+            carrera: reg.carrera, grado: reg.grado,
             periodo: reg.periodo,
-            inicio: a.inicio,
-            fin: a.fin,
-            total: a.total,
-            horas: a.horas || 5,
-            programa: a.programa || 'LIC'
+            inicio: a.inicio, fin: a.fin, total: a.total,
+            horas: a.horas || 5, programa: a.programa || 'LIC'
           });
         }
       });
     });
   });
 
-  renderSidebar(Object.keys(profMap));
+  // Si no hay datos en localStorage, usar datos demo
+  if (Object.keys(profMap).length === 0) {
+    profMap = {
+      'García Mendoza, Alejandro': { materias: [
+        { materia: 'Automatización Industrial', grupo: 'A', carrera: 'Ing. Mecatrónica', grado: '5', periodo: '2025-1', inicio: 1, fin: 16, total: 16, horas: 5, programa: 'LIC' },
+        { materia: 'Control de Procesos', grupo: 'B', carrera: 'Ing. Industrial', grado: '6', periodo: '2025-1', inicio: 1, fin: 16, total: 16, horas: 4, programa: 'LIC' }
+      ]},
+      'López Vargas, Carmen': { materias: [
+        { materia: 'Manufactura Avanzada', grupo: 'A', carrera: 'Ing. Industrial', grado: '7', periodo: '2025-1', inicio: 1, fin: 14, total: 14, horas: 5, programa: 'LIC' }
+      ]},
+      'Martínez Reyes, Jorge': { materias: [
+        { materia: 'Robótica', grupo: 'A', carrera: 'Ing. Mecatrónica', grado: '8', periodo: '2025-1', inicio: 2, fin: 17, total: 16, horas: 4, programa: 'LIC' },
+        { materia: 'Sistemas Embebidos', grupo: 'B', carrera: 'Ing. Mecatrónica', grado: '6', periodo: '2025-1', inicio: 1, fin: 16, total: 16, horas: 5, programa: 'LIC' }
+      ]},
+      'Hernández Cruz, Ana': { materias: [
+        { materia: 'Gestión de Calidad', grupo: 'A', carrera: 'Ing. Industrial', grado: '4', periodo: '2025-1', inicio: 1, fin: 16, total: 16, horas: 3, programa: 'LIC' }
+      ]},
+      'Ramírez Fuentes, Luis': { materias: [
+        { materia: 'Termodinámica', grupo: 'A', carrera: 'Ing. Mecatrónica', grado: '3', periodo: '2025-1', inicio: 1, fin: 18, total: 18, horas: 5, programa: 'LIC' },
+        { materia: 'Mecánica de Fluidos', grupo: 'B', carrera: 'Ing. Industrial', grado: '4', periodo: '2025-1', inicio: 1, fin: 18, total: 18, horas: 5, programa: 'LIC' }
+      ]}
+    };
+    periodos = ['2025-1'];
+    document.getElementById('topPeriodoBadge').textContent = '2025-1 (datos demo)';
+  }
 
-  // si había prof activo, re-renderizar
+  filtrarProfesores();
+
   if (profActivo && profMap[profActivo]) {
     abrirProfesor(profActivo);
   } else if (profActivo) {
@@ -706,102 +761,134 @@ function cargarDatos() {
   }
 }
 
+// ── TABS + FILTRO ─────────────────────────────────────────────────────────────
+function cambiarTab(tab, element) {
+  document.querySelectorAll('.sidebar-tab').forEach(el => el.classList.remove('active'));
+  element.classList.add('active');
+  filtroTabActual = tab;
+  filtrarProfesores();
+}
+
+function filtrarProfesores() {
+  const q = document.getElementById('searchProf').value.toLowerCase();
+  const profActividades = JSON.parse(localStorage.getItem('actividadesProfesores')) || {};
+  const profs = Object.keys(profMap).filter(n => {
+    const matchesSearch = n.toLowerCase().includes(q);
+    const tieneAct = (profActividades[n] || []).length > 0;
+    let matchesTab = true;
+    if (filtroTabActual === 'pendientes') matchesTab = !tieneAct;
+    if (filtroTabActual === 'registrados') matchesTab = tieneAct;
+    return matchesSearch && matchesTab;
+  });
+  renderSidebar(profs);
+}
+
 // ── SIDEBAR ───────────────────────────────────────────────────────────────────
 function renderSidebar(profs) {
   const list = document.getElementById('sidebarList');
   if (!profs.length) {
-    list.innerHTML = `<div class="sidebar-empty"><i class="bi bi-inbox" style="font-size:2rem;display:block;margin-bottom:8px;"></i>No hay profesores con asignaciones confirmadas en este periodo.</div>`;
+    list.innerHTML = `<div class="sidebar-empty"><i class="bi bi-inbox" style="font-size:1.8rem;display:block;margin-bottom:8px;"></i>Sin resultados.</div>`;
     return;
   }
   const profActividades = JSON.parse(localStorage.getItem('actividadesProfesores')) || {};
   list.innerHTML = profs.map(n => {
-    const tieneAct  = (profActividades[n] || []).length > 0;
-    const inicial   = n.charAt(0).toUpperCase();
-    const mats      = profMap[n].materias.length;
-    const esActivo  = n === profActivo;
+    const tieneAct = (profActividades[n] || []).length > 0;
+    const inicial  = n.charAt(0).toUpperCase();
+    const mats     = profMap[n].materias.length;
+    const esActivo = n === profActivo;
+    const nameEsc  = n.replace(/'/g,"\\'");
     return `
-    <div class="prof-item ${esActivo?'active':''}" onclick="abrirProfesor('${n.replace(/'/g,"\\'")}')" id="pi_${encodeId(n)}">
+    <div class="prof-item ${esActivo?'active':''}" onclick="abrirProfesor('${nameEsc}')" id="pi_${encodeId(n)}">
       <div class="prof-avatar">${inicial}</div>
       <div class="prof-info">
         <div class="prof-name">${n}</div>
-        <div class="prof-meta">${mats} materia${mats!==1?'s':''} asignada${mats!==1?'s':''}</div>
+        <div class="prof-meta">${mats} mat. · ${tieneAct ? '<span style="color:#16a34a;font-weight:700;">Registrado</span>' : 'Pendiente'}</div>
       </div>
+      ${tieneAct ? `
+      <div class="prof-actions">
+        <button class="prof-action-btn edit" title="Editar" onclick="editarProfesor(event,'${nameEsc}')"><i class="bi bi-pencil-fill"></i></button>
+        <button class="prof-action-btn" title="Eliminar registro" onclick="confirmarEliminarProfesor(event,'${nameEsc}')"><i class="bi bi-trash3-fill"></i></button>
+      </div>` : ''}
       <div class="prof-status ${tieneAct?'capturado':''}"></div>
     </div>`;
   }).join('');
 }
 
-function filtrarProfesores() {
-  const q = document.getElementById('searchProf').value.toLowerCase();
-  const profs = Object.keys(profMap).filter(n => n.toLowerCase().includes(q));
-  renderSidebar(profs);
+function encodeId(str) { return str.replace(/[^a-zA-Z0-9]/g,'_'); }
+
+// Editar: simplemente abrir el profesor (ya funciona)
+function editarProfesor(e, nombre) {
+  e.stopPropagation();
+  abrirProfesor(nombre);
 }
 
-function encodeId(str) {
-  return str.replace(/[^a-zA-Z0-9]/g,'_');
+// Confirmar eliminación de registro del profesor
+function confirmarEliminarProfesor(e, nombre) {
+  e.stopPropagation();
+  mostrarConfirm(
+    'Eliminar registro',
+    `¿Deseas eliminar todas las actividades registradas de <strong>${nombre}</strong>? Esta acción no se puede deshacer.`,
+    () => {
+      const profActs = JSON.parse(localStorage.getItem('actividadesProfesores')) || {};
+      delete profActs[nombre];
+      localStorage.setItem('actividadesProfesores', JSON.stringify(profActs));
+      toast('Registro eliminado');
+      filtrarProfesores();
+      // Si era el activo, limpiar vista
+      if (profActivo === nombre) {
+        actAct = [];
+        hayChangesPendientes = false;
+        abrirProfesor(nombre);
+      }
+    }
+  );
 }
 
 // ── ABRIR PROFESOR ────────────────────────────────────────────────────────────
 function abrirProfesor(nombre) {
+  // Si hay cambios pendientes en otro profesor, advertir
+  // (por ahora simplemente abrimos sin aviso — se puede mejorar)
   profActivo = nombre;
-  const datos   = profMap[nombre] || { materias:[] };
-  const materias= datos.materias;
+  const datos    = profMap[nombre] || { materias:[] };
+  const materias = datos.materias;
   const profActividades = JSON.parse(localStorage.getItem('actividadesProfesores')) || {};
   actAct = JSON.parse(JSON.stringify(profActividades[nombre] || []));
+  hayChangesPendientes = false;
+  actualizarBadgeCambios();
 
-  // sidebar highlight
   document.querySelectorAll('.prof-item').forEach(el => el.classList.remove('active'));
   const el = document.getElementById(`pi_${encodeId(nombre)}`);
   if (el) el.classList.add('active');
 
-  // totales docencia
-  const totalHrsDoc  = materias.reduce((s,m) => s + (m.horas||5), 0);
-  const maxSems      = materias.reduce((mx,m) => Math.max(mx, m.total||0), 0);
-
-  // periodos únicos del prof
-  const perUnicos = [...new Set(materias.map(m=>m.periodo))];
+  const totalHrsDoc = materias.reduce((s,m) => s + (m.horas||5), 0);
+  const maxSems     = materias.reduce((mx,m) => Math.max(mx, m.total||0), 0);
+  const perUnicos   = [...new Set(materias.map(m => m.periodo))];
+  const yaTieneActs = (profActividades[nombre] || []).length > 0;
 
   document.getElementById('emptyState').style.display = 'none';
   document.getElementById('profView').style.display   = 'block';
   document.getElementById('saveBar').style.display    = 'flex';
 
-  // NO DATA check
+  // Mostrar botón revisar si ya hay algún profesor registrado
+  actualizarBtnRevisar();
+
   let noDataBanner = '';
   if (materias.length === 0) {
-    noDataBanner = `<div class="no-data-banner"><i class="bi bi-exclamation-triangle-fill"></i><span>Este profesor no tiene materias asignadas en el periodo seleccionado.</span></div>`;
+    noDataBanner = `<div class="no-data-banner"><i class="bi bi-exclamation-triangle-fill"></i><span>Este profesor no tiene materias asignadas en el periodo activo.</span></div>`;
   }
 
   document.getElementById('profView').innerHTML = `
     ${noDataBanner}
-    <!-- HEADER -->
+
+    <!-- HEADER COMPACTO -->
     <div class="prof-header-card fade-in">
-      <div class="prof-avatar-lg">${nombre.charAt(0)}</div>
-      <div>
+      <div class="prof-avatar-md"><i class="bi bi-person-fill"></i></div>
+      <div style="flex:1;min-width:0;">
         <div class="prof-header-name">${nombre}</div>
         <div class="prof-header-sub">
-          <i class="bi bi-building" style="font-size:.75rem;"></i>
+          <i class="bi bi-building"></i>
           División de Sistemas Productivos y Mantenimiento Industrial
-        </div>
-        <div style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap;">
-          ${perUnicos.map(p=>`<span class="per-badge">${p}</span>`).join('')}
-        </div>
-      </div>
-      <div class="header-stats">
-        <div class="stat-chip">
-          <div class="stat-chip-val" id="hStatHrs">${totalHrsDoc}</div>
-          <div class="stat-chip-label">Hrs Doc</div>
-        </div>
-        <div class="stat-chip">
-          <div class="stat-chip-val" id="hStatSem">${maxSems}</div>
-          <div class="stat-chip-label">Sem Doc</div>
-        </div>
-        <div class="stat-chip">
-          <div class="stat-chip-val" id="hStatAct">0</div>
-          <div class="stat-chip-label">Hrs Otras</div>
-        </div>
-        <div class="stat-chip" style="background:var(--blue);border-color:var(--blue);">
-          <div class="stat-chip-val" id="hStatTotal" style="color:white;">—</div>
-          <div class="stat-chip-label" style="color:rgba(255,255,255,.65);">Total Lab</div>
+          ${perUnicos.map(p=>`<span class="per-badge" style="margin-left:4px;">${p}</span>`).join('')}
         </div>
       </div>
     </div>
@@ -841,14 +928,15 @@ function abrirProfesor(nombre) {
       </div>
       <div class="subtotal-bar">
         <div class="subtotal-item">
-          <span class="subtotal-label"><i class="bi bi-clock" style="margin-right:5px;"></i>Total Hrs Docencia</span>
+          <span class="subtotal-label"><i class="bi bi-clock" style="margin-right:4px;"></i>Total Hrs Docencia</span>
           <span class="subtotal-value">${totalHrsDoc} hrs</span>
         </div>
         <div class="subtotal-item">
-          <span class="subtotal-label"><i class="bi bi-calendar3" style="margin-right:5px;"></i>Total Semanas Docencia</span>
-          <span class="subtotal-value">${maxSems} sem</span>
+          <span class="subtotal-label"><i class="bi bi-calendar3" style="margin-right:4px;"></i>Total Semanas Docencia</span>
+          <span class="subtotal-value" id="hStatSem">${maxSems} sem</span>
         </div>
       </div>
+      <span style="display:none;" id="hStatHrs">${totalHrsDoc}</span>
     </div>
 
     <!-- OTRAS ACTIVIDADES -->
@@ -857,7 +945,7 @@ function abrirProfesor(nombre) {
         <i class="bi bi-clipboard-plus"></i>Otras Actividades
         <div class="sec-action">
           <button class="btn-add-act" onclick="agregarActividad()">
-            <i class="bi bi-plus-lg"></i>Agregar actividad
+            <i class="bi bi-plus-lg"></i>Agregar
           </button>
         </div>
       </div>
@@ -883,16 +971,24 @@ function abrirProfesor(nombre) {
       <div class="section-title"><i class="bi bi-bar-chart-line-fill"></i>Resumen de Carga</div>
       <div class="resumen-grid">
         <div class="resumen-cell">
-          <span class="resumen-cell-label">Total Sem. Docencia</span>
-          <span class="resumen-cell-val" id="rSemDoc">${maxSems} sem</span>
+          <div class="resumen-row">
+            <span class="resumen-cell-label">Total Sem. Docencia</span>
+            <span class="resumen-cell-val" id="rSemDoc">${maxSems} sem</span>
+          </div>
+          <div class="resumen-row">
+            <span class="resumen-cell-label" style="color:var(--gray-600);">Total Sem. Otras Act.</span>
+            <span class="resumen-cell-val" id="rSemAct">0 sem</span>
+          </div>
         </div>
         <div class="resumen-cell">
-          <span class="resumen-cell-label">Total Hrs Docencia</span>
-          <span class="resumen-cell-val" id="rHrsDoc">${totalHrsDoc} hrs</span>
-        </div>
-        <div class="resumen-cell">
-          <span class="resumen-cell-label">Total Hrs Otras Act.</span>
-          <span class="resumen-cell-val" id="rHrsAct">0 hrs</span>
+          <div class="resumen-row">
+            <span class="resumen-cell-label">Total Hrs Docencia</span>
+            <span class="resumen-cell-val" id="rHrsDoc">${totalHrsDoc} hrs</span>
+          </div>
+          <div class="resumen-row">
+            <span class="resumen-cell-label" style="color:var(--gray-600);">Total Hrs Otras Act.</span>
+            <span class="resumen-cell-val" id="rHrsAct">0 hrs</span>
+          </div>
         </div>
       </div>
       <div class="totales-bar">
@@ -917,7 +1013,7 @@ function renderActividades() {
   const tbody = document.getElementById('tbodyAct');
   if (!tbody) return;
   if (!actAct.length) {
-    tbody.innerHTML = `<tr><td colspan="6" class="act-empty">Sin otras actividades. Usa "Agregar actividad" para añadir.</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="6" class="act-empty">Sin otras actividades. Usa "Agregar" para añadir.</td></tr>`;
     return;
   }
   tbody.innerHTML = actAct.map((a, i) => {
@@ -925,19 +1021,38 @@ function renderActividades() {
     return `
     <tr id="actRow${i}">
       <td class="act-cell"><select class="act-select" onchange="updAct(${i},'tipo',this.value)">${opts}</select></td>
-      <td class="act-cell"><input type="number" class="act-input" min="0" value="${a.horas||''}" placeholder="0" oninput="updAct(${i},'horas',this.value)"></td>
-      <td class="act-cell"><input type="number" class="act-input" min="1" max="18" value="${a.inicio||''}" placeholder="1" oninput="updAct(${i},'inicio',this.value)"></td>
-      <td class="act-cell"><input type="number" class="act-input" min="1" max="18" value="${a.fin||''}" placeholder="14" oninput="updAct(${i},'fin',this.value)"></td>
-      <td class="act-cell"><input type="number" class="act-input" readonly value="${a.totalSem||''}" placeholder="—"></td>
+      <td class="act-cell"><input type="number" class="act-input" min="0" value="${a.horas||''}" placeholder="" oninput="updAct(${i},'horas',this.value)"></td>
+      <td class="act-cell"><input type="number" class="act-input" min="1" max="18" value="${a.inicio||''}" placeholder="" oninput="updAct(${i},'inicio',this.value)"></td>
+      <td class="act-cell"><input type="number" class="act-input" min="1" max="18" value="${a.fin||''}" placeholder="" oninput="updAct(${i},'fin',this.value)"></td>
+      <td class="act-cell"><input type="number" class="act-input" id="totSem_${i}" readonly value="${a.totalSem||''}" placeholder="—"></td>
       <td class="act-cell center"><button class="btn-del-act" onclick="elimAct(${i})"><i class="bi bi-trash3"></i></button></td>
     </tr>`;
   }).join('');
+}
+
+function marcarCambios() {
+  hayChangesPendientes = true;
+  actualizarBadgeCambios();
+}
+
+function actualizarBadgeCambios() {
+  const badge = document.getElementById('cambiosBadge');
+  if (!badge) return;
+  badge.style.display = hayChangesPendientes ? 'inline-flex' : 'none';
+}
+
+function actualizarBtnRevisar() {
+  const profActs = JSON.parse(localStorage.getItem('actividadesProfesores')) || {};
+  const hayRegistros = Object.keys(profActs).some(k => (profActs[k] || []).length > 0);
+  const btn = document.getElementById('btnRevisar');
+  if (btn) btn.style.display = hayRegistros ? 'flex' : 'none';
 }
 
 function agregarActividad() {
   actAct.push({ tipo: ACTIVIDADES_OPTS[0], horas:'', inicio:'', fin:'', totalSem:'' });
   renderActividades();
   recalcularTotales();
+  marcarCambios();
 }
 
 function updAct(i, campo, val) {
@@ -945,39 +1060,33 @@ function updAct(i, campo, val) {
   actAct[i][campo] = val;
   const ini = parseInt(actAct[i].inicio);
   const fin = parseInt(actAct[i].fin);
-  if (!isNaN(ini) && !isNaN(fin) && fin >= ini) {
-    actAct[i].totalSem = fin - ini + 1;
-    const row = document.getElementById(`actRow${i}`);
-    if (row) {
-      const totalInput = row.querySelectorAll('input[type=number]')[2];
-      if (totalInput) totalInput.value = actAct[i].totalSem;
-    }
-  }
+  actAct[i].totalSem = (!isNaN(ini) && !isNaN(fin) && fin >= ini) ? fin - ini + 1 : '';
+  const totInput = document.getElementById(`totSem_${i}`);
+  if (totInput) totInput.value = actAct[i].totalSem;
   recalcularTotales();
+  marcarCambios();
 }
 
 function elimAct(i) {
   actAct.splice(i, 1);
   renderActividades();
   recalcularTotales();
+  marcarCambios();
 }
 
 // ── TOTALES ───────────────────────────────────────────────────────────────────
 function recalcularTotales() {
-  const hrsDoc  = parseInt(document.getElementById('hStatHrs')?.textContent) || 0;
-  const semDoc  = parseInt(document.getElementById('hStatSem')?.textContent) || 0;
-  const hrsAct  = actAct.reduce((s,a) => s + (parseInt(a.horas)||0), 0);
-  const maxSemsAct = actAct.reduce((mx,a) => Math.max(mx, parseInt(a.totalSem)||0), 0);
+  const hrsDoc    = parseInt(document.getElementById('hStatHrs')?.textContent) || 0;
+  const semDoc    = parseInt(document.getElementById('hStatSem')?.textContent) || 0;
+  const hrsAct    = actAct.reduce((s,a) => s + (parseInt(a.horas)||0), 0);
+  const maxSemsAct= actAct.reduce((mx,a) => Math.max(mx, parseInt(a.totalSem)||0), 0);
   const totalHrs  = hrsDoc + hrsAct;
   const totalSems = Math.max(semDoc, maxSemsAct);
-
   const set = (id, val) => { const el=document.getElementById(id); if(el) el.textContent=val; };
-  set('hStatAct',  hrsAct);
-  set('hStatTotal',totalHrs + ' hrs');
   set('rHrsAct',   hrsAct + ' hrs');
+  set('rSemAct',   maxSemsAct + ' sem');
   set('rTotalHrs', totalHrs + ' hrs');
   set('rTotalSem', totalSems + ' sem');
-
   const rTSem = document.getElementById('rTotalSem');
   if (rTSem) rTSem.className = `totales-val${totalSems > 0 && totalSems < 15 ? ' warn' : ''}`;
 }
@@ -988,12 +1097,15 @@ function guardarActividades() {
   const profActs = JSON.parse(localStorage.getItem('actividadesProfesores')) || {};
   profActs[profActivo] = actAct;
   localStorage.setItem('actividadesProfesores', JSON.stringify(profActs));
+  hayChangesPendientes = false;
+  actualizarBadgeCambios();
+  actualizarBtnRevisar();
   toast('Actividades guardadas correctamente');
-  renderSidebar(Object.keys(profMap));
-  // re-highlight
+  filtrarProfesores();
   const el = document.getElementById(`pi_${encodeId(profActivo)}`);
   if (el) el.classList.add('active');
 }
+
 
 // ── TOAST ─────────────────────────────────────────────────────────────────────
 function toast(msg) {
