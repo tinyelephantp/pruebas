@@ -1242,3 +1242,18 @@ window.resetearStatusPruebas = function() {
 </script>
 </body>
 </html>
+    }, 3500);
+}
+
+// ─── RESET ────────────────────────────────────────────────────────────────────
+window.resetearStatusPruebas = function() {
+    if (confirm("¿Resetear TODOS los datos? (registros, estado división, etc.)")) {
+        localStorage.removeItem('estadoDivisiones');
+        localStorage.removeItem('registrosResumenCargas');
+        localStorage.removeItem('actividadesProfesores');
+        location.reload();
+    }
+};
+</script>
+</body>
+</html>
