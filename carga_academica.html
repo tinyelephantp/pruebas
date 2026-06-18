@@ -4,376 +4,670 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Carga Académica — Profesores</title>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
-
 :root {
-  --ink:        #0d1b2a;
-  --ink-mid:    #1e3a5f;
-  --sky:        #1a6cf5;
-  --sky-light:  #e8f0fe;
-  --sky-glow:   rgba(26,108,245,.12);
-  --sage:       #00897b;
-  --sage-light: #e0f2f1;
-  --rose:       #e53935;
-  --amber:      #f59e0b;
-  --violet:     #6c3cde;
-  --violet-lt:  #ede9fb;
-  --g50:        #f7f8fc;
-  --g100:       #eef0f7;
-  --g200:       #dde2ef;
-  --g300:       #b8c2d8;
-  --g500:       #6b7a99;
-  --g700:       #2f3d56;
-  --g900:       #0d1b2a;
-  --r:          14px;
-  --r-lg:       20px;
-  --shadow:     0 1px 4px rgba(13,27,42,.06), 0 4px 16px rgba(13,27,42,.05);
-  --shadow-md:  0 4px 20px rgba(13,27,42,.10), 0 1px 6px rgba(13,27,42,.06);
+  --ink:        #0E1117;
+  --ink-80:     #2D3441;
+  --ink-60:     #4B5568;
+  --ink-40:     #9AA3B2;
+  --ink-20:     #D1D8E4;
+  --ink-10:     #EEF1F6;
+  --ink-05:     #F7F9FC;
+  --indigo:     #5B6EF5;
+  --indigo-dk:  #3D4FCC;
+  --indigo-lt:  #EEF0FE;
+  --indigo-md:  #C7CCFB;
+  --sage:       #10B981;
+  --sage-lt:    #D1FAE5;
+  --amber:      #F59E0B;
+  --amber-lt:   #FEF3C7;
+  --rose:       #F43F5E;
+  --rose-lt:    #FFE4E6;
+  --violet:     #8B5CF6;
+  --violet-lt:  #EDE9FE;
+  --r:          10px;
+  --r-lg:       16px;
+  --r-xl:       22px;
+  --shadow-xs:  0 1px 2px rgba(14,17,23,.05);
+  --shadow-sm:  0 1px 4px rgba(14,17,23,.06), 0 2px 8px rgba(14,17,23,.04);
+  --shadow-md:  0 4px 16px rgba(14,17,23,.08), 0 1px 4px rgba(14,17,23,.05);
+  --shadow-lg:  0 8px 32px rgba(14,17,23,.12), 0 2px 8px rgba(14,17,23,.06);
+  --transition: .18s cubic-bezier(.4,0,.2,1);
 }
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: 'Inter', sans-serif; background: var(--g50); color: var(--ink); font-size: 14px; min-height: 100vh; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--ink-05);
+  color: var(--ink);
+  font-size: 14px;
+  min-height: 100vh;
+  line-height: 1.5;
+}
 
 /* ─── TOP BAR ─── */
 .topbar {
-  background: white; border-bottom: 1px solid var(--g200); padding: 0 32px;
-  height: 60px; display: flex; align-items: center; justify-content: space-between;
-  position: sticky; top: 0; z-index: 100;
+  background: rgba(255,255,255,.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--ink-10);
+  padding: 0 32px;
+  height: 62px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 200;
 }
-.topbar-brand { display: flex; align-items: center; gap: 10px; }
-.topbar-brand .icon { width: 34px; height: 34px; border-radius: 10px; background: var(--sky); display: flex; align-items: center; justify-content: center; }
-.topbar-brand .icon i { color: white; font-size: 17px; }
-.topbar-brand .name { font-weight: 700; font-size: .92rem; color: var(--ink); letter-spacing: -.2px; }
-.topbar-brand .sub { font-size: .72rem; color: var(--g500); font-weight: 400; }
+.topbar-brand { display: flex; align-items: center; gap: 12px; }
+.brand-icon {
+  width: 36px; height: 36px; border-radius: 10px;
+  background: linear-gradient(135deg, var(--indigo) 0%, var(--indigo-dk) 100%);
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 2px 8px rgba(91,110,245,.35);
+}
+.brand-icon i { color: white; font-size: 17px; }
+.brand-text .name { font-weight: 700; font-size: .9rem; color: var(--ink); letter-spacing: -.2px; }
+.brand-text .sub  { font-size: .7rem; color: var(--ink-40); margin-top: 1px; }
 .btn-back {
   display: inline-flex; align-items: center; gap: 7px;
-  background: var(--g50); border: 1px solid var(--g200); border-radius: 9px;
-  padding: 7px 16px; font-size: .8rem; font-weight: 600; color: var(--g500);
-  cursor: pointer; transition: all .18s; text-decoration: none;
+  background: var(--ink-05); border: 1px solid var(--ink-20);
+  border-radius: var(--r); padding: 7px 15px;
+  font-size: .78rem; font-weight: 600; color: var(--ink-60);
+  cursor: pointer; transition: var(--transition); text-decoration: none;
+  font-family: 'DM Sans', sans-serif;
 }
-.btn-back:hover { background: white; border-color: var(--sky); color: var(--sky); }
+.btn-back:hover { background: white; border-color: var(--indigo); color: var(--indigo); box-shadow: var(--shadow-xs); }
 
 /* ─── BREADCRUMB ─── */
-.breadcrumb-wrap {
-  padding: 12px 32px; display: flex; align-items: center; gap: 6px;
-  font-size: .76rem; color: var(--g500); border-bottom: 1px solid var(--g100); background: white;
+.breadcrumb-bar {
+  padding: 9px 32px;
+  display: flex; align-items: center; gap: 6px;
+  font-size: .73rem; color: var(--ink-40);
+  background: white;
+  border-bottom: 1px solid var(--ink-10);
 }
-.bc-link { color: var(--sky); font-weight: 600; cursor: pointer; }
+.bc-link { color: var(--indigo); font-weight: 600; cursor: pointer; }
 .bc-link:hover { text-decoration: underline; }
-.bc-sep { color: var(--g300); }
-.bc-current { color: var(--g700); font-weight: 500; }
+.bc-sep { color: var(--ink-20); font-size: .65rem; }
+.bc-current { color: var(--ink-60); font-weight: 500; }
 
-/* ─── MAIN CONTENT ─── */
-.content { max-width: 1280px; margin: 0 auto; padding: 28px 32px; }
-
-/* ─── VIEWS ─── */
+/* ─── CONTENT ─── */
+.content { max-width: 1240px; margin: 0 auto; padding: 28px 32px; }
 .view { display: none; }
 .view.active { display: block; }
 
 /* ─── SECTION LABEL ─── */
 .sect-label {
-  font-size: .67rem; font-weight: 700; text-transform: uppercase;
-  letter-spacing: .8px; color: var(--g500); margin-bottom: 14px;
-  display: flex; align-items: center; gap: 6px;
+  font-size: .68rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: .9px; color: var(--ink-40);
+  margin-bottom: 16px; display: flex; align-items: center; gap: 6px;
 }
 
 /* ─── CAREER CARDS ─── */
-.career-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px; }
+.career-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px;
+}
 .career-card {
-  background: white; border-radius: var(--r-lg); border: 1px solid var(--g200);
-  box-shadow: var(--shadow); padding: 20px 22px; cursor: pointer;
-  transition: all .2s; display: flex; align-items: center; gap: 14px;
+  background: white;
+  border-radius: 20px;
+  border: 1px solid var(--ink-10);
+  box-shadow: var(--shadow-sm);
+  padding: 28px 20px 20px;
+  cursor: pointer;
+  transition: var(--transition);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 14px;
 }
-.career-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); border-color: #c3d4f9; }
+.career-card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-3px);
+  border-color: var(--indigo-md);
+}
+.career-card:active { transform: translateY(0); }
 .career-badge {
-  width: 44px; height: 44px; border-radius: 12px; background: var(--sky-light);
-  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  width: 72px; height: 72px; border-radius: 50%;
+  background: var(--indigo-lt);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
 }
-.career-badge i { color: var(--sky); font-size: 22px; }
-.career-title { font-weight: 700; font-size: .9rem; color: var(--ink); line-height: 1.35; }
-.career-meta { font-size: .72rem; color: var(--g500); margin-top: 3px; }
+.career-badge i { color: var(--indigo); font-size: 30px; }
+.career-title { font-weight: 700; font-size: .85rem; color: var(--ink); line-height: 1.4; }
+.career-meta {
+  display: inline-flex; align-items: center; gap: 5px;
+  background: var(--ink-05); border: 1px solid var(--ink-10);
+  border-radius: 20px; padding: 4px 14px;
+  font-size: .7rem; color: var(--ink-60); font-weight: 600;
+}
 
 /* ─── TABS ─── */
 .tabs-wrap {
-  display: flex; align-items: center; gap: 2px;
-  border-bottom: 1.5px solid var(--g200); margin-bottom: 22px;
+  display: flex; align-items: center; gap: 4px;
+  border-bottom: 1px solid var(--ink-10);
+  margin-bottom: 22px;
+  padding-bottom: 0;
 }
 .tab-btn {
-  padding: 10px 18px; border: none; background: none; cursor: pointer;
-  font-size: .82rem; font-weight: 600; color: var(--g500);
-  border-bottom: 2px solid transparent; margin-bottom: -1.5px;
-  transition: all .18s; display: flex; align-items: center; gap: 7px;
-  border-radius: 8px 8px 0 0;
+  padding: 10px 18px;
+  border: none; background: none;
+  cursor: pointer; font-size: .8rem; font-weight: 600;
+  color: var(--ink-40); font-family: 'DM Sans', sans-serif;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  transition: var(--transition);
+  display: flex; align-items: center; gap: 8px;
+  border-radius: var(--r) var(--r) 0 0;
 }
-.tab-btn:hover { color: var(--ink); background: var(--g50); }
-.tab-btn.active { color: var(--sky); border-bottom-color: var(--sky); background: var(--sky-light); }
+.tab-btn:hover { color: var(--ink); background: var(--ink-05); }
+.tab-btn.active { color: var(--indigo); border-bottom-color: var(--indigo); }
 .tab-pill {
-  font-size: .65rem; font-weight: 700; padding: 2px 7px; border-radius: 20px;
-  background: var(--g100); color: var(--g500);
+  font-size: .63rem; font-weight: 700; padding: 2px 7px;
+  border-radius: 20px; background: var(--ink-10); color: var(--ink-40);
+  font-family: 'DM Mono', monospace;
 }
-.tab-btn.active .tab-pill { background: var(--sky); color: white; }
+.tab-btn.active .tab-pill { background: var(--indigo); color: white; }
 .tab-panel { display: none; }
 .tab-panel.active { display: block; }
 
-/* ─── PROF CARD ─── */
-.prof-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px; }
+/* ─── PROF CARDS ─── */
+.prof-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 10px;
+}
 .prof-card {
-  background: white; border-radius: var(--r); border: 1px solid var(--g200);
-  box-shadow: var(--shadow); padding: 14px 16px; cursor: pointer;
-  transition: all .2s; display: flex; align-items: center; gap: 12px;
+  background: white;
+  border-radius: var(--r-lg);
+  border: 1px solid var(--ink-10);
+  box-shadow: var(--shadow-xs);
+  padding: 16px 18px;
+  cursor: pointer;
+  transition: var(--transition);
+  display: flex; align-items: center; gap: 13px;
 }
-.prof-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); border-color: var(--sky); }
+.prof-card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+  border-color: var(--indigo-md);
+}
 .prof-avatar {
-  width: 40px; height: 40px; border-radius: 50%;
-  background: linear-gradient(135deg, var(--sky), var(--ink-mid));
+  width: 42px; height: 42px; border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
-  color: white; font-weight: 700; font-size: .85rem; flex-shrink: 0;
+  color: white; font-weight: 700; font-size: .82rem; flex-shrink: 0;
+  letter-spacing: .5px;
 }
-.prof-avatar img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; }
-.prof-name { font-weight: 700; color: var(--ink); font-size: .85rem; line-height: 1.3; }
-.prof-multi-badge {
-  display: inline-flex; align-items: center; gap: 4px;
-  font-size: .68rem; color: var(--violet); font-weight: 700; margin-top: 2px;
-}
+.prof-name { font-weight: 700; color: var(--ink); font-size: .84rem; line-height: 1.3; }
+.prof-sub { font-size: .7rem; color: var(--ink-40); margin-top: 3px; display: flex; align-items: center; gap: 4px; }
+.prof-card .arrow-icon { color: var(--ink-20); font-size: .78rem; margin-left: auto; flex-shrink: 0; }
+
+/* ─── EMPTY STATE ─── */
 .empty-state {
-  padding: 40px 20px; text-align: center; color: var(--g500);
-  background: white; border-radius: var(--r-lg); border: 1px dashed var(--g200);
+  padding: 48px 24px; text-align: center; color: var(--ink-40);
+  background: white; border-radius: var(--r-lg); border: 1px dashed var(--ink-20);
 }
-.empty-state i { font-size: 2.2rem; opacity: .35; display: block; margin-bottom: 10px; }
-.empty-state span { font-size: .82rem; }
+.empty-state i { font-size: 2rem; opacity: .4; display: block; margin-bottom: 10px; }
+.empty-state span { font-size: .8rem; }
 
 /* ─── PROF DETAIL HEADER ─── */
 .prof-header {
-  background: white; border-radius: var(--r-lg); border: 1px solid var(--g200);
-  box-shadow: var(--shadow); padding: 24px 28px; margin-bottom: 20px;
-  display: flex; align-items: center; gap: 22px; flex-wrap: wrap;
+  background: white;
+  border-radius: var(--r-xl);
+  border: 1px solid var(--ink-10);
+  box-shadow: var(--shadow-sm);
+  padding: 28px 32px;
+  margin-bottom: 20px;
+  display: flex; align-items: flex-start; gap: 24px; flex-wrap: wrap;
+  position: relative; overflow: hidden;
+}
+.prof-header::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 4px;
+  background: linear-gradient(90deg, var(--indigo) 0%, var(--violet) 50%, var(--sage) 100%);
 }
 .prof-photo {
-  width: 90px; height: 106px; border-radius: 13px; background: var(--g100);
-  border: 1.5px dashed var(--g300); display: flex; flex-direction: column;
-  align-items: center; justify-content: center; cursor: pointer; position: relative;
-  overflow: hidden; flex-shrink: 0; transition: all .2s;
+  width: 88px; height: 104px; border-radius: 14px;
+  background: var(--ink-05); border: 1.5px dashed var(--ink-20);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  cursor: pointer; position: relative; overflow: hidden;
+  flex-shrink: 0; transition: var(--transition);
+  font-size: .66rem; color: var(--ink-40); gap: 6px;
 }
-.prof-photo:hover { border-color: var(--sky); background: var(--sky-light); }
+.prof-photo:hover { border-color: var(--indigo); background: var(--indigo-lt); color: var(--indigo); }
+.prof-photo i { font-size: 1.4rem; }
 .prof-photo img { width: 100%; height: 100%; object-fit: cover; position: absolute; inset: 0; }
-.prof-photo-input { display: none; }
-.prof-info-name { font-size: 1.35rem; font-weight: 800; color: var(--ink); letter-spacing: -.3px; }
-.prof-info-org { font-size: .78rem; color: var(--g500); margin-top: 3px; }
+.prof-info { flex: 1; min-width: 0; }
+.prof-info-name { font-size: 1.3rem; font-weight: 700; color: var(--ink); letter-spacing: -.4px; line-height: 1.2; }
+.prof-info-org { font-size: .77rem; color: var(--ink-40); margin-top: 4px; }
+.prof-chips { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
 .chip {
   display: inline-flex; align-items: center; gap: 6px;
-  background: var(--g100); border-radius: 8px; padding: 4px 11px;
-  font-size: .74rem; font-weight: 600; color: var(--g700); margin-top: 10px;
+  border-radius: 8px; padding: 5px 12px;
+  font-size: .72rem; font-weight: 600;
 }
-.chip.blue { background: var(--sky-light); color: var(--sky); }
+.chip-indigo { background: var(--indigo-lt); color: var(--indigo); }
+.chip-sage   { background: var(--sage-lt); color: #047857; }
+.chip-amber  { background: var(--amber-lt); color: #92400E; }
 
 /* ─── PANEL ─── */
 .panel {
-  background: white; border-radius: var(--r-lg); border: 1px solid var(--g200);
-  box-shadow: var(--shadow); padding: 22px 26px; margin-bottom: 20px;
+  background: white;
+  border-radius: var(--r-xl);
+  border: 1px solid var(--ink-10);
+  box-shadow: var(--shadow-sm);
+  padding: 24px 28px;
+  margin-bottom: 20px;
 }
 
-/* ─── GANTT TABLE (SOLO GRÁFICA) ─── */
-.gantt-wrap { overflow-x: auto; padding-bottom: 6px; }
-.gantt-table { width: 100%; border-collapse: collapse; font-size: .82rem; min-width: 800px; }
-.gantt-table th, .gantt-table td { border: 1px solid var(--g200); }
+/* ─── GANTT TABLE ─── */
+.gantt-wrap { overflow-x: auto; border-radius: 10px; border: 1px solid var(--ink-10); }
+.gantt-table { width: 100%; border-collapse: collapse; font-size: .78rem; min-width: 700px; }
+.gantt-table th, .gantt-table td { border: 1px solid var(--ink-10); }
 .gantt-table th {
-  padding: 9px 4px; font-weight: 700; font-size: .74rem;
-  text-align: center; background: var(--g50); color: var(--g500);
+  padding: 8px 3px; font-weight: 600; font-size: .7rem;
+  text-align: center; background: var(--ink-05); color: var(--ink-40);
+  font-family: 'DM Mono', monospace;
 }
-.th-main { background: #e8f0fe !important; color: #1a6cf5 !important; text-transform: uppercase; letter-spacing: .4px; font-size: .78rem !important; padding: 10px 4px !important; }
+.th-main {
+  background: var(--indigo-lt) !important;
+  color: var(--indigo) !important;
+  font-weight: 700; font-size: .72rem !important;
+  padding: 10px 4px !important; letter-spacing: .5px;
+  font-family: 'DM Sans', sans-serif !important;
+}
 .gantt-cell { padding: 3px; vertical-align: middle; }
-.gantt-empty { background: repeating-linear-gradient(45deg, #fafbfd, #fafbfd 8px, #f3f5fa 8px, #f3f5fa 16px); }
-
+.gantt-empty {
+  background: repeating-linear-gradient(
+    45deg, var(--ink-05), var(--ink-05) 6px, var(--ink-10) 6px, var(--ink-10) 12px
+  );
+}
 .gantt-bar {
-  height: 38px; border-radius: 6px; display: flex; align-items: center; justify-content: center;
-  font-size: .72rem; font-weight: 700; color: white; white-space: nowrap;
-  overflow: hidden; text-overflow: ellipsis; padding: 0 8px;
-  box-shadow: 0 2px 6px rgba(13,27,42,.12);
+  height: 36px; border-radius: 7px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: .68rem; font-weight: 700;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding: 0 10px;
+  transition: var(--transition); cursor: default;
+  letter-spacing: -.1px;
+  border-width: 2px;
+  border-style: solid;
 }
+.gantt-bar:hover { filter: brightness(0.95); transform: scaleY(1.04); }
 
-.gc-0  { background: #1a6cf5; } .gc-1  { background: #00897b; }
-.gc-2  { background: #6c3cde; } .gc-3  { background: #f59e0b; }
-.gc-4  { background: #e53935; } .gc-5  { background: #0891b2; }
-.gc-6  { background: #16a34a; } .gc-7  { background: #d946ef; }
-.gc-8  { background: #84cc16; } .gc-9  { background: #f97316; }
-.gc-10 { background: #0d9488; } .gc-11 { background: #7c3aed; }
+.gc-0  { background: rgba(91,110,245,.13); border-color: #5B6EF5; color: #3D4FCC; }
+.gc-1  { background: rgba(16,185,129,.13); border-color: #10B981; color: #047857; }
+.gc-2  { background: rgba(139,92,246,.13); border-color: #8B5CF6; color: #6D28D9; }
+.gc-3  { background: rgba(245,158,11,.13); border-color: #F59E0B; color: #92400E; }
+.gc-4  { background: rgba(244,63,94,.13);  border-color: #F43F5E; color: #BE123C; }
+.gc-5  { background: rgba(8,145,178,.13);  border-color: #0891B2; color: #0E7490; }
+.gc-6  { background: rgba(22,163,74,.13);  border-color: #16A34A; color: #14532D; }
+.gc-7  { background: rgba(217,70,239,.13); border-color: #D946EF; color: #86198F; }
+.gc-8  { background: rgba(132,204,22,.18); border-color: #65A30D; color: #365314; }
+.gc-9  { background: rgba(249,115,22,.13); border-color: #F97316; color: #9A3412; }
+.gc-10 { background: rgba(13,148,136,.13); border-color: #0D9488; color: #134E4A; }
+.gc-11 { background: rgba(124,58,237,.13); border-color: #7C3AED; color: #4C1D95; }
 
-/* ─── OTRAS ACTIVIDADES FORM ─── */
-.act-form { display: flex; gap: 10px; align-items: flex-end; flex-wrap: wrap; margin-bottom: 18px; }
+/* ─── ACTIVITY FORM ─── */
+.act-form {
+  background: var(--ink-05);
+  border-radius: 14px;
+  border: 1px solid var(--ink-10);
+  overflow: hidden;
+  margin-bottom: 18px;
+}
+.act-form-header {
+  background: #5B6EF5;
+  color: white;
+  padding: 10px 16px;
+  font-size: .75rem;
+  font-weight: 700;
+  letter-spacing: .5px;
+  text-align: center;
+  text-transform: uppercase;
+}
+.act-select-wrap {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--ink-10);
+  background: white;
+}
+.act-select-wrap select {
+  width: 100%;
+  border: 1px solid var(--ink-20);
+  border-radius: 8px;
+  padding: 9px 12px;
+  font-size: .82rem;
+  background: white;
+  font-family: 'DM Sans', sans-serif;
+  color: var(--ink);
+  appearance: auto;
+}
+.act-select-wrap select:focus { outline: none; border-color: var(--indigo); box-shadow: 0 0 0 3px rgba(91,110,245,.12); }
+.act-options-list { background: white; }
+.act-option-item {
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--ink-10);
+  font-size: .8rem;
+  color: var(--ink-80);
+  cursor: pointer;
+  transition: var(--transition);
+  display: flex; align-items: center; gap: 10px;
+}
+.act-option-item:last-child { border-bottom: none; }
+.act-option-item:hover { background: var(--indigo-lt); color: var(--indigo); }
+.act-option-item i { font-size: .9rem; color: var(--indigo); flex-shrink: 0; }
+.act-config-row {
+  display: flex; gap: 10px; align-items: flex-end; flex-wrap: wrap;
+  padding: 14px 14px 14px;
+  border-top: 1px solid var(--ink-10);
+  background: var(--ink-05);
+}
 .field-group { display: flex; flex-direction: column; gap: 5px; }
-.field-group label { font-size: .67rem; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; color: var(--g500); }
+.field-group label {
+  font-size: .64rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: .7px; color: var(--ink-40);
+}
 .field-group select, .field-group input {
-  border: 1.5px solid var(--g200); border-radius: 9px; padding: 8px 11px;
-  font-size: .8rem; background: var(--g50); font-family: inherit; color: var(--ink);
-  transition: border-color .18s, box-shadow .18s;
+  border: 1.5px solid var(--ink-20); border-radius: 9px; padding: 9px 12px;
+  font-size: .8rem; background: white; font-family: 'DM Sans', sans-serif;
+  color: var(--ink); transition: border-color var(--transition), box-shadow var(--transition);
+  appearance: auto;
 }
-.field-group select:focus, .field-group input:focus { outline: none; border-color: var(--sky); box-shadow: 0 0 0 3px var(--sky-glow); background: white; }
+.field-group select:focus, .field-group input:focus {
+  outline: none; border-color: var(--indigo);
+  box-shadow: 0 0 0 3px rgba(91,110,245,.12);
+}
 .btn-add-act {
-  border-radius: 9px; font-weight: 700; padding: 9px 20px; font-size: .82rem;
-  background: var(--sage); color: white; border: none; cursor: pointer; transition: all .18s;
-  display: flex; align-items: center; gap: 7px;
+  border-radius: 9px; font-weight: 700; padding: 10px 20px; font-size: .8rem;
+  background: var(--sage); color: white; border: none; cursor: pointer;
+  transition: var(--transition); display: flex; align-items: center; gap: 7px;
+  font-family: 'DM Sans', sans-serif; margin-top: auto;
 }
-.btn-add-act:hover { background: #00796b; transform: translateY(-1px); }
-.act-list { display: flex; flex-direction: column; gap: 7px; }
-.act-item { display: flex; align-items: center; gap: 12px; background: var(--g50); border-radius: 10px; border: 1px solid var(--g200); padding: 10px 14px; margin-bottom: 7px; }
-.act-icon { width: 32px; height: 32px; border-radius: 8px; background: var(--violet-lt); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.btn-add-act:hover { background: #059669; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(16,185,129,.3); }
+.btn-add-act:active { transform: translateY(0); }
+#act-tipo-hidden { display: none; }
+
+/* ─── ACTIVITY LIST ─── */
+.act-item {
+  display: flex; align-items: flex-start; gap: 13px;
+  background: white; border-radius: 11px;
+  border: 1px solid var(--ink-10); padding: 12px 16px; margin-bottom: 8px;
+  transition: var(--transition);
+}
+.act-item:hover { border-color: var(--ink-20); box-shadow: var(--shadow-xs); }
+.act-icon {
+  width: 36px; height: 36px; border-radius: 9px;
+  background: var(--violet-lt); display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; margin-top: 2px;
+}
 .act-icon i { color: var(--violet); font-size: 1rem; }
-.act-name { font-weight: 700; font-size: .82rem; color: var(--ink); flex: 1; }
-.act-meta-chips { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 2px; }
-.act-chip { background: white; border: 1px solid var(--g200); border-radius: 6px; padding: 2px 8px; font-size: .7rem; font-weight: 600; color: var(--g500); display: flex; align-items: center; gap: 4px; }
-.btn-del { width: 28px; height: 28px; border-radius: 50%; background: #fef2f2; color: var(--rose); border: none; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: .8rem; transition: all .18s; flex-shrink: 0; }
+.act-name { font-weight: 700; font-size: .82rem; color: var(--ink); }
+.act-norma { font-size: .72rem; color: var(--indigo); font-weight: 600; margin-top: 2px; }
+.act-meta-chips { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 5px; }
+.act-chip {
+  background: var(--ink-05); border: 1px solid var(--ink-10);
+  border-radius: 6px; padding: 2px 8px;
+  font-size: .68rem; font-weight: 600; color: var(--ink-60);
+  display: flex; align-items: center; gap: 4px;
+  font-family: 'DM Mono', monospace;
+}
+.btn-del {
+  width: 30px; height: 30px; border-radius: 8px;
+  background: var(--rose-lt); color: var(--rose);
+  border: none; display: flex; align-items: center; justify-content: center;
+  cursor: pointer; font-size: .8rem; transition: var(--transition);
+  flex-shrink: 0; margin-left: auto;
+}
 .btn-del:hover { background: var(--rose); color: white; }
 
-/* ─── RESUMEN BOCETO (BURBUJAS) ─── */
-.summary-card {
-  background: white; border-radius: var(--radius-md);
-  border: 1px solid var(--g200); padding: 20px;
-  box-shadow: var(--shadow-sm); height: 100%;
+/* ─── RESUMEN DE HORAS (ESTILOS BASE COMUNES) ─── */
+.resumen-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 22px;
+  margin-bottom: 18px;
+  align-items: start;
 }
-.summary-header {
-  font-weight: 800; text-align: center; margin-bottom: 15px;
-  text-transform: uppercase; letter-spacing: 0.5px;
+.resumen-col-title {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-weight: 700; font-size: .82rem;
+  padding: 8px 18px; border-radius: 30px;
+  margin-bottom: 14px; border: 1.5px solid transparent;
 }
-.summary-header.doc { color: var(--sky); }
-.summary-header.act { color: #d97706; }
-.semanas-label {
-  text-align: center; font-size: 0.75rem; color: var(--g500);
-  font-weight: 700; text-transform: uppercase; letter-spacing: 1px;
-  margin-bottom: 15px; border-bottom: 1px solid var(--g200); padding-bottom: 5px;
+.resumen-col-title i { font-size: .92rem; }
+.resumen-col-subheader {
+  display: flex; align-items: center; gap: 10px;
+  padding: 0 18px 8px 4px;
+  font-size: .62rem; font-weight: 700; text-transform: uppercase; letter-spacing: .7px;
+  color: var(--ink-40);
 }
-.bucket-row { display: flex; justify-content: space-around; }
-.col-bucket { display: flex; flex-direction: column; align-items: center; width: 30%; }
-.bucket-title {
-  border: 1px solid var(--g300); border-radius: 6px; padding: 2px 14px;
-  font-weight: 800; font-size: .85rem; margin-bottom: 16px;
-  color: var(--g700); background: var(--g50); letter-spacing: 0.5px;
-}
-.circles-wrap {
-  display: flex; flex-direction: column; gap: 10px; min-height: 90px; 
-  align-items: center; justify-content: flex-start; width: 100%;
-}
-.circle-val {
-  width: 32px; height: 32px; border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  font-weight: 800; font-size: 0.9rem; cursor: default;
-}
-.circle-val.doc { border: 2px solid var(--sky); color: var(--sky); background: var(--sky-light); }
-.circle-val.act { border: 2px solid #f59e0b; color: #d97706; background: #fef3c7; }
-.sum-line {
-  width: 70%; height: 2px; background: var(--g900); margin: 16px 0 8px;
-}
-.bucket-sum { font-size: 1.25rem; font-weight: 800; color: var(--ink); }
-.bucket-sum-label { font-size: 0.65rem; font-weight: 700; color: var(--g500); text-transform: uppercase; }
+.resumen-col-subheader .sub-name { flex: 1; }
+.resumen-col-subheader .sub-hrs { width: 96px; text-align: center; }
+.resumen-col-subheader .sub-total { width: 78px; text-align: center; }
 
+.periodo-card {
+  position: relative;
+  background: white;
+  border: 2px solid transparent;
+  border-radius: 16px;
+  padding: 20px 16px 16px;
+  margin-bottom: 14px;
+}
+.periodo-card:last-child { margin-bottom: 0; }
+.periodo-card .periodo-label {
+  position: absolute; top: -12px; left: 14px;
+  background: white; padding: 0 5px;
+  font-size: .7rem; font-weight: 700;
+  font-family: 'DM Mono', monospace;
+}
+.periodo-card-inner { display: flex; align-items: center; gap: 14px; min-height: 28px; }
+.periodo-card-rows { flex: 1; display: flex; flex-direction: column; gap: 9px; min-width: 0; }
+.periodo-card-row { display: flex; align-items: center; gap: 10px; }
+.periodo-card-row .row-name {
+  flex: 1; font-size: .8rem; font-weight: 600; color: var(--ink-80);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0;
+}
+.periodo-card-row .row-hrs {
+  width: 96px; flex-shrink: 0; text-align: center;
+  border: 1.5px solid transparent;
+  border-radius: 8px; padding: 4px 0;
+  font-size: .73rem; font-weight: 700;
+  font-family: 'DM Mono', monospace;
+}
+.periodo-card-total { width: 78px; flex-shrink: 0; display: flex; justify-content: center; }
+.periodo-card-total .num {
+  color: white;
+  border-radius: 30px; padding: 8px 0; width: 100%; text-align: center;
+  font-weight: 700; font-family: 'DM Mono', monospace; font-size: .82rem;
+}
+.periodo-card-empty { font-size: .76rem; color: var(--ink-40); font-style: italic; padding: 2px 0; }
+
+.resumen-col-total {
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+  margin-top: 8px;
+}
+
+/* ─── THEME: DOCENCIA (SAGE/ESMERALDA) ─── */
+.doc-theme .resumen-col-title { background: rgba(16,185,129,.08); border-color: #10B981; color: #047857; }
+.doc-theme .periodo-card { border-color: rgba(16,185,129,.55); }
+.doc-theme .periodo-label { color: #047857; }
+.doc-theme .row-hrs { background: rgba(16,185,129,.1); border-color: #10B981; color: #047857; }
+.doc-theme .num { background: #10B981; box-shadow: 0 2px 8px rgba(16,185,129,.32); }
+
+/* ─── THEME: ACTIVIDADES (VIOLETA) ─── */
+.act-theme .resumen-col-title { background: rgba(139,92,246,.08); border-color: #8B5CF6; color: #6D28D9; }
+.act-theme .periodo-card { border-color: rgba(139,92,246,.55); }
+.act-theme .periodo-label { color: #6D28D9; }
+.act-theme .row-hrs { background: rgba(139,92,246,.1); border-color: #8B5CF6; color: #6D28D9; }
+.act-theme .num { background: #8B5CF6; box-shadow: 0 2px 8px rgba(139,92,246,.32); }
+
+/* ─── TOTAL LABORAL ─── */
 .total-laboral-wrap {
+  background: rgba(16,185,129,.06);
+  border-radius: 16px;
+  border: 2px solid #10B981;
+  padding: 20px 24px;
   display: flex; align-items: center; justify-content: center; gap: 20px;
-  margin-top: 30px; padding-top: 20px; border-top: 1px dashed var(--g300);
+  flex-wrap: wrap;
 }
-.total-laboral-label { font-size: 1.25rem; font-weight: 800; color: var(--g800); text-transform: uppercase; letter-spacing: 1px; }
-.circle-val-total {
-  width: 58px; height: 58px; border-radius: 50%;
+.total-left { display: flex; flex-direction: column; gap: 4px; }
+.total-left-title { font-weight: 700; font-size: .88rem; color: #047857; }
+.total-left-sub { font-size: .72rem; color: #10B981; }
+.total-bubble-wrap { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+.total-bubble {
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+}
+.total-bubble-circle {
+  width: 64px; height: 64px; border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
-  font-weight: 900; font-size: 1.45rem;
-  border: 3px solid var(--ink); color: var(--ink); background: transparent;
+  font-weight: 700; font-size: 1.4rem;
+  font-family: 'DM Mono', monospace;
+  border: 2.5px solid;
 }
+.total-bubble-circle.grand {
+  border-color: #047857;
+  color: white;
+  background: #10B981;
+  width: 72px; height: 72px; font-size: 1.6rem;
+}
+/* Colores de las burbujas finales */
+.total-bubble-circle.doc { border-color: #10B981; color: #047857; background: rgba(16,185,129,.15); }
+.total-bubble-circle.act { border-color: #8B5CF6; color: #6D28D9; background: rgba(139,92,246,.15); }
 
-/* Tooltip (Burbujita CSS) */
-.tooltip-trigger { position: relative; cursor: default; }
-.tooltip-trigger:hover::after {
-  content: attr(data-tooltip);
-  position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%);
-  background: white; color: var(--rose); padding: 4px 10px; border-radius: 6px;
-  font-size: .75rem; white-space: nowrap; z-index: 100; margin-bottom: 6px;
-  box-shadow: 0 4px 12px rgba(0,0,0,.15); font-weight: 700;
+.total-bubble-label { font-size: .62rem; font-weight: 700; color: #10B981; text-transform: uppercase; letter-spacing: .5px; text-align: center; }
+.total-plus { font-size: 1.2rem; color: #10B981; font-weight: 700; }
+.total-eq { font-size: 1.2rem; color: #10B981; font-weight: 700; }
+
+/* ─── TOOLTIP ─── */
+.tt { position: relative; cursor: default; }
+.tt::after {
+  content: attr(data-tip);
+  position: absolute; bottom: 110%; left: 50%; transform: translateX(-50%);
+  background: var(--ink); color: white; padding: 4px 10px;
+  border-radius: 6px; font-size: .7rem; white-space: nowrap;
+  z-index: 200; opacity: 0; pointer-events: none;
+  transition: opacity .15s; font-family: 'DM Sans', sans-serif;
 }
-.tooltip-trigger:hover::before {
-  content: ''; position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%);
-  border: 5px solid transparent; border-top-color: white; margin-bottom: -4px; z-index: 100;
-}
+.tt:hover::after { opacity: 1; }
 
 /* ─── TOAST ─── */
-@keyframes slideIn { from { opacity:0; transform: translateY(-10px) scale(.96); } to { opacity:1; transform: translateY(0) scale(1); } }
-@keyframes fadeOut { to { opacity:0; transform: translateY(-6px); } }
+@keyframes toastIn  { from { opacity:0; transform: translateY(-8px) scale(.97); } to { opacity:1; transform: translateY(0) scale(1); } }
+@keyframes toastOut { to { opacity:0; transform: translateY(-6px); } }
+
+/* ─── BACK BTN PANEL ─── */
+.section-back {
+  display: inline-flex; align-items: center; gap: 7px;
+  background: transparent; border: 1px solid var(--ink-20);
+  border-radius: var(--r); padding: 7px 14px;
+  font-size: .78rem; font-weight: 600; color: var(--ink-60);
+  cursor: pointer; transition: var(--transition); margin-bottom: 20px;
+  font-family: 'DM Sans', sans-serif;
+}
+.section-back:hover { background: white; border-color: var(--indigo); color: var(--indigo); }
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 640px) {
+  .topbar { padding: 0 16px; }
+  .content { padding: 16px; }
+  .prof-header { padding: 20px; }
+  .panel { padding: 18px; }
+}
+@media (max-width: 760px) {
+  .resumen-grid { grid-template-columns: 1fr; }
+}
 </style>
 </head>
 <body>
 
 <div class="topbar">
   <div class="topbar-brand">
-    <div class="icon"><i class="bi bi-bar-chart-steps"></i></div>
-    <div>
+    <div class="brand-icon"><i class="bi bi-bar-chart-steps"></i></div>
+    <div class="brand-text">
       <div class="name">Carga Académica</div>
-      <div class="sub">Consulta y registro por profesor</div>
+      <div class="sub">Registro y consulta por profesor</div>
     </div>
   </div>
   <a href="asignacion_materias.html" class="btn-back">
-    <i class="bi bi-arrow-left-circle"></i> Regresar a Asignación
+    <i class="bi bi-arrow-left-short" style="font-size:1rem;"></i> Regresar a Asignación
   </a>
 </div>
 
-<div class="breadcrumb-wrap" id="breadcrumb">
+<div class="breadcrumb-bar" id="breadcrumb">
   <span class="bc-current">Carreras</span>
 </div>
 
 <div class="content">
 
   <div class="view active" id="view-lista-carreras">
-    <div class="sect-label"><i class="bi bi-grid-3x3-gap-fill"></i>Selecciona una carrera</div>
+    <div class="sect-label">
+      <i class="bi bi-grid-3x3-gap-fill"></i> Selecciona una carrera
+    </div>
     <div class="career-grid" id="grid-carreras"></div>
   </div>
 
   <div class="view" id="view-profs-carrera">
-    <button class="btn-back mb-4" style="margin-bottom:20px;" onclick="irVista('lista-carreras')">
-      <i class="bi bi-arrow-left"></i> Carreras
+    <button class="section-back" onclick="irVista('lista-carreras')">
+      <i class="bi bi-arrow-left"></i> Todas las carreras
     </button>
-
     <div class="tabs-wrap">
       <button class="tab-btn active" id="tab-propios-btn" onclick="switchTab('propios')">
-        <i class="bi bi-mortarboard-fill"></i> Profesores de la carrera
+        <i class="bi bi-mortarboard"></i> Profesores de la carrera
         <span class="tab-pill" id="tab-propios-count">0</span>
       </button>
       <button class="tab-btn" id="tab-multi-btn" onclick="switchTab('multi')">
-        <i class="bi bi-layers-fill"></i> Imparten en múltiples carreras
+        <i class="bi bi-layers"></i> Múltiples carreras
         <span class="tab-pill" id="tab-multi-count">0</span>
       </button>
     </div>
-
     <div class="tab-panel active" id="tab-propios">
       <div class="prof-grid" id="lista-profs-carrera"></div>
     </div>
     <div class="tab-panel" id="tab-multi">
       <div id="lista-profs-multi">
         <div class="empty-state">
-          <i class="bi bi-people"></i><span>Sin profesores que impartan en múltiples carreras</span>
+          <i class="bi bi-people"></i>
+          <span>Ningún profesor imparte en múltiples carreras</span>
         </div>
       </div>
     </div>
   </div>
 
   <div class="view" id="view-prof">
-    <button class="btn-back" style="margin-bottom:20px;" id="btn-back-prof" onclick="irVista('profs-carrera')">
-      <i class="bi bi-arrow-left"></i> Profesores
+    <button class="section-back" id="btn-back-prof" onclick="irVista('profs-carrera')">
+      <i class="bi bi-arrow-left"></i> Regresar a profesores
     </button>
 
     <div class="prof-header">
-      <div class="prof-photo" onclick="document.getElementById('photo-input').click()" title="Clic para subir foto">
+      <div class="prof-photo" onclick="document.getElementById('photo-input').click()" title="Subir foto">
         <img id="prof-photo-img" src="" style="display:none;">
-        <div class="prof-photo-ph" id="prof-photo-placeholder">
-          <i class="bi bi-camera-fill"></i><span>Foto</span>
+        <div id="prof-photo-placeholder">
+          <i class="bi bi-camera"></i>
+          <span>Foto</span>
         </div>
         <input type="file" id="photo-input" accept="image/*" style="display:none;" onchange="subirFoto(event)">
       </div>
-      <div>
+      <div class="prof-info">
         <div class="prof-info-name" id="prof-nombre-detalle">—</div>
-        <div class="prof-info-org">Universidad Tecnológica de San Juan del Río</div>
-        <div><span class="chip blue"><i class="bi bi-building"></i><span id="prof-carrera-chip">—</span></span></div>
+        <div class="prof-chips">
+          <span class="chip chip-indigo">
+            <i class="bi bi-building"></i>
+            <span id="prof-carrera-chip">—</span>
+          </span>
+        </div>
       </div>
     </div>
 
-    <div class="panel fade-in">
-      <div class="sect-label"><i class="bi bi-calendar3-week"></i>Distribución semanal (Semanas 1–15)</div>
+    <div class="panel">
+      <div class="sect-label">
+        <i class="bi bi-calendar3-week"></i> Distribución semanal — Semanas 1 a 14
+      </div>
       <div class="gantt-wrap">
         <table class="gantt-table" id="ganttTable">
           <thead id="ganttHead"></thead>
@@ -382,441 +676,517 @@ body { font-family: 'Inter', sans-serif; background: var(--g50); color: var(--in
       </div>
     </div>
 
-    <div class="panel fade-in">
-      <div class="sect-label"><i class="bi bi-plus-circle-fill"></i>Otras actividades</div>
-      <div class="act-form" id="form-act">
-        <div class="field-group">
-          <label>Actividad</label>
-          <select id="act-tipo" style="min-width:200px;">
-            <option value="" disabled selected>Selecciona actividad…</option>
-            <option value="Tutoría">Tutoría</option>
-            <option value="Asesoría">Asesoría</option>
-            <option value="Investigación">Investigación</option>
-            <option value="Gestión">Gestión / Administración</option>
-            <option value="Estadía">Coordinación de Estadía</option>
-            <option value="Residencia">Coordinación de Residencia</option>
-            <option value="Competencias">Competencias / Olimpiadas</option>
+    <div class="panel">
+      <div class="sect-label">
+        <i class="bi bi-plus-circle-fill"></i> Otras actividades
+      </div>
+
+      <div class="act-form">
+        <div class="act-form-header">
+          I.- Asignación: Actividad y/o Proyecto Académico // Normatividad
+        </div>
+        <div class="act-select-wrap">
+          <select id="act-tipo-display" onchange="seleccionarActividad(this.value)">
+            <option value="" disabled selected>Selecciona una actividad…</option>
+            <option value="Acreditación CIEES">Acreditación CIEES / DOCENCIA - ACTIVIDADES ACADÉMICAS</option>
+            <option value="Acreditación CONAIC">Acreditación CONAIC / DOCENCIA - ACTIVIDADES ACADÉMICAS</option>
+            <option value="Actividades IMNC">Actividades IMNC / VINCULACIÓN Y GESTIÓN ACADÉMICA - COMISIONES ACADÉMICAS</option>
+            <option value="Actualización Moodle">Actualización de cursos en Moodle / DOCENCIA - ACTIVIDADES ACADÉMICAS</option>
+            <option value="Actualización tutorías">Actualización de manual de tutorías / DOCENCIA - ACTIVIDADES ACADÉMICAS</option>
+            <option value="Aldeas digitales">Aldeas digitales / DOCENCIA - ACTIVIDADES ACADÉMICAS</option>
+            <option value="Tutoría">Tutoría / TUTORÍAS</option>
+            <option value="Asesoría">Asesoría / ACTIVIDADES ACADÉMICAS</option>
+            <option value="Investigación">Investigación / INVESTIGACIÓN</option>
+            <option value="Gestión">Gestión / Administración - GESTIÓN ACADÉMICA</option>
+            <option value="Estadía">Coordinación de Estadía / ESTADÍAS</option>
+            <option value="Residencia">Coordinación de Residencia / RESIDENCIAS</option>
+            <option value="Competencias">Competencias / Olimpiadas - ACTIVIDADES ACADÉMICAS</option>
             <option value="Otro">Otro</option>
           </select>
         </div>
-        <div class="field-group">
-          <label>Hrs/Semana</label>
-          <input type="number" id="act-horas" placeholder="Ej: 2" min="1" max="40" style="width:90px;">
+        <input type="hidden" id="act-tipo">
+        <div class="act-config-row">
+          <div class="field-group">
+            <label>Hrs / Sem.</label>
+            <input type="number" id="act-horas" placeholder="Ej: 2" min="1" max="40" style="width:88px;">
+          </div>
+          <div class="field-group">
+            <label>Sem. inicio</label>
+            <input type="number" id="act-ini" placeholder="1" min="1" max="14" style="width:82px;">
+          </div>
+          <div class="field-group">
+            <label>Sem. fin</label>
+            <input type="number" id="act-fin" placeholder="14" min="1" max="14" style="width:82px;">
+          </div>
+          <button class="btn-add-act" onclick="agregarActividad()">
+            <i class="bi bi-plus-lg"></i> Agregar
+          </button>
         </div>
-        <div class="field-group">
-          <label>Sem. Inicio</label>
-          <input type="number" id="act-ini" placeholder="1" min="1" max="15" style="width:84px;">
-        </div>
-        <div class="field-group">
-          <label>Sem. Fin</label>
-          <input type="number" id="act-fin" placeholder="15" min="1" max="15" style="width:84px;">
-        </div>
-        <button class="btn-add-act" onclick="agregarActividad()" style="margin-top:auto;">
-          <i class="bi bi-plus-lg"></i> Agregar
-        </button>
       </div>
-      <div class="act-list" id="lista-act"></div>
+
+      <div id="lista-act"></div>
     </div>
 
-    <div class="panel fade-in" id="panelResumenBoceto">
-      <div class="sect-label"><i class="bi bi-diagram-3-fill"></i> Resumen de Horas (Desglose)</div>
-      
-      <div class="row g-4">
-        <div class="col-md-6">
-          <div class="summary-card">
-            <div class="summary-header doc">HORAS DOCENCIA</div>
-            <div class="semanas-label">SEMANAS</div>
-            <div class="bucket-row">
-              <div class="col-bucket">
-                <div class="bucket-title">1 - 7</div>
-                <div class="circles-wrap" id="doc-1-7"></div>
-                <div class="sum-line"></div>
-                <div class="bucket-sum" id="sum-doc-1-7">0</div>
-                <div class="bucket-sum-label">Total Horas</div>
-              </div>
-              <div class="col-bucket">
-                <div class="bucket-title">7 - 14</div>
-                <div class="circles-wrap" id="doc-7-14"></div>
-                <div class="sum-line"></div>
-                <div class="bucket-sum" id="sum-doc-7-14">0</div>
-                <div class="bucket-sum-label">Total Horas</div>
-              </div>
-              <div class="col-bucket">
-                <div class="bucket-title">1 - 14</div>
-                <div class="circles-wrap" id="doc-1-14"></div>
-                <div class="sum-line"></div>
-                <div class="bucket-sum" id="sum-doc-1-14">0</div>
-                <div class="bucket-sum-label">Total Horas</div>
-              </div>
-            </div>
+    <div class="panel" id="panelResumen">
+      <div class="sect-label">
+        <i class="bi bi-diagram-3-fill"></i> Resumen de horas
+      </div>
+
+      <div class="resumen-grid">
+
+        <div class="resumen-col doc-theme">
+          <div class="resumen-col-title">
+            <i class="bi bi-book-fill"></i> Horas Docencia
+          </div>
+          <div class="resumen-col-subheader">
+            <span class="sub-name"></span>
+            <span class="sub-hrs">Horas</span>
+            <span class="sub-total">Total:</span>
+          </div>
+          <div id="resumen-doc-content"></div>
+          <div class="resumen-col-total">
+            <div class="total-bubble-circle doc" id="col-total-doc">0</div>
+            <div class="total-bubble-label">Docencia</div>
           </div>
         </div>
 
-        <div class="col-md-6">
-          <div class="summary-card">
-            <div class="summary-header act">HORAS OTRAS ACTIVIDADES</div>
-            <div class="semanas-label">SEMANAS</div>
-            <div class="bucket-row">
-              <div class="col-bucket">
-                <div class="bucket-title">1 - 7</div>
-                <div class="circles-wrap" id="act-1-7"></div>
-                <div class="sum-line"></div>
-                <div class="bucket-sum" id="sum-act-1-7">0</div>
-                <div class="bucket-sum-label">Total Horas</div>
-              </div>
-              <div class="col-bucket">
-                <div class="bucket-title">7 - 14</div>
-                <div class="circles-wrap" id="act-7-14"></div>
-                <div class="sum-line"></div>
-                <div class="bucket-sum" id="sum-act-7-14">0</div>
-                <div class="bucket-sum-label">Total Horas</div>
-              </div>
-              <div class="col-bucket">
-                <div class="bucket-title">1 - 14</div>
-                <div class="circles-wrap" id="act-1-14"></div>
-                <div class="sum-line"></div>
-                <div class="bucket-sum" id="sum-act-1-14">0</div>
-                <div class="bucket-sum-label">Total Horas</div>
-              </div>
-            </div>
+        <div class="resumen-col act-theme">
+          <div class="resumen-col-title">
+            <i class="bi bi-lightning-fill"></i> Otras Actividades
+          </div>
+          <div class="resumen-col-subheader">
+            <span class="sub-name"></span>
+            <span class="sub-hrs">Horas</span>
+            <span class="sub-total">Total:</span>
+          </div>
+          <div id="resumen-act-content"></div>
+          <div class="resumen-col-total">
+            <div class="total-bubble-circle act" id="col-total-act">0</div>
+            <div class="total-bubble-label">Actividades</div>
           </div>
         </div>
+
       </div>
 
       <div class="total-laboral-wrap">
-        <div class="total-laboral-label">Total Laborales</div>
-        <div class="circle-val-total" id="gran-total-laboral">0</div>
+        <div class="total-left">
+          <div class="total-left-title">Carga Total Laboral</div>
+          <div class="total-left-sub">Docencia + Actividades</div>
+        </div>
+        <div class="total-bubble-wrap">
+          <div class="total-bubble">
+            <div class="total-bubble-circle doc" id="gran-total-doc">0</div>
+            <div class="total-bubble-label">Docencia</div>
+          </div>
+          <div class="total-plus">+</div>
+          <div class="total-bubble">
+            <div class="total-bubble-circle act" id="gran-total-act">0</div>
+            <div class="total-bubble-label">Actividades</div>
+          </div>
+          <div class="total-eq">=</div>
+          <div class="total-bubble">
+            <div class="total-bubble-circle grand" id="gran-total-laboral">0</div>
+            <div class="total-bubble-label">Total hrs</div>
+          </div>
+        </div>
       </div>
-      
+
     </div>
-
-  </div>
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-<script>
+  </div></div><script>
 let state = { carrera: null, profesor: null };
 const COLORS = ['gc-0','gc-1','gc-2','gc-3','gc-4','gc-5','gc-6','gc-7','gc-8','gc-9','gc-10','gc-11'];
-const ACT_ICONS = {
-  'Tutoría':'bi-person-check-fill', 'Asesoría':'bi-chat-quote-fill',
-  'Investigación':'bi-journal-text', 'Gestión':'bi-gear-fill',
-  'Estadía':'bi-briefcase-fill', 'Residencia':'bi-building-fill',
-  'Competencias':'bi-trophy-fill', 'Otro':'bi-three-dots'
+
+/* Mapa de nombre completo + normatividad */
+const ACT_FULL_NAMES = {
+  'Acreditación CIEES':    { nombre: 'Acreditación CIEES', norma: 'DOCENCIA — ACTIVIDADES ACADÉMICAS' },
+  'Acreditación CONAIC':   { nombre: 'Acreditación CONAIC', norma: 'DOCENCIA — ACTIVIDADES ACADÉMICAS' },
+  'Actividades IMNC':      { nombre: 'Actividades IMNC', norma: 'VINCULACIÓN Y GESTIÓN ACADÉMICA — COMISIONES ACADÉMICAS' },
+  'Actualización Moodle':  { nombre: 'Actualización de cursos en Moodle', norma: 'DOCENCIA — ACTIVIDADES ACADÉMICAS' },
+  'Actualización tutorías':{ nombre: 'Actualización de manual de tutorías', norma: 'DOCENCIA — ACTIVIDADES ACADÉMICAS' },
+  'Aldeas digitales':      { nombre: 'Aldeas digitales', norma: 'DOCENCIA — ACTIVIDADES ACADÉMICAS' },
+  'Tutoría':               { nombre: 'Tutoría', norma: 'TUTORÍAS' },
+  'Asesoría':              { nombre: 'Asesoría', norma: 'ACTIVIDADES ACADÉMICAS' },
+  'Investigación':         { nombre: 'Investigación', norma: 'INVESTIGACIÓN' },
+  'Gestión':               { nombre: 'Gestión / Administración', norma: 'GESTIÓN ACADÉMICA' },
+  'Estadía':               { nombre: 'Coordinación de Estadía', norma: 'ESTADÍAS' },
+  'Residencia':            { nombre: 'Coordinación de Residencia', norma: 'RESIDENCIAS' },
+  'Competencias':          { nombre: 'Competencias / Olimpiadas', norma: 'ACTIVIDADES ACADÉMICAS' },
+  'Otro':                  { nombre: 'Otra actividad', norma: 'SIN CATEGORÍA' },
 };
+
+const ACT_ICONS = {
+  'Tutoría':'bi-person-check-fill','Asesoría':'bi-chat-quote-fill',
+  'Investigación':'bi-journal-text','Gestión':'bi-gear-fill',
+  'Estadía':'bi-briefcase-fill','Residencia':'bi-building-fill',
+  'Competencias':'bi-trophy-fill',
+  'Acreditación CIEES':'bi-patch-check-fill',
+  'Acreditación CONAIC':'bi-patch-check-fill',
+  'Actividades IMNC':'bi-diagram-3-fill',
+  'Actualización Moodle':'bi-laptop-fill',
+  'Actualización tutorías':'bi-journal-bookmark-fill',
+  'Aldeas digitales':'bi-wifi',
+  'Otro':'bi-three-dots'
+};
+
+const AVATAR_COLORS = [
+  '#5B6EF5', '#10B981', '#F59E0B', '#F43F5E',
+  '#8B5CF6', '#0891B2', '#16A34A', '#D946EF',
+  '#F97316', '#0D9488', '#7C3AED', '#84CC16'
+];
+
+function seleccionarActividad(val) {
+  document.getElementById('act-tipo').value = val;
+}
 
 function irVista(v) {
   document.querySelectorAll('.view').forEach(x => x.classList.remove('active'));
-  document.getElementById('view-' + v).classList.add('active');
+  document.getElementById('view-'+v).classList.add('active');
   actualizarBC(v);
   if (v === 'lista-carreras') renderCarreras();
 }
-
 function actualizarBC(v) {
   const bc = document.getElementById('breadcrumb');
   if (v === 'lista-carreras') {
     bc.innerHTML = `<span class="bc-current">Carreras</span>`;
   } else if (v === 'profs-carrera') {
-    bc.innerHTML = `<span class="bc-link" onclick="irVista('lista-carreras')">Carreras</span><span class="bc-sep">›</span><span class="bc-current">${trunc(state.carrera)}</span>`;
+    bc.innerHTML = `<span class="bc-link" onclick="irVista('lista-carreras')">Carreras</span><span class="bc-sep"> › </span><span class="bc-current">${trunc(state.carrera)}</span>`;
   } else {
-    bc.innerHTML = `<span class="bc-link" onclick="irVista('lista-carreras')">Carreras</span><span class="bc-sep">›</span><span class="bc-link" onclick="irVista('profs-carrera')">${trunc(state.carrera)}</span><span class="bc-sep">›</span><span class="bc-current">${state.profesor}</span>`;
+    bc.innerHTML = `<span class="bc-link" onclick="irVista('lista-carreras')">Carreras</span><span class="bc-sep"> › </span><span class="bc-link" onclick="irVista('profs-carrera')">${trunc(state.carrera)}</span><span class="bc-sep"> › </span><span class="bc-current">${state.profesor}</span>`;
   }
 }
-function trunc(s) { return s && s.length > 40 ? s.substring(0,38)+'…' : s || ''; }
+function trunc(s){ return s && s.length>40 ? s.substring(0,38)+'…' : s||''; }
 
 function switchTab(tab) {
-  document.getElementById('tab-propios').classList.toggle('active', tab === 'propios');
-  document.getElementById('tab-multi').classList.toggle('active', tab === 'multi');
-  document.getElementById('tab-propios-btn').classList.toggle('active', tab === 'propios');
-  document.getElementById('tab-multi-btn').classList.toggle('active', tab === 'multi');
+  document.getElementById('tab-propios').classList.toggle('active', tab==='propios');
+  document.getElementById('tab-multi').classList.toggle('active', tab==='multi');
+  document.getElementById('tab-propios-btn').classList.toggle('active', tab==='propios');
+  document.getElementById('tab-multi-btn').classList.toggle('active', tab==='multi');
 }
 
-function getRegistros() { return JSON.parse(localStorage.getItem('registrosResumenCargas') || '[]'); }
-function getCarreras() {
-  const s = new Set(); getRegistros().forEach(r => { if (r.carrera) s.add(r.carrera); }); return [...s].sort();
+function getRegistros(){ return JSON.parse(localStorage.getItem('registrosResumenCargas')||'[]'); }
+function getCarreras(){
+  const s=new Set(); getRegistros().forEach(r=>{ if(r.carrera) s.add(r.carrera); }); return [...s].sort();
 }
-function getProfsCarrera(carrera) {
-  const s = new Set();
-  getRegistros().filter(r => r.carrera === carrera).forEach(r => {
-    r.asignaciones?.forEach(a => { r.gruposRegistrados?.forEach(g => { if (a[g] && a[g] !== '---') s.add(a[g]); }); });
+function getProfsCarrera(carrera){
+  const s=new Set();
+  getRegistros().filter(r=>r.carrera===carrera).forEach(r=>{
+    r.asignaciones?.forEach(a=>{ r.gruposRegistrados?.forEach(g=>{ if(a[g]&&a[g]!=='---') s.add(a[g]); }); });
   });
   return [...s].sort();
 }
-function getProfsMulti(carrera) {
-  const pc = {};
-  getRegistros().forEach(r => {
-    r.asignaciones?.forEach(a => { r.gruposRegistrados?.forEach(g => {
-        if (a[g] && a[g] !== '---') { if (!pc[a[g]]) pc[a[g]] = new Set(); pc[a[g]].add(r.carrera); }
-      });
-    });
+function getProfsMulti(carrera){
+  const pc={};
+  getRegistros().forEach(r=>{
+    r.asignaciones?.forEach(a=>{ r.gruposRegistrados?.forEach(g=>{
+      if(a[g]&&a[g]!=='---'){ if(!pc[a[g]]) pc[a[g]]=new Set(); pc[a[g]].add(r.carrera); }
+    }); });
   });
-  return Object.entries(pc).filter(([p,cs]) => cs.size > 1 && cs.has(carrera)).map(([p])=>p).sort();
+  return Object.entries(pc).filter(([p,cs])=>cs.size>1&&cs.has(carrera)).map(([p])=>p).sort();
 }
-function getAsignaciones(carrera, prof) {
-  const list = [];
-  getRegistros().filter(r => r.carrera === carrera).forEach(r => {
-    r.asignaciones?.forEach(a => {
-      r.gruposRegistrados?.forEach(g => {
-        if (a[g] === prof) list.push({ materia: a.materia, inicio: +a.inicio||1, fin: +a.fin||15, horas: +a.horas||0, grupo: g, grado: r.grado, carrera: r.carrera });
+function getAsignaciones(carrera, prof){
+  const list=[];
+  getRegistros().filter(r=>r.carrera===carrera).forEach(r=>{
+    r.asignaciones?.forEach(a=>{
+      r.gruposRegistrados?.forEach(g=>{
+        if(a[g]===prof) list.push({ materia:a.materia, inicio:+a.inicio||1, fin:+a.fin||14, horas:+a.horas||0, grupo:g, grado:r.grado, carrera:r.carrera });
       });
     });
   });
   return list;
 }
-function getActs(prof) { return JSON.parse(localStorage.getItem('actividadesProfesores') || '{}')[prof] || []; }
-function saveActs(prof, lista) {
-  const d = JSON.parse(localStorage.getItem('actividadesProfesores') || '{}');
-  d[prof] = lista; localStorage.setItem('actividadesProfesores', JSON.stringify(d));
+function getActs(prof){ return JSON.parse(localStorage.getItem('actividadesProfesores')||'{}')[prof]||[]; }
+function saveActs(prof,lista){
+  const d=JSON.parse(localStorage.getItem('actividadesProfesores')||'{}');
+  d[prof]=lista; localStorage.setItem('actividadesProfesores',JSON.stringify(d));
 }
-function getFoto(prof) { return JSON.parse(localStorage.getItem('fotasProfesores') || '{}')[prof] || null; }
-function saveFoto(prof, b64) {
-  const d = JSON.parse(localStorage.getItem('fotasProfesores') || '{}');
-  d[prof] = b64; localStorage.setItem('fotasProfesores', JSON.stringify(d));
+function getFoto(prof){ return JSON.parse(localStorage.getItem('fotasProfesores')||'{}')[prof]||null; }
+function saveFoto(prof,b64){
+  const d=JSON.parse(localStorage.getItem('fotasProfesores')||'{}');
+  d[prof]=b64; localStorage.setItem('fotasProfesores',JSON.stringify(d));
 }
 
-function renderCarreras() {
-  const carreras = getCarreras();
-  const cont = document.getElementById('grid-carreras');
-  if (!carreras.length) { cont.innerHTML = `<div class="empty-state" style="grid-column:1/-1;"><i class="bi bi-folder-x"></i><span>No hay registros. Ve a Asignación de Materias para crear registros.</span></div>`; return; }
-  cont.innerHTML = carreras.map(c => `
+function renderCarreras(){
+  const carreras=getCarreras();
+  const cont=document.getElementById('grid-carreras');
+  if(!carreras.length){
+    cont.innerHTML=`<div class="empty-state" style="grid-column:1/-1;">
+      <i class="bi bi-folder-x"></i>
+      <span>Sin registros. Ve a Asignación de Materias para crear registros.</span>
+    </div>`;
+    return;
+  }
+  cont.innerHTML=carreras.map(c=>`
     <div class="career-card" onclick="selCarrera('${c.replace(/'/g,"\\'")}')">
-      <div class="career-badge"><i class="bi bi-mortarboard-fill"></i></div>
-      <div>
-        <div class="career-title">${c}</div>
-        <div class="career-meta"><i class="bi bi-people me-1"></i>${getProfsCarrera(c).length} profesores</div>
-      </div>
+      <div class="career-badge"><i class="bi bi-briefcase-fill"></i></div>
+      <div class="career-title">${c}</div>
+      <div class="career-meta"><i class="bi bi-file-earmark-text"></i>${getProfsCarrera(c).length} resúmenes</div>
     </div>`).join('');
 }
 
-function selCarrera(c) {
-  state.carrera = c;
-  const profs = getProfsCarrera(c); const multi = getProfsMulti(c);
-  document.getElementById('tab-propios-count').textContent = profs.length;
-  document.getElementById('tab-multi-count').textContent = multi.length;
-  document.getElementById('lista-profs-carrera').innerHTML = profs.length ? renderProfCards(profs) : `<div class="empty-state"><i class="bi bi-person-x"></i><span>Sin profesores en esta carrera</span></div>`;
-  document.getElementById('lista-profs-multi').innerHTML = multi.length ? `<div class="prof-grid">${renderProfCards(multi, true)}</div>` : `<div class="empty-state"><i class="bi bi-people"></i><span>Ningún profesor comparte esta carrera con otra</span></div>`;
+function avatarColor(name){
+  let h=0; for(let c of name) h=(h*31+c.charCodeAt(0))>>>0;
+  return AVATAR_COLORS[h%AVATAR_COLORS.length];
+}
+
+function selCarrera(c){
+  state.carrera=c;
+  const profs=getProfsCarrera(c);
+  const multi=getProfsMulti(c);
+  document.getElementById('tab-propios-count').textContent=profs.length;
+  document.getElementById('tab-multi-count').textContent=multi.length;
+  document.getElementById('lista-profs-carrera').innerHTML=profs.length
+    ? `<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px;">${renderProfCards(profs)}</div>`
+    : `<div class="empty-state"><i class="bi bi-person-x"></i><span>Sin profesores en esta carrera</span></div>`;
+  document.getElementById('lista-profs-multi').innerHTML=multi.length
+    ? `<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px;">${renderProfCards(multi,true)}</div>`
+    : `<div class="empty-state"><i class="bi bi-people"></i><span>Ningún profesor comparte esta carrera con otra</span></div>`;
   switchTab('propios'); irVista('profs-carrera');
 }
 
-function renderProfCards(profs, isMulti = false) {
-  if (!profs.length) return '';
-  return profs.map(p => {
-    const iniciales = p.split(' ').filter(Boolean).map(w => w[0]).join('').substring(0, 2).toUpperCase();
-    return `
-    <div class="col-12">
-      <div class="prof-card" onclick="abrirProfesor('${p.replace(/'/g,"\\'")}')">
-        <div class="prof-avatar">${iniciales}</div>
-        <div class="flex-grow-1">
-          <div style="font-weight:700;color:var(--navy);font-size:.88rem;">${p}</div>
-          ${isMulti ? '<div style="font-size:.7rem;color:var(--purple);font-weight:600;"><i class="bi bi-layers-fill me-1"></i>Múltiples carreras</div>' : ''}
-        </div>
-        <i class="bi bi-chevron-right" style="color:var(--g300);font-size:.85rem;"></i>
+function renderProfCards(profs, isMulti=false){
+  return profs.map(p=>{
+    const ini=p.split(' ').filter(Boolean).map(w=>w[0]).join('').substring(0,2).toUpperCase();
+    const color=avatarColor(p);
+    return `<div class="prof-card" onclick="abrirProfesor('${p.replace(/'/g,"\\'")}')">
+      <div class="prof-avatar" style="background:${color};">${ini}</div>
+      <div style="flex:1;min-width:0;">
+        <div class="prof-name">${p}</div>
+        ${isMulti?`<div class="prof-sub" style="color:var(--violet);"><i class="bi bi-layers-fill"></i> Múltiples carreras</div>`:''}
       </div>
+      <i class="bi bi-chevron-right arrow-icon"></i>
     </div>`;
   }).join('');
 }
 
-function abrirProfesor(prof) {
-  state.profesor = prof;
-  document.getElementById('prof-nombre-detalle').textContent = prof;
-  document.getElementById('prof-carrera-chip').textContent = state.carrera || '';
-  const foto = getFoto(prof);
-  if (foto) { document.getElementById('prof-photo-img').src = foto; document.getElementById('prof-photo-img').style.display = 'block'; document.getElementById('prof-photo-placeholder').style.display = 'none'; }
-  else { document.getElementById('prof-photo-img').style.display = 'none'; document.getElementById('prof-photo-placeholder').style.display = 'flex'; }
-  
+function abrirProfesor(prof){
+  state.profesor=prof;
+  document.getElementById('prof-nombre-detalle').textContent=prof;
+  document.getElementById('prof-carrera-chip').textContent=state.carrera||'';
+  const foto=getFoto(prof);
+  if(foto){
+    document.getElementById('prof-photo-img').src=foto;
+    document.getElementById('prof-photo-img').style.display='block';
+    document.getElementById('prof-photo-placeholder').style.display='none';
+  } else {
+    document.getElementById('prof-photo-img').style.display='none';
+    document.getElementById('prof-photo-placeholder').style.display='flex';
+  }
   irVista('prof');
   renderGantt(prof);
   renderActList(prof);
-  renderResumenBoceto(prof);
+  renderResumen(prof);
 }
 
-// ─── GANTT (Empaquetado) ──────────────────────────────────────────────────
-function pack(items) {
-  items.sort((a,b) => a.inicio !== b.inicio ? a.inicio - b.inicio : (b.fin-b.inicio)-(a.fin-a.inicio));
-  const lanes = [];
-  items.forEach(item => {
-    let placed = false;
-    for (let l=0; l<lanes.length; l++) {
-      if (!lanes[l].some(e => item.inicio <= e.fin && item.fin >= e.inicio)) {
-        lanes[l].push(item); placed = true; break;
+function subirFoto(event){
+  const file=event.target.files[0]; if(!file) return;
+  const reader=new FileReader();
+  reader.onload=e=>{
+    const b64=e.target.result;
+    saveFoto(state.profesor,b64);
+    document.getElementById('prof-photo-img').src=b64;
+    document.getElementById('prof-photo-img').style.display='block';
+    document.getElementById('prof-photo-placeholder').style.display='none';
+  };
+  reader.readAsDataURL(file);
+}
+
+/* ─── GANTT ─── */
+function pack(items){
+  items.sort((a,b)=>a.inicio!==b.inicio?a.inicio-b.inicio:(b.fin-b.inicio)-(a.fin-a.inicio));
+  const lanes=[];
+  items.forEach(item=>{
+    let placed=false;
+    for(let l=0;l<lanes.length;l++){
+      if(!lanes[l].some(e=>item.inicio<=e.fin&&item.fin>=e.inicio)){
+        lanes[l].push(item); placed=true; break;
       }
     }
-    if (!placed) lanes.push([item]);
+    if(!placed) lanes.push([item]);
   });
   return lanes;
 }
 
-function renderGantt(prof) {
-  const asigs = getAsignaciones(state.carrera, prof);
-  const acts = getActs(prof);
-
-  let colorIdx = 0;
-  const allItems = [];
-  
-  asigs.forEach(a => {
-    allItems.push({ 
-      tipo:'doc', label:`${a.materia} | ${a.grupo} | ${a.grado}`, 
-      inicio:a.inicio, fin:a.fin, horas:a.horas, 
-      color: COLORS[colorIdx++ % COLORS.length] 
-    });
-  });
-  
-  acts.forEach(a => {
-    allItems.push({ 
-      tipo:'act', label:`${a.tipo} (${a.horas}h)`, 
-      inicio:+a.ini, fin:+a.fin, horas:+a.horas, 
-      color: COLORS[colorIdx++ % COLORS.length] 
-    });
-  });
-
-  const lanes = pack(allItems);
-
-  document.getElementById('ganttHead').innerHTML = `
-    <tr><th colspan="15" class="th-main">Semanas 1 – 15</th></tr>
-    <tr>${Array.from({length:15},(_,i)=>`<th style="width:6.66%;">${i+1}</th>`).join('')}</tr>`;
-
-  let html = '';
-  if (!lanes.length) {
-      html += `<tr><td colspan="15" style="height:46px; text-align:center; color:var(--g300); font-style:italic; font-size:.8rem;">Sin carga asignada</td></tr>`;
+function renderGantt(prof){
+  const asigs=getAsignaciones(state.carrera,prof);
+  const acts=getActs(prof);
+  let ci=0;
+  const allItems=[];
+  asigs.forEach(a=>allItems.push({ tipo:'doc', label:`${a.materia} | ${a.grupo}`, inicio:a.inicio, fin:Math.min(a.fin,14), horas:a.horas, color:COLORS[ci++%COLORS.length] }));
+  acts.forEach(a=>allItems.push({ tipo:'act', label:`${a.tipo} (${a.horas}h)`, inicio:+a.ini, fin:Math.min(+a.fin,14), horas:+a.horas, color:COLORS[ci++%COLORS.length] }));
+  const lanes=pack(allItems);
+  const WEEKS=14;
+  document.getElementById('ganttHead').innerHTML=`
+    <tr><th colspan="${WEEKS}" class="th-main">Semanas 1 – 14</th></tr>
+    <tr>${Array.from({length:WEEKS},(_,i)=>`<th style="width:${(100/WEEKS).toFixed(2)}%;">${i+1}</th>`).join('')}</tr>`;
+  let html='';
+  if(!lanes.length){
+    html=`<tr><td colspan="${WEEKS}" style="height:50px;text-align:center;color:var(--ink-40);font-style:italic;font-size:.78rem;">Sin carga asignada en esta carrera</td></tr>`;
   } else {
-      lanes.forEach(lane => {
-          html += `<tr>`;
-          let w = 1;
-          while (w <= 15) {
-              const item = lane.find(i => i.inicio === w);
-              if (item) {
-                  const span = item.fin - item.inicio + 1;
-                  html += `<td colspan="${span}" class="gantt-cell"><div class="gantt-bar ${item.color}" title="${item.label}">${item.label}</div></td>`;
-                  w = item.fin + 1;
-              } else { 
-                  html += `<td class="gantt-empty"></td>`; w++; 
-              }
-          }
-          html += `</tr>`;
-      });
+    lanes.forEach(lane=>{
+      html+=`<tr>`;
+      let w=1;
+      while(w<=WEEKS){
+        const item=lane.find(i=>i.inicio===w);
+        if(item){
+          const span=Math.min(item.fin,WEEKS)-item.inicio+1;
+          html+=`<td colspan="${span}" class="gantt-cell"><div class="gantt-bar ${item.color}" title="${item.label}">${item.label}</div></td>`;
+          w=item.fin+1;
+        } else { html+=`<td class="gantt-empty"></td>`; w++; }
+      }
+      html+=`</tr>`;
+    });
   }
-  document.getElementById('ganttBody').innerHTML = html;
+  document.getElementById('ganttBody').innerHTML=html;
 }
 
-// ─── RESUMEN (BOCETO BURBUJAS) ────────────────────────────────────────────────
-function getBucketsObj(item) {
-    let i = parseInt(item.inicio) || 1;
-    let f = parseInt(item.fin) || 14;
-    let h = parseInt(item.horas) || 0;
-    // Logica basada en el esquema del boceto
-    if (i === 1 && f >= 14) return [0, 0, h]; // Toda la jornada (1-14)
-    if (f <= 7) return [h, 0, 0];             // Primer bloque (1-7)
-    if (i >= 7) return [0, h, 0];             // Segundo bloque (7-14)
-    return [h, h, 0];                         // Cruza ambos bloques
+/* ─── RESUMEN HORAS ─── */
+function getBuckets(item){
+  // Corrección: busca item.inicio o item.ini
+  const i = parseInt(item.inicio || item.ini) || 1;
+  const f = Math.min(parseInt(item.fin) || 14, 14);
+  const h = parseInt(item.horas) || 0;
+  
+  if(i === 1 && f >= 14) return [0, 0, h];
+  if(f <= 7) return [h, 0, 0];
+  if(i >= 7) return [0, h, 0];
+  return [h, h, 0];
 }
 
-function renderResumenBoceto(prof) {
-  const asigs = getAsignaciones(state.carrera, prof);
-  const acts = getActs(prof);
+function renderPeriodoCard(label, items, total){
+  const rowsHtml = items.length
+    ? items.map(x=>`
+        <div class="periodo-card-row">
+          <span class="row-name" title="${x.name}">${x.name}</span>
+          <span class="row-hrs">${x.h} hrs/sem</span>
+        </div>`).join('')
+    : `<div class="periodo-card-empty">Sin asignaciones en este período</div>`;
+  const totalHtml = total>0
+    ? `<div class="periodo-card-total"><div class="num">${total} hrs</div></div>`
+    : '';
+  return `
+    <div class="periodo-card">
+      <span class="periodo-label">Semanas ${label}</span>
+      <div class="periodo-card-inner">
+        <div class="periodo-card-rows">${rowsHtml}</div>
+        ${totalHtml}
+      </div>
+    </div>`;
+}
 
-  let d1=[], d2=[], d3=[];
-  let sumD1=0, sumD2=0, sumD3=0;
-
-  asigs.forEach(m => {
-      let b = getBucketsObj(m);
-      if(b[0]) { d1.push({h: b[0], name: m.materia}); sumD1+=b[0]; }
-      if(b[1]) { d2.push({h: b[1], name: m.materia}); sumD2+=b[1]; }
-      if(b[2]) { d3.push({h: b[2], name: m.materia}); sumD3+=b[2]; }
+function renderResumen(prof){
+  const asigs=getAsignaciones(state.carrera,prof);
+  const acts=getActs(prof);
+  let d1=[],d2=[],d3=[],sumD1=0,sumD2=0,sumD3=0;
+  let o1=[],o2=[],o3=[],sumO1=0,sumO2=0,sumO3=0;
+  asigs.forEach(m=>{
+    let b=getBuckets(m);
+    if(b[0]){d1.push({h:b[0],name:m.materia});sumD1+=b[0];}
+    if(b[1]){d2.push({h:b[1],name:m.materia});sumD2+=b[1];}
+    if(b[2]){d3.push({h:b[2],name:m.materia});sumD3+=b[2];}
+  });
+  acts.forEach(a=>{
+    const info=ACT_FULL_NAMES[a.tipo]||{nombre:a.tipo,norma:''};
+    let b=getBuckets(a);
+    if(b[0]){o1.push({h:b[0],name:info.nombre});sumO1+=b[0];}
+    if(b[1]){o2.push({h:b[1],name:info.nombre});sumO2+=b[1];}
+    if(b[2]){o3.push({h:b[2],name:info.nombre});sumO3+=b[2];}
   });
 
-  let o1=[], o2=[], o3=[];
-  let sumO1=0, sumO2=0, sumO3=0;
+  document.getElementById('resumen-doc-content').innerHTML =
+    renderPeriodoCard('1 – 7', d1, sumD1) +
+    renderPeriodoCard('7 – 14', d2, sumD2) +
+    renderPeriodoCard('1 – 14', d3, sumD3);
 
-  acts.forEach(a => {
-      let b = getBucketsObj(a);
-      if(b[0]) { o1.push({h: b[0], name: a.tipo}); sumO1+=b[0]; }
-      if(b[1]) { o2.push({h: b[1], name: a.tipo}); sumO2+=b[1]; }
-      if(b[2]) { o3.push({h: b[2], name: a.tipo}); sumO3+=b[2]; }
-  });
+  document.getElementById('resumen-act-content').innerHTML =
+    renderPeriodoCard('1 – 7', o1, sumO1) +
+    renderPeriodoCard('7 – 14', o2, sumO2) +
+    renderPeriodoCard('1 – 14', o3, sumO3);
 
-  const buildCircles = (arr, type) => {
-      if(!arr.length) return `<div class="text-muted small py-2 fst-italic">N/A</div>`;
-      return arr.map(x => `<div class="circle-val ${type} tooltip-trigger" data-tooltip="${x.name}">${x.h}</div>`).join('');
-  };
-
-  // Docencia
-  document.getElementById('doc-1-7').innerHTML = buildCircles(d1, 'doc');
-  document.getElementById('doc-7-14').innerHTML = buildCircles(d2, 'doc');
-  document.getElementById('doc-1-14').innerHTML = buildCircles(d3, 'doc');
-  document.getElementById('sum-doc-1-7').innerText = sumD1;
-  document.getElementById('sum-doc-7-14').innerText = sumD2;
-  document.getElementById('sum-doc-1-14').innerText = sumD3;
-
-  // Otras Actividades
-  document.getElementById('act-1-7').innerHTML = buildCircles(o1, 'act');
-  document.getElementById('act-7-14').innerHTML = buildCircles(o2, 'act');
-  document.getElementById('act-1-14').innerHTML = buildCircles(o3, 'act');
-  document.getElementById('sum-act-1-7').innerText = sumO1;
-  document.getElementById('sum-act-7-14').innerText = sumO2;
-  document.getElementById('sum-act-1-14').innerText = sumO3;
-
-  // Total Laboral
-  let granTotal = sumD1+sumD2+sumD3 + sumO1+sumO2+sumO3;
-  document.getElementById('gran-total-laboral').innerText = granTotal;
+  const totalDoc=sumD1+sumD2+sumD3;
+  const totalAct=sumO1+sumO2+sumO3;
+  document.getElementById('col-total-doc').textContent=totalDoc;
+  document.getElementById('col-total-act').textContent=totalAct;
+  document.getElementById('gran-total-doc').textContent=totalDoc;
+  document.getElementById('gran-total-act').textContent=totalAct;
+  document.getElementById('gran-total-laboral').textContent=totalDoc+totalAct;
 }
 
-// ─── GESTIÓN DE ACTIVIDADES ──────────────────────────────────────────────────
-function agregarActividad() {
-  const tipo = document.getElementById('act-tipo').value;
-  const horas = +document.getElementById('act-horas').value;
-  const ini = +document.getElementById('act-ini').value;
-  const fin = +document.getElementById('act-fin').value;
-  if (!tipo || !horas || !ini || !fin) { toast('Completa todos los campos.', 'error'); return; }
-  if (ini < 1 || fin > 15 || ini > fin) { toast('Semanas inválidas (rango 1–15, inicio ≤ fin).', 'error'); return; }
-  if (horas < 1 || horas > 40) { toast('Horas entre 1 y 40.', 'error'); return; }
-  
-  const lista = getActs(state.profesor);
-  lista.push({ id: Date.now(), tipo, horas, ini, fin });
-  saveActs(state.profesor, lista);
-  
-  ['act-tipo','act-horas','act-ini','act-fin'].forEach(id => document.getElementById(id).value = '');
-  toast('Actividad registrada.', 'success');
+/* ─── ACTIVIDADES ─── */
+function agregarActividad(){
+  const tipo=document.getElementById('act-tipo').value;
+  const horas=+document.getElementById('act-horas').value;
+  const ini=+document.getElementById('act-ini').value;
+  const fin=+document.getElementById('act-fin').value;
+  if(!tipo||!horas||!ini||!fin){ toast('Completa todos los campos.','error'); return; }
+  if(ini<1||fin>14||ini>fin){ toast('Semanas inválidas (rango 1–14, inicio ≤ fin).','error'); return; }
+  if(horas<1||horas>40){ toast('Las horas deben estar entre 1 y 40.','error'); return; }
+  const lista=getActs(state.profesor);
+  lista.push({ id:Date.now(), tipo, horas, ini, fin });
+  saveActs(state.profesor,lista);
+  document.getElementById('act-tipo').value='';
+  document.getElementById('act-tipo-display').value='';
+  document.getElementById('act-horas').value='';
+  document.getElementById('act-ini').value='';
+  document.getElementById('act-fin').value='';
+  toast('Actividad registrada correctamente.','success');
   renderGantt(state.profesor);
   renderActList(state.profesor);
-  renderResumenBoceto(state.profesor);
+  renderResumen(state.profesor);
 }
 
-function eliminarActividad(id) {
-  saveActs(state.profesor, getActs(state.profesor).filter(a => a.id !== id));
-  toast('Actividad eliminada.', 'info');
+function eliminarActividad(id){
+  saveActs(state.profesor,getActs(state.profesor).filter(a=>a.id!==id));
+  toast('Actividad eliminada.','info');
   renderGantt(state.profesor);
   renderActList(state.profesor);
-  renderResumenBoceto(state.profesor);
+  renderResumen(state.profesor);
 }
 
-function renderActList(prof) {
-  const lista = getActs(prof);
-  const cont = document.getElementById('lista-act');
-  if (!lista.length) { cont.innerHTML = `<div class="empty-state" style="padding: 20px; height: auto;"><i class="bi bi-clipboard-x" style="font-size:1.6rem;"></i><span>Sin actividades adicionales registradas</span></div>`; return; }
-  cont.innerHTML = lista.map(a => `
+function renderActList(prof){
+  const lista=getActs(prof);
+  const cont=document.getElementById('lista-act');
+  if(!lista.length){
+    cont.innerHTML=`<div class="empty-state" style="padding:24px;height:auto;">
+      <i class="bi bi-clipboard-x" style="font-size:1.4rem;"></i>
+      <span>Sin actividades adicionales registradas</span>
+    </div>`;
+    return;
+  }
+  cont.innerHTML=lista.map(a=>{
+    const info=ACT_FULL_NAMES[a.tipo]||{nombre:a.tipo,norma:''};
+    return `
     <div class="act-item">
       <div class="act-icon"><i class="bi ${ACT_ICONS[a.tipo]||'bi-three-dots'}"></i></div>
       <div style="flex:1;min-width:0;">
-        <div class="act-name">${a.tipo}</div>
+        <div class="act-name">${info.nombre}</div>
+        <div class="act-norma"><i class="bi bi-tag-fill" style="font-size:.65rem;"></i> ${info.norma}</div>
         <div class="act-meta-chips">
-          <span class="act-chip"><i class="bi bi-clock"></i>${a.horas} hrs/sem</span>
-          <span class="act-chip"><i class="bi bi-calendar-range"></i>Sem. ${a.ini}–${a.fin}</span>
+          <span class="act-chip"><i class="bi bi-clock" style="font-size:.75rem;"></i>${a.horas} hrs/sem</span>
+          <span class="act-chip"><i class="bi bi-calendar-range" style="font-size:.75rem;"></i>Sem. ${a.ini} – ${a.fin}</span>
         </div>
       </div>
-      <button class="btn-del" onclick="eliminarActividad(${a.id})" title="Eliminar"><i class="bi bi-trash3-fill"></i></button>
-    </div>`).join('');
+      <button class="btn-del" onclick="eliminarActividad(${a.id})" title="Eliminar">
+        <i class="bi bi-trash3"></i>
+      </button>
+    </div>`;
+  }).join('');
 }
 
-function toast(msg, tipo='success') {
-  const old = document.getElementById('_toast'); if (old) old.remove();
-  const cfg = { success: { icon:'bi-check-circle-fill', color:'#16a34a' }, info: { icon:'bi-info-circle-fill', color:'#f59e0b' }, error: { icon:'bi-x-circle-fill', color:'#e53935' } };
-  const c = cfg[tipo]; const el = document.createElement('div'); el.id = '_toast';
-  el.style.cssText = `position:fixed;top:18px;right:22px;z-index:9999;display:flex;align-items:center;gap:10px;background:white;border:1px solid #e2e8f0;border-left:4px solid ${c.color};border-radius:12px;padding:12px 16px;box-shadow:0 8px 28px rgba(10,30,60,.12);font-family:'Inter',sans-serif;font-size:.85rem;font-weight:500;max-width:300px;animation:slideIn .28s cubic-bezier(.34,1.56,.64,1);`;
-  el.innerHTML = `<i class="bi ${c.icon}" style="color:${c.color};font-size:1rem;flex-shrink:0;"></i><span style="flex:1;color:#0d1b2a;">${msg}</span><button onclick="this.parentElement.remove()" style="background:none;border:none;color:#94a3b8;cursor:pointer;font-size:1rem;padding:0 0 0 8px;line-height:1;">✕</button>`;
+/* ─── TOAST ─── */
+function toast(msg, tipo='success'){
+  const old=document.getElementById('_toast'); if(old) old.remove();
+  const cfg={ success:{icon:'bi-check-circle-fill',color:'#10B981'}, info:{icon:'bi-info-circle-fill',color:'#F59E0B'}, error:{icon:'bi-x-circle-fill',color:'#F43F5E'} };
+  const c=cfg[tipo]; const el=document.createElement('div'); el.id='_toast';
+  el.style.cssText=`position:fixed;top:18px;right:20px;z-index:9999;display:flex;align-items:center;gap:10px;background:white;border:1px solid #e5e7eb;border-left:3px solid ${c.color};border-radius:12px;padding:12px 16px;box-shadow:0 8px 24px rgba(14,17,23,.12);font-family:'DM Sans',sans-serif;font-size:.82rem;font-weight:500;max-width:310px;animation:toastIn .26s cubic-bezier(.34,1.56,.64,1);`;
+  el.innerHTML=`<i class="bi ${c.icon}" style="color:${c.color};font-size:1rem;flex-shrink:0;"></i><span style="flex:1;color:var(--ink);">${msg}</span><button onclick="this.parentElement.remove()" style="background:none;border:none;color:#9ca3af;cursor:pointer;font-size:1.1rem;padding:0 0 0 8px;line-height:1;">×</button>`;
   document.body.appendChild(el);
-  setTimeout(() => { if (el.parentElement) { el.style.animation = 'fadeOut .22s ease forwards'; setTimeout(()=>el.remove(), 220); } }, 3500);
+  setTimeout(()=>{ if(el.parentElement){ el.style.animation='toastOut .2s ease forwards'; setTimeout(()=>el.remove(),200); } },3500);
 }
 
-window.addEventListener('DOMContentLoaded', () => irVista('lista-carreras'));
+
+window.addEventListener('DOMContentLoaded',()=>irVista('lista-carreras'));
 </script>
 </body>
 </html>
+
+
