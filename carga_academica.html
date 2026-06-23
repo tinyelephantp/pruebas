@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="es">
 <head>
 <meta charset="UTF-8">
@@ -105,8 +105,18 @@ body {
 .sect-label {
   font-size: .68rem; font-weight: 700; text-transform: uppercase;
   letter-spacing: .9px; color: var(--ink-40);
-  margin-bottom: 16px; display: flex; align-items: center; gap: 6px;
+  margin-bottom: 4px; display: flex; align-items: center; gap: 6px; flex-wrap: wrap;
 }
+.sect-label-row {
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 8px; margin-bottom: 6px;
+}
+.sect-hint {
+  font-size: .72rem; color: var(--ink-40); font-weight: 500;
+  margin-bottom: 16px; display: flex; align-items: center; gap: 6px;
+  font-style: italic;
+}
+.sect-hint i { color: var(--indigo-md); font-size: .8rem; font-style: normal; }
 
 /* ─── CAREER CARDS ─── */
 .career-grid {
@@ -115,30 +125,17 @@ body {
   gap: 16px;
 }
 .career-card {
-  background: white;
-  border-radius: 20px;
-  border: 1px solid var(--ink-10);
-  box-shadow: var(--shadow-sm);
-  padding: 28px 20px 20px;
-  cursor: pointer;
-  transition: var(--transition);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  gap: 14px;
+  background: white; border-radius: 20px;
+  border: 1px solid var(--ink-10); box-shadow: var(--shadow-sm);
+  padding: 28px 20px 20px; cursor: pointer; transition: var(--transition);
+  display: flex; flex-direction: column; align-items: center; text-align: center; gap: 14px;
 }
-.career-card:hover {
-  box-shadow: var(--shadow-md);
-  transform: translateY(-3px);
-  border-color: var(--indigo-md);
-}
+.career-card:hover { box-shadow: var(--shadow-md); transform: translateY(-3px); border-color: var(--indigo-md); }
 .career-card:active { transform: translateY(0); }
 .career-badge {
   width: 72px; height: 72px; border-radius: 50%;
   background: var(--indigo-lt);
-  display: flex; align-items: center; justify-content: center;
-  flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
 }
 .career-badge i { color: var(--indigo); font-size: 30px; }
 .career-title { font-weight: 700; font-size: .85rem; color: var(--ink); line-height: 1.4; }
@@ -152,19 +149,14 @@ body {
 /* ─── TABS ─── */
 .tabs-wrap {
   display: flex; align-items: center; gap: 4px;
-  border-bottom: 1px solid var(--ink-10);
-  margin-bottom: 22px;
-  padding-bottom: 0;
+  border-bottom: 1px solid var(--ink-10); margin-bottom: 22px; padding-bottom: 0;
 }
 .tab-btn {
-  padding: 10px 18px;
-  border: none; background: none;
+  padding: 10px 18px; border: none; background: none;
   cursor: pointer; font-size: .8rem; font-weight: 600;
   color: var(--ink-40); font-family: 'DM Sans', sans-serif;
-  border-bottom: 2px solid transparent;
-  margin-bottom: -1px;
-  transition: var(--transition);
-  display: flex; align-items: center; gap: 8px;
+  border-bottom: 2px solid transparent; margin-bottom: -1px;
+  transition: var(--transition); display: flex; align-items: center; gap: 8px;
   border-radius: var(--r) var(--r) 0 0;
 }
 .tab-btn:hover { color: var(--ink); background: var(--ink-05); }
@@ -181,33 +173,24 @@ body {
 /* ─── PROF CARDS ─── */
 .prof-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-  gap: 10px;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 12px;
 }
 .prof-card {
-  background: white;
-  border-radius: var(--r-lg);
-  border: 1px solid var(--ink-10);
-  box-shadow: var(--shadow-xs);
-  padding: 16px 18px;
-  cursor: pointer;
-  transition: var(--transition);
-  display: flex; align-items: center; gap: 13px;
+  background: white; border-radius: var(--r-lg); border: 1px solid var(--ink-10);
+  box-shadow: var(--shadow-xs); padding: 20px 22px; cursor: pointer;
+  transition: var(--transition); display: flex; align-items: center; gap: 16px;
+  width: 100%;
 }
-.prof-card:hover {
-  box-shadow: var(--shadow-md);
-  transform: translateY(-2px);
-  border-color: var(--indigo-md);
-}
+.prof-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); border-color: var(--indigo-md); }
 .prof-avatar {
-  width: 42px; height: 42px; border-radius: 50%;
+  width: 50px; height: 50px; border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
-  color: white; font-weight: 700; font-size: .82rem; flex-shrink: 0;
-  letter-spacing: .5px;
+  color: white; font-weight: 700; font-size: .9rem; flex-shrink: 0; letter-spacing: .5px;
 }
-.prof-name { font-weight: 700; color: var(--ink); font-size: .84rem; line-height: 1.3; }
+.prof-name { font-weight: 700; color: var(--ink); font-size: .88rem; line-height: 1.3; }
 .prof-sub { font-size: .7rem; color: var(--ink-40); margin-top: 3px; display: flex; align-items: center; gap: 4px; }
-.prof-card .arrow-icon { color: var(--ink-20); font-size: .78rem; margin-left: auto; flex-shrink: 0; }
+.prof-card .arrow-icon { color: var(--ink-20); font-size: .82rem; margin-left: auto; flex-shrink: 0; }
 
 /* ─── EMPTY STATE ─── */
 .empty-state {
@@ -217,91 +200,227 @@ body {
 .empty-state i { font-size: 2rem; opacity: .4; display: block; margin-bottom: 10px; }
 .empty-state span { font-size: .8rem; }
 
-/* ─── PROF DETAIL HEADER ─── */
+/* ─── TOOLBAR DE CARRERA ─── */
+.carrera-toolbar {
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 20px; flex-wrap: wrap;
+}
+.btn-toolbar {
+  display: inline-flex; align-items: center; gap: 7px;
+  border-radius: var(--r); padding: 8px 16px;
+  font-size: .78rem; font-weight: 600;
+  cursor: pointer; transition: var(--transition);
+  font-family: 'DM Sans', sans-serif; border: 1px solid var(--ink-20);
+  white-space: nowrap;
+}
+.btn-toolbar-back {
+  background: transparent; color: var(--ink-60);
+}
+.btn-toolbar-back:hover { background: white; border-color: var(--indigo); color: var(--indigo); }
+.btn-toolbar-report {
+  background: var(--indigo); color: white; border-color: var(--indigo);
+  box-shadow: 0 2px 8px rgba(91,110,245,.28);
+}
+.btn-toolbar-report:hover { background: var(--indigo-dk); border-color: var(--indigo-dk); transform: translateY(-1px); box-shadow: 0 4px 14px rgba(91,110,245,.38); }
+
+/* ─── PROF DETAIL HEADER OUTER ─── */
+.prof-header-outer {
+  display: flex;
+  align-items: flex-start;
+  gap: 24px;
+  margin-bottom: 24px;
+  flex-wrap: nowrap;
+}
+
+/* MODIFICADO: tarjeta del nombre centrada y con estilo distintivo */
 .prof-header {
-  background: white;
-  border-radius: var(--r-xl);
+  flex: 0 1 400px;
+  background: linear-gradient(160deg, #ffffff 0%, var(--indigo-lt) 145%);
+  border-radius: var(--r-lg);
   border: 1px solid var(--ink-10);
   box-shadow: var(--shadow-sm);
-  padding: 28px 32px;
-  margin-bottom: 20px;
-  display: flex; align-items: flex-start; gap: 24px; flex-wrap: wrap;
-  position: relative; overflow: hidden;
+  padding: 22px 22px 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 6px;
+  position: relative;
+  overflow: hidden;
+  align-self: stretch;
 }
+
 .prof-header::before {
   content: '';
-  position: absolute; top: 0; left: 0; right: 0; height: 4px;
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 4px;
   background: linear-gradient(90deg, var(--indigo) 0%, var(--violet) 50%, var(--sage) 100%);
 }
+.prof-header::after {
+  content: '';
+  position: absolute;
+  width: 140px; height: 140px;
+  background: radial-gradient(circle, rgba(91,110,245,.10) 0%, transparent 70%);
+  top: -40px; right: -40px; pointer-events: none;
+}
+
+.prof-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.prof-info-name {
+  font-size: 1.3rem;
+  font-weight: 700;
+  letter-spacing: -.4px;
+  line-height: 1.25;
+  background: linear-gradient(95deg, var(--indigo-dk) 10%, var(--violet) 90%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.prof-info-org {
+  font-size: .74rem;
+  color: var(--ink-40);
+  margin-top: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  flex-wrap: wrap;
+}
+
+.prof-info-org i {
+  color: var(--ink-40);
+  font-size: .78rem;
+}
+
+/* Etiqueta de tutor debajo del nombre */
+.prof-info-tutor {
+  font-size: .7rem;
+  font-weight: 700;
+  color: #6D28D9;
+  background: var(--violet-lt);
+  border: 1px solid var(--violet);
+  border-radius: 20px;
+  padding: 4px 13px;
+  margin-top: 9px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+/* Etiqueta de tutor junto al título de distribución semanal */
+.gantt-tutor-info {
+  font-size: .68rem;
+  font-weight: 700;
+  color: #6D28D9;
+  background: var(--violet-lt);
+  border: 1px solid var(--violet);
+  border-radius: 20px;
+  padding: 3px 11px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin-left: 4px;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
 .prof-photo {
-  width: 88px; height: 104px; border-radius: 14px;
-  background: var(--ink-05); border: 1.5px dashed var(--ink-20);
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-  cursor: pointer; position: relative; overflow: hidden;
-  flex-shrink: 0; transition: var(--transition);
-  font-size: .66rem; color: var(--ink-40); gap: 6px;
+  flex-shrink: 0;
+  order: 2;
+  width: 110px;
+  height: 132px;
+  border-radius: 12px;
+  background: white;
+  border: 1.5px solid var(--ink-20);
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: var(--transition);
+  font-size: .65rem;
+  color: var(--ink-40);
+  gap: 5px;
 }
-.prof-photo:hover { border-color: var(--indigo); background: var(--indigo-lt); color: var(--indigo); }
-.prof-photo i { font-size: 1.4rem; }
-.prof-photo img { width: 100%; height: 100%; object-fit: cover; position: absolute; inset: 0; }
-.prof-info { flex: 1; min-width: 0; }
-.prof-info-name { font-size: 1.3rem; font-weight: 700; color: var(--ink); letter-spacing: -.4px; line-height: 1.2; }
-.prof-info-org { font-size: .77rem; color: var(--ink-40); margin-top: 4px; }
-.prof-chips { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
-.chip {
-  display: inline-flex; align-items: center; gap: 6px;
-  border-radius: 8px; padding: 5px 12px;
-  font-size: .72rem; font-weight: 600;
+
+.prof-photo:hover {
+  border-color: var(--indigo);
+  background: var(--indigo-lt);
+  color: var(--indigo);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-1px);
 }
-.chip-indigo { background: var(--indigo-lt); color: var(--indigo); }
-.chip-sage   { background: var(--sage-lt); color: #047857; }
-.chip-amber  { background: var(--amber-lt); color: #92400E; }
+
+.prof-photo i {
+  font-size: 1.8rem;
+}
+
+.prof-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: absolute;
+  inset: 0;
+}
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 760px) {
+  .resumen-grid {
+    grid-template-columns: 1fr;
+  }
+  .prof-header-outer {
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  .prof-header {
+    flex: 1 1 100%;
+  }
+  .prof-photo {
+    order: 0;
+  }
+}
+
+@media (max-width: 640px) {
+  .topbar {
+    padding: 0 16px;
+  }
+  .content {
+    padding: 16px;
+  }
+  .panel {
+    padding: 18px;
+  }
+}
 
 /* ─── PANEL ─── */
 .panel {
-  background: white;
-  border-radius: var(--r-xl);
-  border: 1px solid var(--ink-10);
-  box-shadow: var(--shadow-sm);
-  padding: 24px 28px;
-  margin-bottom: 20px;
+  background: white; border-radius: var(--r-xl); border: 1px solid var(--ink-10);
+  box-shadow: var(--shadow-sm); padding: 24px 28px; margin-bottom: 20px;
 }
 
 /* ─── GANTT TABLE ─── */
 .gantt-wrap { overflow-x: auto; border-radius: 10px; border: 1px solid var(--ink-10); }
 .gantt-table { width: 100%; border-collapse: collapse; font-size: .78rem; min-width: 700px; }
 .gantt-table th, .gantt-table td { border: 1px solid var(--ink-10); }
-.gantt-table th {
-  padding: 8px 3px; font-weight: 600; font-size: .7rem;
-  text-align: center; background: var(--ink-05); color: var(--ink-40);
-  font-family: 'DM Mono', monospace;
-}
-.th-main {
-  background: var(--indigo-lt) !important;
-  color: var(--indigo) !important;
-  font-weight: 700; font-size: .72rem !important;
-  padding: 10px 4px !important; letter-spacing: .5px;
-  font-family: 'DM Sans', sans-serif !important;
-}
+.gantt-table th { padding: 8px 3px; font-weight: 600; font-size: .7rem; text-align: center; background: var(--ink-05); color: var(--ink-40); font-family: 'DM Mono', monospace; }
+.th-main { background: var(--indigo-lt) !important; color: var(--indigo) !important; font-weight: 700; font-size: .72rem !important; padding: 10px 4px !important; letter-spacing: .5px; font-family: 'DM Sans', sans-serif !important; }
 .gantt-cell { padding: 3px; vertical-align: middle; }
-.gantt-empty {
-  background: repeating-linear-gradient(
-    45deg, var(--ink-05), var(--ink-05) 6px, var(--ink-10) 6px, var(--ink-10) 12px
-  );
-}
-.gantt-bar {
-  height: 36px; border-radius: 7px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: .68rem; font-weight: 700;
-  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding: 0 10px;
-  transition: var(--transition); cursor: default;
-  letter-spacing: -.1px;
-  border-width: 2px;
-  border-style: solid;
-}
+.gantt-empty { background: repeating-linear-gradient(45deg, var(--ink-05), var(--ink-05) 6px, var(--ink-10) 6px, var(--ink-10) 12px); }
+.gantt-bar { height: 36px; border-radius: 7px; display: flex; align-items: center; justify-content: center; font-size: .68rem; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding: 0 10px; transition: var(--transition); cursor: default; letter-spacing: -.1px; border-width: 2px; border-style: solid; }
 .gantt-bar:hover { filter: brightness(0.95); transform: scaleY(1.04); }
-
 .gc-0  { background: rgba(91,110,245,.13); border-color: #5B6EF5; color: #3D4FCC; }
 .gc-1  { background: rgba(16,185,129,.13); border-color: #10B981; color: #047857; }
 .gc-2  { background: rgba(139,92,246,.13); border-color: #8B5CF6; color: #6D28D9; }
@@ -316,192 +435,66 @@ body {
 .gc-11 { background: rgba(124,58,237,.13); border-color: #7C3AED; color: #4C1D95; }
 
 /* ─── ACTIVITY FORM ─── */
-.act-form {
-  background: var(--ink-05);
-  border-radius: 14px;
-  border: 1px solid var(--ink-10);
-  overflow: hidden;
-  margin-bottom: 18px;
-}
-.act-form-header {
-  background: #5B6EF5;
-  color: white;
-  padding: 10px 16px;
-  font-size: .75rem;
-  font-weight: 700;
-  letter-spacing: .5px;
-  text-align: center;
-  text-transform: uppercase;
-}
-.act-select-wrap {
-  padding: 10px 14px;
-  border-bottom: 1px solid var(--ink-10);
-  background: white;
-}
-.act-select-wrap select {
-  width: 100%;
-  border: 1px solid var(--ink-20);
-  border-radius: 8px;
-  padding: 9px 12px;
-  font-size: .82rem;
-  background: white;
-  font-family: 'DM Sans', sans-serif;
-  color: var(--ink);
-  appearance: auto;
-}
+.act-form { background: var(--ink-05); border-radius: 14px; border: 1px solid var(--ink-10); overflow: hidden; margin-bottom: 18px; }
+.act-form-header { background: #5B6EF5; color: white; padding: 10px 16px; font-size: .75rem; font-weight: 700; letter-spacing: .5px; text-align: center; text-transform: uppercase; }
+.act-select-wrap { padding: 10px 14px; border-bottom: 1px solid var(--ink-10); background: white; }
+.act-select-wrap select { width: 100%; border: 1px solid var(--ink-20); border-radius: 8px; padding: 9px 12px; font-size: .82rem; background: white; font-family: 'DM Sans', sans-serif; color: var(--ink); appearance: auto; }
 .act-select-wrap select:focus { outline: none; border-color: var(--indigo); box-shadow: 0 0 0 3px rgba(91,110,245,.12); }
 .act-options-list { background: white; }
-.act-option-item {
-  padding: 10px 16px;
-  border-bottom: 1px solid var(--ink-10);
-  font-size: .8rem;
-  color: var(--ink-80);
-  cursor: pointer;
-  transition: var(--transition);
-  display: flex; align-items: center; gap: 10px;
-}
+.act-option-item { padding: 10px 16px; border-bottom: 1px solid var(--ink-10); font-size: .8rem; color: var(--ink-80); cursor: pointer; transition: var(--transition); display: flex; align-items: center; gap: 10px; }
 .act-option-item:last-child { border-bottom: none; }
 .act-option-item:hover { background: var(--indigo-lt); color: var(--indigo); }
 .act-option-item i { font-size: .9rem; color: var(--indigo); flex-shrink: 0; }
-.act-config-row {
-  display: flex; gap: 10px; align-items: flex-end; flex-wrap: wrap;
-  padding: 14px 14px 14px;
-  border-top: 1px solid var(--ink-10);
-  background: var(--ink-05);
-}
+.act-config-row { display: flex; gap: 10px; align-items: flex-end; flex-wrap: wrap; padding: 14px 14px 14px; border-top: 1px solid var(--ink-10); background: var(--ink-05); }
 .field-group { display: flex; flex-direction: column; gap: 5px; }
-.field-group label {
-  font-size: .64rem; font-weight: 700;
-  text-transform: uppercase; letter-spacing: .7px; color: var(--ink-40);
-}
-.field-group select, .field-group input {
-  border: 1.5px solid var(--ink-20); border-radius: 9px; padding: 9px 12px;
-  font-size: .8rem; background: white; font-family: 'DM Sans', sans-serif;
-  color: var(--ink); transition: border-color var(--transition), box-shadow var(--transition);
-  appearance: auto;
-}
-.field-group select:focus, .field-group input:focus {
-  outline: none; border-color: var(--indigo);
-  box-shadow: 0 0 0 3px rgba(91,110,245,.12);
-}
-.btn-add-act {
-  border-radius: 9px; font-weight: 700; padding: 10px 20px; font-size: .8rem;
-  background: var(--sage); color: white; border: none; cursor: pointer;
-  transition: var(--transition); display: flex; align-items: center; gap: 7px;
-  font-family: 'DM Sans', sans-serif; margin-top: auto;
-}
+.field-group label { font-size: .64rem; font-weight: 700; text-transform: uppercase; letter-spacing: .7px; color: var(--ink-40); }
+.field-group select, .field-group input { border: 1.5px solid var(--ink-20); border-radius: 9px; padding: 9px 12px; font-size: .8rem; background: white; font-family: 'DM Sans', sans-serif; color: var(--ink); transition: border-color var(--transition), box-shadow var(--transition); appearance: auto; }
+.field-group select:focus, .field-group input:focus { outline: none; border-color: var(--indigo); box-shadow: 0 0 0 3px rgba(91,110,245,.12); }
+.field-group input[type="number"] { appearance: textfield; -moz-appearance: textfield; }
+.field-group input[type="number"]::-webkit-outer-spin-button,
+.field-group input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+.btn-add-act { border-radius: 9px; font-weight: 700; padding: 10px 20px; font-size: .8rem; background: var(--sage); color: white; border: none; cursor: pointer; transition: var(--transition); display: flex; align-items: center; gap: 7px; font-family: 'DM Sans', sans-serif; margin-top: auto; }
 .btn-add-act:hover { background: #059669; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(16,185,129,.3); }
 .btn-add-act:active { transform: translateY(0); }
 #act-tipo-hidden { display: none; }
 
 /* ─── ACTIVITY LIST ─── */
-.act-item {
-  display: flex; align-items: flex-start; gap: 13px;
-  background: white; border-radius: 11px;
-  border: 1px solid var(--ink-10); padding: 12px 16px; margin-bottom: 8px;
-  transition: var(--transition);
-}
+.act-item { display: flex; align-items: flex-start; gap: 13px; background: white; border-radius: 11px; border: 1px solid var(--ink-10); padding: 12px 16px; margin-bottom: 8px; transition: var(--transition); }
 .act-item:hover { border-color: var(--ink-20); box-shadow: var(--shadow-xs); }
-.act-icon {
-  width: 36px; height: 36px; border-radius: 9px;
-  background: var(--violet-lt); display: flex; align-items: center; justify-content: center;
-  flex-shrink: 0; margin-top: 2px;
-}
+.act-icon { width: 36px; height: 36px; border-radius: 9px; background: var(--violet-lt); display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px; }
 .act-icon i { color: var(--violet); font-size: 1rem; }
 .act-name { font-weight: 700; font-size: .82rem; color: var(--ink); }
 .act-norma { font-size: .72rem; color: var(--indigo); font-weight: 600; margin-top: 2px; }
 .act-meta-chips { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 5px; }
-.act-chip {
-  background: var(--ink-05); border: 1px solid var(--ink-10);
-  border-radius: 6px; padding: 2px 8px;
-  font-size: .68rem; font-weight: 600; color: var(--ink-60);
-  display: flex; align-items: center; gap: 4px;
-  font-family: 'DM Mono', monospace;
-}
-.btn-del {
-  width: 30px; height: 30px; border-radius: 8px;
-  background: var(--rose-lt); color: var(--rose);
-  border: none; display: flex; align-items: center; justify-content: center;
-  cursor: pointer; font-size: .8rem; transition: var(--transition);
-  flex-shrink: 0; margin-left: auto;
-}
+.act-chip { background: var(--ink-05); border: 1px solid var(--ink-10); border-radius: 6px; padding: 2px 8px; font-size: .68rem; font-weight: 600; color: var(--ink-60); display: flex; align-items: center; gap: 4px; font-family: 'DM Mono', monospace; }
+.btn-del { width: 30px; height: 30px; border-radius: 8px; background: var(--rose-lt); color: var(--rose); border: none; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: .8rem; transition: var(--transition); flex-shrink: 0; margin-left: auto; }
 .btn-del:hover { background: var(--rose); color: white; }
 
-/* ─── RESUMEN DE HORAS (ESTILOS BASE COMUNES) ─── */
-.resumen-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 22px;
-  margin-bottom: 18px;
-  align-items: start;
-}
-.resumen-col-title {
-  display: inline-flex; align-items: center; gap: 8px;
-  font-weight: 700; font-size: .82rem;
-  padding: 8px 18px; border-radius: 30px;
-  margin-bottom: 14px; border: 1.5px solid transparent;
-}
+/* ─── RESUMEN DE HORAS ─── */
+.resumen-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; margin-bottom: 18px; align-items: start; }
+.resumen-col-title { display: inline-flex; align-items: center; gap: 8px; font-weight: 700; font-size: .82rem; padding: 8px 18px; border-radius: 30px; margin-bottom: 14px; border: 1.5px solid transparent; }
 .resumen-col-title i { font-size: .92rem; }
-.resumen-col-subheader {
-  display: flex; align-items: center; gap: 10px;
-  padding: 0 18px 8px 4px;
-  font-size: .62rem; font-weight: 700; text-transform: uppercase; letter-spacing: .7px;
-  color: var(--ink-40);
-}
+.resumen-col-subheader { display: flex; align-items: center; gap: 10px; padding: 0 18px 8px 4px; font-size: .62rem; font-weight: 700; text-transform: uppercase; letter-spacing: .7px; color: var(--ink-40); }
 .resumen-col-subheader .sub-name { flex: 1; }
 .resumen-col-subheader .sub-hrs { width: 96px; text-align: center; }
 .resumen-col-subheader .sub-total { width: 78px; text-align: center; }
-
-.periodo-card {
-  position: relative;
-  background: white;
-  border: 2px solid transparent;
-  border-radius: 16px;
-  padding: 20px 16px 16px;
-  margin-bottom: 14px;
-}
+.periodo-card { position: relative; background: white; border: 2px solid transparent; border-radius: 16px; padding: 20px 16px 16px; margin-bottom: 14px; }
 .periodo-card:last-child { margin-bottom: 0; }
-.periodo-card .periodo-label {
-  position: absolute; top: -12px; left: 14px;
-  background: white; padding: 0 5px;
-  font-size: .7rem; font-weight: 700;
-  font-family: 'DM Mono', monospace;
-}
+.periodo-card .periodo-label { position: absolute; top: -12px; left: 14px; background: white; padding: 0 5px; font-size: .7rem; font-weight: 700; font-family: 'DM Mono', monospace; }
 .periodo-card-inner { display: flex; align-items: center; gap: 14px; min-height: 28px; }
 .periodo-card-rows { flex: 1; display: flex; flex-direction: column; gap: 9px; min-width: 0; }
 .periodo-card-row { display: flex; align-items: center; gap: 10px; }
-.periodo-card-row .row-name {
-  flex: 1; font-size: .8rem; font-weight: 600; color: var(--ink-80);
-  overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0;
-}
-.periodo-card-row .row-hrs {
-  width: 96px; flex-shrink: 0; text-align: center;
-  border: 1.5px solid transparent;
-  border-radius: 8px; padding: 4px 0;
-  font-size: .73rem; font-weight: 700;
-  font-family: 'DM Mono', monospace;
-}
+.periodo-card-row .row-name { flex: 1; font-size: .8rem; font-weight: 600; color: var(--ink-80); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
+.periodo-card-row .row-hrs { width: 96px; flex-shrink: 0; text-align: center; border: 1.5px solid transparent; border-radius: 8px; padding: 4px 0; font-size: .73rem; font-weight: 700; font-family: 'DM Mono', monospace; }
 .periodo-card-total { width: 78px; flex-shrink: 0; display: flex; justify-content: center; }
-.periodo-card-total .num {
-  color: white;
-  border-radius: 30px; padding: 8px 0; width: 100%; text-align: center;
-  font-weight: 700; font-family: 'DM Mono', monospace; font-size: .82rem;
-}
+.periodo-card-total .num { color: white; border-radius: 30px; padding: 8px 0; width: 100%; text-align: center; font-weight: 700; font-family: 'DM Mono', monospace; font-size: .82rem; }
 .periodo-card-empty { font-size: .76rem; color: var(--ink-40); font-style: italic; padding: 2px 0; }
-
-.resumen-col-total {
-  display: flex; flex-direction: column; align-items: center; gap: 6px;
-  margin-top: 8px;
-}
-
-/* ─── THEME: DOCENCIA (SAGE/ESMERALDA) ─── */
+.resumen-col-total { display: flex; flex-direction: column; align-items: center; gap: 6px; margin-top: 8px; }
 .doc-theme .resumen-col-title { background: rgba(16,185,129,.08); border-color: #10B981; color: #047857; }
 .doc-theme .periodo-card { border-color: rgba(16,185,129,.55); }
 .doc-theme .periodo-label { color: #047857; }
 .doc-theme .row-hrs { background: rgba(16,185,129,.1); border-color: #10B981; color: #047857; }
 .doc-theme .num { background: #10B981; box-shadow: 0 2px 8px rgba(16,185,129,.32); }
-
-/* ─── THEME: ACTIVIDADES (VIOLETA) ─── */
 .act-theme .resumen-col-title { background: rgba(139,92,246,.08); border-color: #8B5CF6; color: #6D28D9; }
 .act-theme .periodo-card { border-color: rgba(139,92,246,.55); }
 .act-theme .periodo-label { color: #6D28D9; }
@@ -509,52 +502,23 @@ body {
 .act-theme .num { background: #8B5CF6; box-shadow: 0 2px 8px rgba(139,92,246,.32); }
 
 /* ─── TOTAL LABORAL ─── */
-.total-laboral-wrap {
-  background: rgba(16,185,129,.06);
-  border-radius: 16px;
-  border: 2px solid #10B981;
-  padding: 20px 24px;
-  display: flex; align-items: center; justify-content: center; gap: 20px;
-  flex-wrap: wrap;
-}
+.total-laboral-wrap { background: rgba(16,185,129,.06); border-radius: 16px; border: 2px solid #10B981; padding: 20px 24px; display: flex; align-items: center; justify-content: center; gap: 20px; flex-wrap: wrap; }
 .total-left { display: flex; flex-direction: column; gap: 4px; }
 .total-left-title { font-weight: 700; font-size: .88rem; color: #047857; }
 .total-left-sub { font-size: .72rem; color: #10B981; }
 .total-bubble-wrap { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
-.total-bubble {
-  display: flex; flex-direction: column; align-items: center; gap: 6px;
-}
-.total-bubble-circle {
-  width: 64px; height: 64px; border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  font-weight: 700; font-size: 1.4rem;
-  font-family: 'DM Mono', monospace;
-  border: 2.5px solid;
-}
-.total-bubble-circle.grand {
-  border-color: #047857;
-  color: white;
-  background: #10B981;
-  width: 72px; height: 72px; font-size: 1.6rem;
-}
-/* Colores de las burbujas finales */
+.total-bubble { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+.total-bubble-circle { width: 64px; height: 64px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1.4rem; font-family: 'DM Mono', monospace; border: 2.5px solid; }
+.total-bubble-circle.grand { border-color: #047857; color: white; background: #10B981; width: 72px; height: 72px; font-size: 1.6rem; }
 .total-bubble-circle.doc { border-color: #10B981; color: #047857; background: rgba(16,185,129,.15); }
 .total-bubble-circle.act { border-color: #8B5CF6; color: #6D28D9; background: rgba(139,92,246,.15); }
-
 .total-bubble-label { font-size: .62rem; font-weight: 700; color: #10B981; text-transform: uppercase; letter-spacing: .5px; text-align: center; }
 .total-plus { font-size: 1.2rem; color: #10B981; font-weight: 700; }
 .total-eq { font-size: 1.2rem; color: #10B981; font-weight: 700; }
 
 /* ─── TOOLTIP ─── */
 .tt { position: relative; cursor: default; }
-.tt::after {
-  content: attr(data-tip);
-  position: absolute; bottom: 110%; left: 50%; transform: translateX(-50%);
-  background: var(--ink); color: white; padding: 4px 10px;
-  border-radius: 6px; font-size: .7rem; white-space: nowrap;
-  z-index: 200; opacity: 0; pointer-events: none;
-  transition: opacity .15s; font-family: 'DM Sans', sans-serif;
-}
+.tt::after { content: attr(data-tip); position: absolute; bottom: 110%; left: 50%; transform: translateX(-50%); background: var(--ink); color: white; padding: 4px 10px; border-radius: 6px; font-size: .7rem; white-space: nowrap; z-index: 200; opacity: 0; pointer-events: none; transition: opacity .15s; font-family: 'DM Sans', sans-serif; }
 .tt:hover::after { opacity: 1; }
 
 /* ─── TOAST ─── */
@@ -562,25 +526,178 @@ body {
 @keyframes toastOut { to { opacity:0; transform: translateY(-6px); } }
 
 /* ─── BACK BTN PANEL ─── */
-.section-back {
-  display: inline-flex; align-items: center; gap: 7px;
-  background: transparent; border: 1px solid var(--ink-20);
-  border-radius: var(--r); padding: 7px 14px;
-  font-size: .78rem; font-weight: 600; color: var(--ink-60);
-  cursor: pointer; transition: var(--transition); margin-bottom: 20px;
-  font-family: 'DM Sans', sans-serif;
-}
+.section-back { display: inline-flex; align-items: center; gap: 7px; background: transparent; border: 1px solid var(--ink-20); border-radius: var(--r); padding: 7px 14px; font-size: .78rem; font-weight: 600; color: var(--ink-60); cursor: pointer; transition: var(--transition); margin-bottom: 20px; font-family: 'DM Sans', sans-serif; }
 .section-back:hover { background: white; border-color: var(--indigo); color: var(--indigo); }
+
+/* ─── GUARDAR CARGA BTN ─── */
+.save-carga-bar {
+  background: white; border-radius: var(--r-xl); border: 1px solid var(--ink-10);
+  box-shadow: var(--shadow-sm); padding: 20px 28px; margin-bottom: 20px;
+  display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+}
+.save-carga-info { display: flex; flex-direction: column; gap: 3px; }
+.save-carga-info strong { font-size: .88rem; font-weight: 700; color: var(--ink); }
+.save-carga-info span { font-size: .74rem; color: var(--ink-40); }
+.btn-guardar-carga {
+  display: inline-flex; align-items: center; gap: 9px;
+  background: linear-gradient(135deg, var(--indigo) 0%, var(--indigo-dk) 100%);
+  color: white; border: none; border-radius: 12px; padding: 12px 28px;
+  font-size: .85rem; font-weight: 700; cursor: pointer;
+  transition: var(--transition); font-family: 'DM Sans', sans-serif;
+  box-shadow: 0 4px 14px rgba(91,110,245,.35);
+  letter-spacing: -.1px;
+}
+.btn-guardar-carga:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(91,110,245,.45); }
+.btn-guardar-carga:active { transform: translateY(0); }
+.btn-guardar-carga i { font-size: 1rem; }
+
+/* ─── VISTA REPORTE ─── */
+.reporte-toolbar {
+  display: flex; align-items: center; gap: 10px; margin-bottom: 20px; flex-wrap: wrap;
+}
+.btn-report-action {
+  display: inline-flex; align-items: center; gap: 7px;
+  border-radius: 10px; padding: 9px 18px; font-size: .8rem; font-weight: 700;
+  cursor: pointer; transition: var(--transition); font-family: 'DM Sans', sans-serif; border: none;
+}
+.btn-excel { background: #217346; color: white; }
+.btn-excel:hover { background: #185a34; transform: translateY(-1px); }
+.btn-print { background: var(--ink); color: white; }
+.btn-print:hover { background: var(--ink-80); transform: translateY(-1px); }
+.btn-back-report { background: transparent; border: 1px solid var(--ink-20); color: var(--ink-60); }
+.btn-back-report:hover { border-color: var(--indigo); color: var(--indigo); background: white; }
+
+/* ─── REPORTE TABLE CONTAINER ─── */
+.reporte-container {
+  background: white; border-radius: var(--r-xl); border: 1px solid var(--ink-10);
+  box-shadow: var(--shadow-md); overflow: hidden;
+}
+.reporte-carrera-header {
+  background: linear-gradient(135deg, #1e3a5f 0%, #2d5a8e 100%);
+  padding: 18px 28px; display: flex; align-items: center; gap: 16px;
+}
+.reporte-carrera-header .logo-wrap {
+  width: 44px; height: 44px; background: rgba(255,255,255,.15);
+  border-radius: 10px; display: flex; align-items: center; justify-content: center;
+}
+.reporte-carrera-header .logo-wrap i { color: white; font-size: 1.3rem; }
+.reporte-carrera-header .title-block { flex: 1; }
+.reporte-carrera-header .title-block h2 { color: white; font-size: 1rem; font-weight: 700; letter-spacing: -.2px; }
+.reporte-carrera-header .title-block p { color: rgba(255,255,255,.6); font-size: .72rem; margin-top: 2px; }
+.reporte-carrera-header .period-badge { background: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.25); border-radius: 8px; padding: 6px 14px; color: white; font-size: .72rem; font-weight: 600; }
+
+/* ─── THE TABLE ─── */
+.reporte-table-wrap { overflow-x: auto; }
+.reporte-table {
+  width: 100%; border-collapse: collapse;
+  font-size: .75rem; font-family: 'DM Sans', sans-serif;
+  min-width: 900px;
+}
+.reporte-table th, .reporte-table td {
+  border: 1px solid #c8d0dc;
+  padding: 0;
+  vertical-align: middle;
+}
+/* ─ Header rows ─ */
+.rt-th-group {
+  background: #1e3a5f; color: white;
+  text-align: center; font-weight: 700;
+  font-size: .7rem; text-transform: uppercase; letter-spacing: .6px;
+  padding: 8px 10px;
+}
+.rt-th-group.doc-group { background: #0f4c2a; }
+.rt-th-group.act-group { background: #3d1a6e; }
+.rt-th-group.total-group { background: #1a3a5c; }
+.rt-th-sub {
+  background: #2d5a8e; color: white;
+  text-align: center; font-weight: 600;
+  font-size: .67rem; padding: 7px 8px;
+  text-transform: uppercase; letter-spacing: .4px;
+}
+.rt-th-sub.doc-sub { background: #166534; }
+.rt-th-sub.act-sub { background: #5b21b6; }
+.rt-th-sub.total-sub { background: #1e4976; }
+
+/* ─ Data cells ─ */
+.rt-td-prof {
+  background: #f0f5ff; font-weight: 700; font-size: .78rem; color: #1e3a5f;
+  padding: 10px 14px; min-width: 160px; border-right: 2px solid #c8d0dc;
+  vertical-align: top;
+}
+.rt-td-prof .tutor-badge {
+  margin-top: 5px; font-size: .62rem; color: #7c3aed; font-weight: 600;
+  display: flex; align-items: center; gap: 4px; flex-wrap: wrap;
+}
+.rt-td-prof .tutor-badge i { font-size: .72rem; }
+
+.rt-td-materia {
+  padding: 7px 10px; font-weight: 500; color: var(--ink-80); min-width: 180px;
+  background: white;
+}
+.rt-td-materia:hover { background: #f8f9ff; }
+
+.rt-td { padding: 7px 8px; text-align: center; background: white; color: var(--ink); }
+.rt-td.num { font-family: 'DM Mono', monospace; font-weight: 600; }
+.rt-td.doc-cell { background: rgba(16,185,129,.05); color: #047857; font-weight: 600; }
+.rt-td.act-cell { background: rgba(139,92,246,.05); color: #5b21b6; font-weight: 600; }
+.rt-td.total-cell {
+  background: #f0f5ff; color: #1e3a5f; font-weight: 700;
+  font-size: .82rem; font-family: 'DM Mono', monospace;
+}
+.rt-td.range-badge {
+  font-size: .62rem; background: rgba(16,185,129,.08);
+  color: #047857; font-weight: 700; padding: 4px 6px;
+  font-family: 'DM Mono', monospace;
+}
+.rt-td.range-badge.act-range {
+  background: rgba(139,92,246,.08); color: #5b21b6;
+}
+/* ─ Stripe & section ─ */
+.prof-section-first td { border-top: 2px solid #a0b4cc !important; }
+.row-even td { background-color: rgba(0,0,0,.012); }
+.row-even td.doc-cell { background: rgba(16,185,129,.07); }
+.row-even td.act-cell { background: rgba(139,92,246,.07); }
+.row-even td.range-badge { background: rgba(16,185,129,.1); }
+.row-even td.range-badge.act-range { background: rgba(139,92,246,.1); }
+.row-even td.total-cell { background: #e8efff; }
+.row-even td.rt-td-prof { background: #e8efff; }
+.row-even td.rt-td-materia { background: #fafafa; }
+
+/* Empty msg */
+.rt-empty { padding: 40px; text-align: center; color: var(--ink-40); font-size: .82rem; }
 
 /* ─── RESPONSIVE ─── */
 @media (max-width: 640px) {
   .topbar { padding: 0 16px; }
   .content { padding: 16px; }
-  .prof-header { padding: 20px; }
+  .prof-header { padding: 12px 16px; }
   .panel { padding: 18px; }
+  .prof-header-outer { flex-direction: row; }
 }
 @media (max-width: 760px) {
   .resumen-grid { grid-template-columns: 1fr; }
+}
+
+/* ════════════════════════════════════════════
+   PRINT STYLES
+   ════════════════════════════════════════════ */
+@media print {
+  @page { margin: 1.2cm 1.5cm; size: A4 landscape; }
+  body { background: white !important; font-size: 9pt; }
+  .topbar, .breadcrumb-bar, .reporte-toolbar, .section-back,
+  .btn-guardar-carga, .save-carga-bar { display: none !important; }
+  .content { padding: 0 !important; max-width: 100% !important; }
+  .view { display: none !important; }
+  .view.active { display: block !important; }
+  #view-reporte { display: block !important; }
+  .reporte-container { box-shadow: none !important; border: none !important; border-radius: 0 !important; }
+  .reporte-carrera-header { -webkit-print-color-adjust: exact; print-color-adjust: exact; border-radius: 0 !important; }
+  .reporte-table th, .reporte-table td { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .rt-th-group, .rt-th-sub, .rt-td-prof,
+  .doc-cell, .act-cell, .total-cell, .range-badge, .range-badge.act-range,
+  .prof-section-first td { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .reporte-table { font-size: 7pt !important; }
+  .reporte-table-wrap { overflow: visible !important; }
 }
 </style>
 </head>
@@ -594,7 +711,7 @@ body {
       <div class="sub">Registro y consulta por profesor</div>
     </div>
   </div>
-  <a href="asignacion_materias.html" class="btn-back">
+  <a href="resumen.html" class="btn-back">
     <i class="bi bi-arrow-left-short" style="font-size:1rem;"></i> Regresar a Asignación
   </a>
 </div>
@@ -605,17 +722,26 @@ body {
 
 <div class="content">
 
+  <!-- ════ VISTA: LISTA DE CARRERAS ════ -->
   <div class="view active" id="view-lista-carreras">
     <div class="sect-label">
       <i class="bi bi-grid-3x3-gap-fill"></i> Selecciona una carrera
     </div>
+    <div class="sect-hint"><i class="bi bi-info-circle"></i> Haz clic sobre una tarjeta para ver a los profesores de esa carrera.</div>
     <div class="career-grid" id="grid-carreras"></div>
   </div>
 
+  <!-- ════ VISTA: PROFS DE CARRERA ════ -->
   <div class="view" id="view-profs-carrera">
-    <button class="section-back" onclick="irVista('lista-carreras')">
-      <i class="bi bi-arrow-left"></i> Todas las carreras
-    </button>
+    <div class="carrera-toolbar">
+      <button class="btn-toolbar btn-toolbar-back" onclick="irVista('lista-carreras')">
+        <i class="bi bi-arrow-left"></i> Todas las carreras
+      </button>
+      <button class="btn-toolbar btn-toolbar-report" id="btn-ver-reporte" onclick="abrirReporte()">
+        <i class="bi bi-table"></i> Ver Reporte de Carga
+      </button>
+    </div>
+    <div class="sect-hint"><i class="bi bi-info-circle"></i> Selecciona un profesor para registrar su carga, o consulta el reporte general de la carrera.</div>
     <div class="tabs-wrap">
       <button class="tab-btn active" id="tab-propios-btn" onclick="switchTab('propios')">
         <i class="bi bi-mortarboard"></i> Profesores de la carrera
@@ -639,12 +765,26 @@ body {
     </div>
   </div>
 
+  <!-- ════ VISTA: DETALLE PROFESOR ════ -->
   <div class="view" id="view-prof">
     <button class="section-back" id="btn-back-prof" onclick="irVista('profs-carrera')">
       <i class="bi bi-arrow-left"></i> Regresar a profesores
     </button>
 
-    <div class="prof-header">
+    <div class="prof-header-outer">
+      <div class="prof-header">
+        <div class="prof-info">
+          <div class="prof-info-name" id="prof-nombre-detalle">—</div>
+          <div class="prof-info-org">
+            <i class="bi bi-building"></i>
+            <span id="prof-carrera-chip">—</span>
+          </div>
+          <div class="prof-info-tutor" id="prof-info-tutor" style="display:none;">
+            <i class="bi bi-person-heart"></i>
+            <span id="prof-info-tutor-text">—</span>
+          </div>
+        </div>
+      </div>
       <div class="prof-photo" onclick="document.getElementById('photo-input').click()" title="Subir foto">
         <img id="prof-photo-img" src="" style="display:none;">
         <div id="prof-photo-placeholder">
@@ -653,21 +793,18 @@ body {
         </div>
         <input type="file" id="photo-input" accept="image/*" style="display:none;" onchange="subirFoto(event)">
       </div>
-      <div class="prof-info">
-        <div class="prof-info-name" id="prof-nombre-detalle">—</div>
-        <div class="prof-chips">
-          <span class="chip chip-indigo">
-            <i class="bi bi-building"></i>
-            <span id="prof-carrera-chip">—</span>
-          </span>
-        </div>
-      </div>
     </div>
 
     <div class="panel">
-      <div class="sect-label">
-        <i class="bi bi-calendar3-week"></i> Distribución semanal — Semanas 1 a 14
+      <div class="sect-label-row">
+        <div class="sect-label" style="margin-bottom:0;">
+          <i class="bi bi-calendar3-week"></i> Distribución semanal — Semanas 1 a 14
+        </div>
+        <span class="gantt-tutor-info" id="gantt-tutor-info" style="display:none;">
+          <i class="bi bi-person-heart"></i> <span id="gantt-tutor-info-text">—</span>
+        </span>
       </div>
+      <div class="sect-hint"><i class="bi bi-info-circle"></i> Cada barra representa una materia o actividad; pasa el cursor sobre ella para ver el detalle.</div>
       <div class="gantt-wrap">
         <table class="gantt-table" id="ganttTable">
           <thead id="ganttHead"></thead>
@@ -680,7 +817,7 @@ body {
       <div class="sect-label">
         <i class="bi bi-plus-circle-fill"></i> Otras actividades
       </div>
-
+      <div class="sect-hint"><i class="bi bi-info-circle"></i> Elige el tipo de actividad, define horas por semana y el rango de semanas, luego presiona "Agregar".</div>
       <div class="act-form">
         <div class="act-form-header">
           I.- Asignación: Actividad y/o Proyecto Académico // Normatividad
@@ -723,7 +860,6 @@ body {
           </button>
         </div>
       </div>
-
       <div id="lista-act"></div>
     </div>
 
@@ -731,13 +867,10 @@ body {
       <div class="sect-label">
         <i class="bi bi-diagram-3-fill"></i> Resumen de horas
       </div>
-
+      <div class="sect-hint"><i class="bi bi-info-circle"></i> Las horas se agrupan automáticamente por periodo (semanas 1–7, 7–14 y 1–14) según el rango registrado.</div>
       <div class="resumen-grid">
-
         <div class="resumen-col doc-theme">
-          <div class="resumen-col-title">
-            <i class="bi bi-book-fill"></i> Horas Docencia
-          </div>
+          <div class="resumen-col-title"><i class="bi bi-book-fill"></i> Horas Docencia</div>
           <div class="resumen-col-subheader">
             <span class="sub-name"></span>
             <span class="sub-hrs">Horas</span>
@@ -749,11 +882,8 @@ body {
             <div class="total-bubble-label">Docencia</div>
           </div>
         </div>
-
         <div class="resumen-col act-theme">
-          <div class="resumen-col-title">
-            <i class="bi bi-lightning-fill"></i> Otras Actividades
-          </div>
+          <div class="resumen-col-title"><i class="bi bi-lightning-fill"></i> Otras Actividades</div>
           <div class="resumen-col-subheader">
             <span class="sub-name"></span>
             <span class="sub-hrs">Horas</span>
@@ -765,9 +895,7 @@ body {
             <div class="total-bubble-label">Actividades</div>
           </div>
         </div>
-
       </div>
-
       <div class="total-laboral-wrap">
         <div class="total-left">
           <div class="total-left-title">Carga Total Laboral</div>
@@ -790,13 +918,60 @@ body {
           </div>
         </div>
       </div>
-
     </div>
-  </div></div><script>
+
+    <div class="save-carga-bar">
+      <div class="save-carga-info">
+        <strong><i class="bi bi-file-earmark-check" style="color:var(--indigo);margin-right:6px;"></i>Guardar carga académica</strong>
+        <span>Consolida y guarda el registro de carga de este profesor para el reporte de carrera.</span>
+      </div>
+      <button class="btn-guardar-carga" onclick="guardarCargaProfesor()">
+        <i class="bi bi-floppy2-fill"></i>
+        Guardar Carga Académica
+      </button>
+    </div>
+
+  </div>
+
+
+  <div class="view" id="view-reporte">
+    <div class="reporte-toolbar">
+      <button class="btn-report-action btn-back-report" onclick="irVista('profs-carrera')">
+        <i class="bi bi-arrow-left"></i> Volver
+      </button>
+      <button class="btn-report-action btn-excel" onclick="exportarExcel()">
+        <i class="bi bi-file-earmark-spreadsheet-fill"></i> Exportar a Excel
+      </button>
+      <button class="btn-report-action btn-print" onclick="window.print()">
+        <i class="bi bi-printer-fill"></i> Imprimir
+      </button>
+    </div>
+    <div class="reporte-container">
+      <div class="reporte-carrera-header" id="reporte-header">
+        <div class="logo-wrap"><i class="bi bi-briefcase-fill"></i></div>
+        <div class="title-block">
+          <h2 id="reporte-carrera-nombre">—</h2>
+          <p>Distribución de Carga Académica por Profesor</p>
+        </div>
+        <span class="period-badge">Semanas 1 – 14</span>
+      </div>
+      <div class="reporte-table-wrap">
+        <table class="reporte-table" id="reporte-table">
+          <thead id="reporte-thead"></thead>
+          <tbody id="reporte-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
+<script>
 let state = { carrera: null, profesor: null };
 const COLORS = ['gc-0','gc-1','gc-2','gc-3','gc-4','gc-5','gc-6','gc-7','gc-8','gc-9','gc-10','gc-11'];
 
-/* Mapa de nombre completo + normatividad */
 const ACT_FULL_NAMES = {
   'Acreditación CIEES':    { nombre: 'Acreditación CIEES', norma: 'DOCENCIA — ACTIVIDADES ACADÉMICAS' },
   'Acreditación CONAIC':   { nombre: 'Acreditación CONAIC', norma: 'DOCENCIA — ACTIVIDADES ACADÉMICAS' },
@@ -828,28 +1003,26 @@ const ACT_ICONS = {
   'Otro':'bi-three-dots'
 };
 
-const AVATAR_COLORS = [
-  '#5B6EF5', '#10B981', '#F59E0B', '#F43F5E',
-  '#8B5CF6', '#0891B2', '#16A34A', '#D946EF',
-  '#F97316', '#0D9488', '#7C3AED', '#84CC16'
-];
+const AVATAR_COLORS = ['#5B6EF5','#10B981','#F59E0B','#F43F5E','#8B5CF6','#0891B2','#16A34A','#D946EF','#F97316','#0D9488','#7C3AED','#84CC16'];
 
-function seleccionarActividad(val) {
-  document.getElementById('act-tipo').value = val;
-}
+function seleccionarActividad(val){ document.getElementById('act-tipo').value = val; }
 
 function irVista(v) {
   document.querySelectorAll('.view').forEach(x => x.classList.remove('active'));
   document.getElementById('view-'+v).classList.add('active');
   actualizarBC(v);
   if (v === 'lista-carreras') renderCarreras();
+  if (v === 'reporte') renderReporte();
 }
+
 function actualizarBC(v) {
   const bc = document.getElementById('breadcrumb');
   if (v === 'lista-carreras') {
     bc.innerHTML = `<span class="bc-current">Carreras</span>`;
   } else if (v === 'profs-carrera') {
     bc.innerHTML = `<span class="bc-link" onclick="irVista('lista-carreras')">Carreras</span><span class="bc-sep"> › </span><span class="bc-current">${trunc(state.carrera)}</span>`;
+  } else if (v === 'reporte') {
+    bc.innerHTML = `<span class="bc-link" onclick="irVista('lista-carreras')">Carreras</span><span class="bc-sep"> › </span><span class="bc-link" onclick="irVista('profs-carrera')">${trunc(state.carrera)}</span><span class="bc-sep"> › </span><span class="bc-current">Reporte de Carga</span>`;
   } else {
     bc.innerHTML = `<span class="bc-link" onclick="irVista('lista-carreras')">Carreras</span><span class="bc-sep"> › </span><span class="bc-link" onclick="irVista('profs-carrera')">${trunc(state.carrera)}</span><span class="bc-sep"> › </span><span class="bc-current">${state.profesor}</span>`;
   }
@@ -862,6 +1035,7 @@ function switchTab(tab) {
   document.getElementById('tab-propios-btn').classList.toggle('active', tab==='propios');
   document.getElementById('tab-multi-btn').classList.toggle('active', tab==='multi');
 }
+
 
 function getRegistros(){ return JSON.parse(localStorage.getItem('registrosResumenCargas')||'[]'); }
 function getCarreras(){
@@ -883,12 +1057,19 @@ function getProfsMulti(carrera){
   });
   return Object.entries(pc).filter(([p,cs])=>cs.size>1&&cs.has(carrera)).map(([p])=>p).sort();
 }
+function getCarrerasProfesor(prof){
+  const s=new Set();
+  getRegistros().forEach(r=>{
+    r.asignaciones?.forEach(a=>{ r.gruposRegistrados?.forEach(g=>{ if(a[g]===prof) s.add(r.carrera); }); });
+  });
+  return [...s].sort();
+}
 function getAsignaciones(carrera, prof){
   const list=[];
   getRegistros().filter(r=>r.carrera===carrera).forEach(r=>{
     r.asignaciones?.forEach(a=>{
       r.gruposRegistrados?.forEach(g=>{
-        if(a[g]===prof) list.push({ materia:a.materia, inicio:+a.inicio||1, fin:+a.fin||14, horas:+a.horas||0, grupo:g, grado:r.grado, carrera:r.carrera });
+        if(a[g]===prof) list.push({ materia:a.materia, inicio:+a.inicio||1, fin:+a.fin||14, horas:+a.horas||0, grupo:g, grado:r.grado, carrera:r.carrera, programa:a.programa||'' });
       });
     });
   });
@@ -905,10 +1086,227 @@ function saveFoto(prof,b64){
   d[prof]=b64; localStorage.setItem('fotasProfesores',JSON.stringify(d));
 }
 
+
+function getTutorGroups(prof, carrera) {
+  const grupos = [];
+  getRegistros().filter(r => !carrera || r.carrera === carrera).forEach(r => {
+    if (r.tutores) {
+      Object.entries(r.tutores).forEach(([g, t]) => {
+        if (t === prof) grupos.push(g);
+      });
+    }
+    if (r.tutor === prof && r.grupo) grupos.push(r.grupo);
+    r.asignaciones?.forEach(a => {
+      r.gruposRegistrados?.forEach(g => {
+        if (a.esTutoria && a[g] === prof && !grupos.includes(g)) grupos.push(g);
+      });
+    });
+  });
+  return [...new Set(grupos)];
+}
+
+
+function guardarCargaProfesor() {
+  const prof = state.profesor;
+  const carrera = state.carrera;
+  if (!prof || !carrera) { toast('No hay profesor seleccionado.','error'); return; }
+
+  const asigs = getAsignaciones(carrera, prof);
+  const acts  = getActs(prof);
+  const totales = calcTotales(asigs, acts);
+
+  const registro = { prof, carrera, asigs, acts, totales, fechaGuardado: new Date().toISOString() };
+
+  const key = 'cargasGuardadas';
+  const todas = JSON.parse(localStorage.getItem(key)||'{}');
+  if (!todas[carrera]) todas[carrera] = {};
+  todas[carrera][prof] = registro;
+  localStorage.setItem(key, JSON.stringify(todas));
+
+  toast(`Carga de ${prof} guardada correctamente.`, 'success');
+}
+
+function calcTotales(asigs, acts) {
+  const docHrs = asigs.reduce((s,a) => s + (a.horas||0), 0);
+  const actHrs = acts.reduce((s,a) => s + (a.horas||0), 0);
+  return { docHrs, actHrs, total: docHrs + actHrs };
+}
+
+function rangeLabel(ini, fin) {
+  const i = +ini || 1;
+  const f = Math.min(+fin || 14, 14);
+  if (i <= 1 && f >= 14) return '1 – 14';
+  if (f <= 7) return '1 – 7';
+  if (i >= 7) return '7 – 14';
+  return `${i} – ${f}`;
+}
+
+function abrirReporte() {
+  irVista('reporte');
+}
+
+function renderReporte() {
+  const carrera = state.carrera;
+  document.getElementById('reporte-carrera-nombre').textContent = carrera || '—';
+
+  const profs = getProfsCarrera(carrera);
+
+  document.getElementById('reporte-thead').innerHTML = `
+    <tr>
+      <th class="rt-th-group" rowspan="2" style="min-width:160px;text-align:left;padding-left:14px;">PROFESOR</th>
+      <th class="rt-th-group" rowspan="2" style="min-width:180px;">ASIGNATURAS</th>
+      <th class="rt-th-group" rowspan="2" style="min-width:72px;">GRUPO</th>
+      <th class="rt-th-group doc-group" colspan="3">HRS DOCENCIA</th>
+      <th class="rt-th-group" rowspan="2" style="min-width:72px;">PROGRAMA</th>
+      <th class="rt-th-group act-group" colspan="4">HRS OTRAS ACTIVIDADES</th>
+      <th class="rt-th-group total-group" rowspan="2" style="min-width:80px;">HRS JORNADA LABORAL</th>
+    </tr>
+    <tr>
+      <th class="rt-th-sub doc-sub" style="min-width:52px;">Hrs/Sem</th>
+      <th class="rt-th-sub doc-sub" style="min-width:72px;">Semanas</th>
+      <th class="rt-th-sub doc-sub" style="min-width:52px;">Total</th>
+      <th class="rt-th-sub act-sub" style="min-width:160px;">Actividad</th>
+      <th class="rt-th-sub act-sub" style="min-width:52px;">Hrs/Sem</th>
+      <th class="rt-th-sub act-sub" style="min-width:72px;">Semanas</th>
+      <th class="rt-th-sub act-sub" style="min-width:52px;">Total</th>
+    </tr>`;
+
+  if (!profs.length) {
+    document.getElementById('reporte-tbody').innerHTML =
+      `<tr><td colspan="12" class="rt-empty">Sin profesores registrados en esta carrera.</td></tr>`;
+    return;
+  }
+
+  let tbodyHtml = '';
+
+  profs.forEach((prof, profIdx) => {
+    const asigs  = getAsignaciones(carrera, prof);
+    const acts   = getActs(prof);
+    const tutorGs = getTutorGroups(prof, carrera);
+
+    const maxRows = Math.max(asigs.length, acts.length, 1);
+    let totalDocHrs = asigs.reduce((s,a) => s + (a.horas||0), 0);
+    let totalActHrs = acts.reduce((s,a) => s + (a.horas||0), 0);
+    let totalLaboral = totalDocHrs + totalActHrs;
+
+    const isEven = profIdx % 2 === 1;
+    const stripeClass = isEven ? 'row-even' : '';
+
+    const tutorHtml = tutorGs.length
+      ? `<div class="tutor-badge"><i class="bi bi-person-heart"></i> Tutor: ${tutorGs.join(', ')}</div>`
+      : '';
+
+    for (let r = 0; r < maxRows; r++) {
+      const a   = asigs[r];
+      const act = acts[r];
+      const isFirst = r === 0;
+      const sectionClass = isFirst ? 'prof-section-first' : '';
+
+      const profCell = isFirst
+        ? `<td class="rt-td-prof ${stripeClass}" rowspan="${maxRows}">
+             <div>${prof}</div>
+             ${tutorHtml}
+           </td>`
+        : '';
+
+      const docMateria = a ? `<td class="rt-td-materia ${stripeClass}">${a.materia}</td>` : `<td class="rt-td-materia ${stripeClass}"></td>`;
+      const docGrupo   = a ? `<td class="rt-td rt-td-grupo ${stripeClass}" style="text-align:center;">${a.grupo}</td>` : `<td class="rt-td ${stripeClass}"></td>`;
+      const docHrs     = a ? `<td class="rt-td num doc-cell ${stripeClass}">${a.horas}</td>` : `<td class="rt-td doc-cell ${stripeClass}"></td>`;
+      const docPeriodo = a ? `<td class="rt-td range-badge ${stripeClass}">${rangeLabel(a.inicio, a.fin)}</td>` : `<td class="rt-td ${stripeClass}"></td>`;
+      const docTotal   = isFirst ? `<td class="rt-td num doc-cell ${stripeClass}" rowspan="${maxRows}">${asigs.length ? totalDocHrs : '—'}</td>` : '';
+      const programa   = a ? `<td class="rt-td ${stripeClass}" style="text-align:center;font-size:.68rem;">${a.programa||''}</td>` : `<td class="rt-td ${stripeClass}"></td>`;
+
+      const actInfo = act ? (ACT_FULL_NAMES[act.tipo]||{nombre:act.tipo}) : null;
+      const actNombre  = act ? `<td class="rt-td act-cell ${stripeClass}" style="min-width:160px;text-align:left;padding:6px 10px;">${actInfo.nombre}</td>` : `<td class="rt-td act-cell ${stripeClass}"></td>`;
+      const actHrs     = act ? `<td class="rt-td num act-cell ${stripeClass}">${act.horas}</td>` : `<td class="rt-td act-cell ${stripeClass}"></td>`;
+      const actPeriodo = act ? `<td class="rt-td range-badge act-range ${stripeClass}">${rangeLabel(act.ini, act.fin)}</td>` : `<td class="rt-td ${stripeClass}"></td>`;
+      const actTotal   = isFirst ? `<td class="rt-td num act-cell ${stripeClass}" rowspan="${maxRows}">${acts.length ? totalActHrs : '—'}</td>` : '';
+
+      const jornadaCell = isFirst
+        ? `<td class="rt-td total-cell ${stripeClass}" rowspan="${maxRows}" style="font-size:.88rem;">${totalLaboral}</td>`
+        : '';
+
+      tbodyHtml += `
+        <tr class="${sectionClass} ${stripeClass}">
+          ${profCell}
+          ${docMateria}
+          ${docGrupo}
+          ${docHrs}
+          ${docPeriodo}
+          ${docTotal}
+          ${programa}
+          ${actNombre}
+          ${actHrs}
+          ${actPeriodo}
+          ${actTotal}
+          ${jornadaCell}
+        </tr>`;
+    }
+  });
+
+  document.getElementById('reporte-tbody').innerHTML = tbodyHtml;
+}
+
+
+function exportarExcel() {
+  const carrera = state.carrera || 'Carrera';
+  const profs   = getProfsCarrera(carrera);
+
+  const wb = XLSX.utils.book_new();
+  const wsData = [];
+
+  wsData.push([`CARRERA: ${carrera}`]);
+  wsData.push([]);
+  wsData.push(['PROFESOR','ASIGNATURAS','GRUPO','Hrs/Sem','Período','Total Doc','PROGRAMA','OTRAS ACTIVIDADES','Hrs/Sem','Período','Total Act','HRS JORNADA LABORAL']);
+
+  profs.forEach(prof => {
+    const asigs = getAsignaciones(carrera, prof);
+    const acts  = getActs(prof);
+    const tutorGs = getTutorGroups(prof, carrera);
+    const totalDoc = asigs.reduce((s,a)=>s+(a.horas||0),0);
+    const totalAct = acts.reduce((s,a)=>s+(a.horas||0),0);
+    const totalLaboral = totalDoc + totalAct;
+
+    const maxRows = Math.max(asigs.length, acts.length, 1);
+    const tutorStr = tutorGs.length ? `Tutor: ${tutorGs.join(', ')}` : '';
+    const profLabel = tutorStr ? `${prof}\n${tutorStr}` : prof;
+
+    for (let r = 0; r < maxRows; r++) {
+      const a   = asigs[r];
+      const act = acts[r];
+      const actInfo = act ? (ACT_FULL_NAMES[act.tipo]||{nombre:act.tipo}) : null;
+      wsData.push([
+        r === 0 ? profLabel : '',
+        a ? a.materia : '',
+        a ? a.grupo : '',
+        a ? a.horas : '',
+        a ? rangeLabel(a.inicio, a.fin) : '',
+        r === 0 ? totalDoc : '',
+        a ? (a.programa||'') : '',
+        act ? actInfo.nombre : '',
+        act ? act.horas : '',
+        act ? rangeLabel(act.ini, act.fin) : '',
+        r === 0 ? totalAct : '',
+        r === 0 ? totalLaboral : '',
+      ]);
+    }
+  });
+
+  const ws = XLSX.utils.aoa_to_sheet(wsData);
+  ws['!cols'] = [
+    {wch:28},{wch:30},{wch:10},{wch:10},{wch:10},{wch:10},{wch:12},{wch:32},{wch:10},{wch:10},{wch:10},{wch:12}
+  ];
+
+  XLSX.utils.book_append_sheet(wb, ws, 'Carga Académica');
+  XLSX.writeFile(wb, `Carga_Academica_${carrera.replace(/\s+/g,'_')}.xlsx`);
+  toast('Archivo Excel generado correctamente.','success');
+}
+
+/* ─── RENDER CARRERAS ─── */
 function renderCarreras(){
-  const carreras=getCarreras();
-  const cont=document.getElementById('grid-carreras');
-  if(!carreras.length){
+  const carreras = getCarreras();
+  const cont = document.getElementById('grid-carreras');
+  if (!carreras.length) {
     cont.innerHTML=`<div class="empty-state" style="grid-column:1/-1;">
       <i class="bi bi-folder-x"></i>
       <span>Sin registros. Ve a Asignación de Materias para crear registros.</span>
@@ -919,7 +1317,7 @@ function renderCarreras(){
     <div class="career-card" onclick="selCarrera('${c.replace(/'/g,"\\'")}')">
       <div class="career-badge"><i class="bi bi-briefcase-fill"></i></div>
       <div class="career-title">${c}</div>
-      <div class="career-meta"><i class="bi bi-file-earmark-text"></i>${getProfsCarrera(c).length} resúmenes</div>
+      <div class="career-meta"><i class="bi bi-file-earmark-text"></i>${getProfsCarrera(c).length} profesores</div>
     </div>`).join('');
 }
 
@@ -934,12 +1332,15 @@ function selCarrera(c){
   const multi=getProfsMulti(c);
   document.getElementById('tab-propios-count').textContent=profs.length;
   document.getElementById('tab-multi-count').textContent=multi.length;
+
   document.getElementById('lista-profs-carrera').innerHTML=profs.length
-    ? `<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px;">${renderProfCards(profs)}</div>`
-    : `<div class="empty-state"><i class="bi bi-person-x"></i><span>Sin profesores en esta carrera</span></div>`;
+    ? renderProfCards(profs)
+    : `<div class="empty-state" style="grid-column:1/-1;"><i class="bi bi-person-x"></i><span>Sin profesores en esta carrera</span></div>`;
+
   document.getElementById('lista-profs-multi').innerHTML=multi.length
-    ? `<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px;">${renderProfCards(multi,true)}</div>`
+    ? `<div class="prof-grid">${renderProfCards(multi,true)}</div>`
     : `<div class="empty-state"><i class="bi bi-people"></i><span>Ningún profesor comparte esta carrera con otra</span></div>`;
+
   switchTab('propios'); irVista('profs-carrera');
 }
 
@@ -961,7 +1362,25 @@ function renderProfCards(profs, isMulti=false){
 function abrirProfesor(prof){
   state.profesor=prof;
   document.getElementById('prof-nombre-detalle').textContent=prof;
-  document.getElementById('prof-carrera-chip').textContent=state.carrera||'';
+  const carrerasProf=getCarrerasProfesor(prof);
+  document.getElementById('prof-carrera-chip').textContent=carrerasProf.length?carrerasProf.join(' / '):(state.carrera||'');
+
+  const tutorGs = getTutorGroups(prof, state.carrera);
+  const tutorBoxName  = document.getElementById('prof-info-tutor');
+  const tutorTextName = document.getElementById('prof-info-tutor-text');
+  const tutorBoxGantt  = document.getElementById('gantt-tutor-info');
+  const tutorTextGantt = document.getElementById('gantt-tutor-info-text');
+  if (tutorGs.length) {
+    const txt = `Tutor de: ${tutorGs.join(', ')}`;
+    tutorTextName.textContent = txt;
+    tutorBoxName.style.display = 'inline-flex';
+    tutorTextGantt.textContent = txt;
+    tutorBoxGantt.style.display = 'inline-flex';
+  } else {
+    tutorBoxName.style.display = 'none';
+    tutorBoxGantt.style.display = 'none';
+  }
+
   const foto=getFoto(prof);
   if(foto){
     document.getElementById('prof-photo-img').src=foto;
@@ -990,7 +1409,6 @@ function subirFoto(event){
   reader.readAsDataURL(file);
 }
 
-/* ─── GANTT ─── */
 function pack(items){
   items.sort((a,b)=>a.inicio!==b.inicio?a.inicio-b.inicio:(b.fin-b.inicio)-(a.fin-a.inicio));
   const lanes=[];
@@ -1039,13 +1457,11 @@ function renderGantt(prof){
   document.getElementById('ganttBody').innerHTML=html;
 }
 
-/* ─── RESUMEN HORAS ─── */
+
 function getBuckets(item){
-  // Corrección: busca item.inicio o item.ini
   const i = parseInt(item.inicio || item.ini) || 1;
   const f = Math.min(parseInt(item.fin) || 14, 14);
   const h = parseInt(item.horas) || 0;
-  
   if(i === 1 && f >= 14) return [0, 0, h];
   if(f <= 7) return [h, 0, 0];
   if(i >= 7) return [0, h, 0];
@@ -1091,17 +1507,14 @@ function renderResumen(prof){
     if(b[1]){o2.push({h:b[1],name:info.nombre});sumO2+=b[1];}
     if(b[2]){o3.push({h:b[2],name:info.nombre});sumO3+=b[2];}
   });
-
   document.getElementById('resumen-doc-content').innerHTML =
     renderPeriodoCard('1 – 7', d1, sumD1) +
     renderPeriodoCard('7 – 14', d2, sumD2) +
     renderPeriodoCard('1 – 14', d3, sumD3);
-
   document.getElementById('resumen-act-content').innerHTML =
     renderPeriodoCard('1 – 7', o1, sumO1) +
     renderPeriodoCard('7 – 14', o2, sumO2) +
     renderPeriodoCard('1 – 14', o3, sumO3);
-
   const totalDoc=sumD1+sumD2+sumD3;
   const totalAct=sumO1+sumO2+sumO3;
   document.getElementById('col-total-doc').textContent=totalDoc;
@@ -1111,7 +1524,7 @@ function renderResumen(prof){
   document.getElementById('gran-total-laboral').textContent=totalDoc+totalAct;
 }
 
-/* ─── ACTIVIDADES ─── */
+
 function agregarActividad(){
   const tipo=document.getElementById('act-tipo').value;
   const horas=+document.getElementById('act-horas').value;
@@ -1172,7 +1585,7 @@ function renderActList(prof){
   }).join('');
 }
 
-/* ─── TOAST ─── */
+
 function toast(msg, tipo='success'){
   const old=document.getElementById('_toast'); if(old) old.remove();
   const cfg={ success:{icon:'bi-check-circle-fill',color:'#10B981'}, info:{icon:'bi-info-circle-fill',color:'#F59E0B'}, error:{icon:'bi-x-circle-fill',color:'#F43F5E'} };
@@ -1182,7 +1595,6 @@ function toast(msg, tipo='success'){
   document.body.appendChild(el);
   setTimeout(()=>{ if(el.parentElement){ el.style.animation='toastOut .2s ease forwards'; setTimeout(()=>el.remove(),200); } },3500);
 }
-
 
 window.addEventListener('DOMContentLoaded',()=>irVista('lista-carreras'));
 </script>
