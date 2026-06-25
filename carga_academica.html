@@ -1,3 +1,4 @@
+cat > /home/claude/carga_academica.html << 'HTMLEOF'
 <!DOCTYPE html> 
 <html lang="es">
 <head>
@@ -16,10 +17,12 @@
   --ink-20:     #D1D8E4;
   --ink-10:     #EEF1F6;
   --ink-05:     #F7F9FC;
-  --indigo:     #5B6EF5;
-  --indigo-dk:  #3D4FCC;
-  --indigo-lt:  #EEF0FE;
-  --indigo-md:  #C7CCFB;
+  --indigo:     #1e3a8a;
+  --indigo-dk:  #1e3a8a;
+  --indigo-lt:  #eff6ff;
+  --indigo-md:  #bfdbfe;
+  --aqua:       #06b6d4;
+  --aqua-lt:    #cffafe;
   --sage:       #10B981;
   --sage-lt:    #D1FAE5;
   --amber:      #F59E0B;
@@ -68,7 +71,7 @@ body {
   width: 36px; height: 36px; border-radius: 10px;
   background: linear-gradient(135deg, var(--indigo) 0%, var(--indigo-dk) 100%);
   display: flex; align-items: center; justify-content: center;
-  box-shadow: 0 2px 8px rgba(91,110,245,.35);
+  box-shadow: 0 2px 8px rgba(30,58,138,.35);
 }
 .brand-icon i { color: white; font-size: 17px; }
 .brand-text .name { font-weight: 700; font-size: .9rem; color: var(--ink); letter-spacing: -.2px; }
@@ -111,12 +114,15 @@ body {
   display: flex; align-items: center; justify-content: space-between;
   flex-wrap: wrap; gap: 8px; margin-bottom: 6px;
 }
+
+/* ─── BURBUJAS INFORMATIVAS ─── */
 .sect-hint {
-  font-size: .72rem; color: var(--ink-40); font-weight: 500;
-  margin-bottom: 16px; display: flex; align-items: center; gap: 6px;
-  font-style: italic;
+  font-size: .76rem; color: #0c4a6e; font-weight: 500;
+  margin-bottom: 16px; display: inline-flex; align-items: center; gap: 10px;
+  background: #e0f2fe; border: 1px solid #0ea5e9; border-radius: 12px;
+  padding: 11px 14px; font-style: normal;
 }
-.sect-hint i { color: var(--indigo-md); font-size: .8rem; font-style: normal; }
+.sect-hint i { color: #0284c7; font-size: .9rem; font-style: normal; flex-shrink: 0; }
 
 /* ─── CAREER CARDS ─── */
 .career-grid {
@@ -219,9 +225,9 @@ body {
 .btn-toolbar-back:hover { background: white; border-color: var(--indigo); color: var(--indigo); }
 .btn-toolbar-report {
   background: var(--indigo); color: white; border-color: var(--indigo);
-  box-shadow: 0 2px 8px rgba(91,110,245,.28);
+  box-shadow: 0 2px 8px rgba(30,58,138,.28);
 }
-.btn-toolbar-report:hover { background: var(--indigo-dk); border-color: var(--indigo-dk); transform: translateY(-1px); box-shadow: 0 4px 14px rgba(91,110,245,.38); }
+.btn-toolbar-report:hover { background: var(--indigo-dk); border-color: var(--indigo-dk); transform: translateY(-1px); box-shadow: 0 4px 14px rgba(30,58,138,.38); }
 
 /* ─── PROF DETAIL HEADER OUTER ─── */
 .prof-header-outer {
@@ -232,12 +238,12 @@ body {
   flex-wrap: nowrap;
 }
 
-/* MODIFICADO: tarjeta del nombre centrada y con estilo distintivo */
+/* Tarjeta del encabezado del profesor */
 .prof-header {
-  flex: 0 1 400px;
-  background: linear-gradient(160deg, #ffffff 0%, var(--indigo-lt) 145%);
+  flex: 1;
+  background: #ffffff;
   border-radius: var(--r-lg);
-  border: 1px solid var(--ink-10);
+  border: 1px solid var(--ink-20);
   box-shadow: var(--shadow-sm);
   padding: 22px 22px 18px;
   display: flex;
@@ -256,13 +262,13 @@ body {
   position: absolute;
   top: 0; left: 0; right: 0;
   height: 4px;
-  background: linear-gradient(90deg, var(--indigo) 0%, var(--violet) 50%, var(--sage) 100%);
+  background: linear-gradient(90deg, #1e3a8a 0%, #06b6d4 50%, #10B981 100%);
 }
 .prof-header::after {
   content: '';
   position: absolute;
   width: 140px; height: 140px;
-  background: radial-gradient(circle, rgba(91,110,245,.10) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(255,255,255,.08) 0%, transparent 70%);
   top: -40px; right: -40px; pointer-events: none;
 }
 
@@ -273,23 +279,14 @@ body {
   flex-direction: column;
   align-items: center;
   width: 100%;
-}
-
-.prof-info-name {
-  font-size: 1.3rem;
-  font-weight: 700;
-  letter-spacing: -.4px;
-  line-height: 1.25;
-  background: linear-gradient(95deg, var(--indigo-dk) 10%, var(--violet) 90%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
+  gap: 2px;
 }
 
 .prof-info-org {
   font-size: .74rem;
-  color: var(--ink-40);
-  margin-top: 6px;
+  color: #265797;
+  margin-bottom: 4px;
+  margin-top: 0;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -298,17 +295,24 @@ body {
 }
 
 .prof-info-org i {
-  color: var(--ink-40);
+  color: #b0c4de;
   font-size: .78rem;
 }
 
-/* Etiqueta de tutor debajo del nombre */
+.prof-info-name {
+  font-size: 1.3rem;
+  font-weight: 700;
+  letter-spacing: -.4px;
+  line-height: 1.25;
+  color: rgb(0, 0, 0);
+}
+
 .prof-info-tutor {
   font-size: .7rem;
   font-weight: 700;
-  color: #6D28D9;
-  background: var(--violet-lt);
-  border: 1px solid var(--violet);
+  color: #043653;
+  background: var(--aqua-lt);
+  border: 1px solid var(--aqua);
   border-radius: 20px;
   padding: 4px 13px;
   margin-top: 9px;
@@ -317,13 +321,12 @@ body {
   gap: 5px;
 }
 
-/* Etiqueta de tutor junto al título de distribución semanal */
 .gantt-tutor-info {
   font-size: .68rem;
   font-weight: 700;
-  color: #6D28D9;
-  background: var(--violet-lt);
-  border: 1px solid var(--violet);
+  color: #043a58;
+  background: var(--aqua-lt);
+  border: 1px solid var(--aqua);
   border-radius: 20px;
   padding: 3px 11px;
   display: inline-flex;
@@ -378,31 +381,15 @@ body {
 
 /* ─── RESPONSIVE ─── */
 @media (max-width: 760px) {
-  .resumen-grid {
-    grid-template-columns: 1fr;
-  }
-  .prof-header-outer {
-    flex-wrap: wrap;
-    gap: 16px;
-  }
-  .prof-header {
-    flex: 1 1 100%;
-  }
-  .prof-photo {
-    order: 0;
-  }
+  .resumen-grid { grid-template-columns: 1fr; }
+  .prof-header-outer { flex-wrap: wrap; gap: 16px; }
+  .prof-header { flex: 1 1 100%; }
+  .prof-photo { order: 0; }
 }
-
 @media (max-width: 640px) {
-  .topbar {
-    padding: 0 16px;
-  }
-  .content {
-    padding: 16px;
-  }
-  .panel {
-    padding: 18px;
-  }
+  .topbar { padding: 0 16px; }
+  .content { padding: 16px; }
+  .panel { padding: 18px; }
 }
 
 /* ─── PANEL ─── */
@@ -421,7 +408,7 @@ body {
 .gantt-empty { background: repeating-linear-gradient(45deg, var(--ink-05), var(--ink-05) 6px, var(--ink-10) 6px, var(--ink-10) 12px); }
 .gantt-bar { height: 36px; border-radius: 7px; display: flex; align-items: center; justify-content: center; font-size: .68rem; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding: 0 10px; transition: var(--transition); cursor: default; letter-spacing: -.1px; border-width: 2px; border-style: solid; }
 .gantt-bar:hover { filter: brightness(0.95); transform: scaleY(1.04); }
-.gc-0  { background: rgba(91,110,245,.13); border-color: #5B6EF5; color: #3D4FCC; }
+.gc-0  { background: rgba(30,58,138,.13); border-color: #1e3a8a; color: #1e40af; }
 .gc-1  { background: rgba(16,185,129,.13); border-color: #10B981; color: #047857; }
 .gc-2  { background: rgba(139,92,246,.13); border-color: #8B5CF6; color: #6D28D9; }
 .gc-3  { background: rgba(245,158,11,.13); border-color: #F59E0B; color: #92400E; }
@@ -436,10 +423,10 @@ body {
 
 /* ─── ACTIVITY FORM ─── */
 .act-form { background: var(--ink-05); border-radius: 14px; border: 1px solid var(--ink-10); overflow: hidden; margin-bottom: 18px; }
-.act-form-header { background: #5B6EF5; color: white; padding: 10px 16px; font-size: .75rem; font-weight: 700; letter-spacing: .5px; text-align: center; text-transform: uppercase; }
+.act-form-header { background: #1e3a8a; color: white; padding: 10px 16px; font-size: .75rem; font-weight: 700; letter-spacing: .5px; text-align: center; text-transform: uppercase; }
 .act-select-wrap { padding: 10px 14px; border-bottom: 1px solid var(--ink-10); background: white; }
 .act-select-wrap select { width: 100%; border: 1px solid var(--ink-20); border-radius: 8px; padding: 9px 12px; font-size: .82rem; background: white; font-family: 'DM Sans', sans-serif; color: var(--ink); appearance: auto; }
-.act-select-wrap select:focus { outline: none; border-color: var(--indigo); box-shadow: 0 0 0 3px rgba(91,110,245,.12); }
+.act-select-wrap select:focus { outline: none; border-color: var(--indigo); box-shadow: 0 0 0 3px rgba(30,58,138,.12); }
 .act-options-list { background: white; }
 .act-option-item { padding: 10px 16px; border-bottom: 1px solid var(--ink-10); font-size: .8rem; color: var(--ink-80); cursor: pointer; transition: var(--transition); display: flex; align-items: center; gap: 10px; }
 .act-option-item:last-child { border-bottom: none; }
@@ -449,7 +436,7 @@ body {
 .field-group { display: flex; flex-direction: column; gap: 5px; }
 .field-group label { font-size: .64rem; font-weight: 700; text-transform: uppercase; letter-spacing: .7px; color: var(--ink-40); }
 .field-group select, .field-group input { border: 1.5px solid var(--ink-20); border-radius: 9px; padding: 9px 12px; font-size: .8rem; background: white; font-family: 'DM Sans', sans-serif; color: var(--ink); transition: border-color var(--transition), box-shadow var(--transition); appearance: auto; }
-.field-group select:focus, .field-group input:focus { outline: none; border-color: var(--indigo); box-shadow: 0 0 0 3px rgba(91,110,245,.12); }
+.field-group select:focus, .field-group input:focus { outline: none; border-color: var(--indigo); box-shadow: 0 0 0 3px rgba(30,58,138,.12); }
 .field-group input[type="number"] { appearance: textfield; -moz-appearance: textfield; }
 .field-group input[type="number"]::-webkit-outer-spin-button,
 .field-group input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
@@ -470,36 +457,217 @@ body {
 .btn-del { width: 30px; height: 30px; border-radius: 8px; background: var(--rose-lt); color: var(--rose); border: none; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: .8rem; transition: var(--transition); flex-shrink: 0; margin-left: auto; }
 .btn-del:hover { background: var(--rose); color: white; }
 
-/* ─── RESUMEN DE HORAS ─── */
-.resumen-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; margin-bottom: 18px; align-items: start; }
-.resumen-col-title { display: inline-flex; align-items: center; gap: 8px; font-weight: 700; font-size: .82rem; padding: 8px 18px; border-radius: 30px; margin-bottom: 14px; border: 1.5px solid transparent; }
-.resumen-col-title i { font-size: .92rem; }
-.resumen-col-subheader { display: flex; align-items: center; gap: 10px; padding: 0 18px 8px 4px; font-size: .62rem; font-weight: 700; text-transform: uppercase; letter-spacing: .7px; color: var(--ink-40); }
-.resumen-col-subheader .sub-name { flex: 1; }
-.resumen-col-subheader .sub-hrs { width: 96px; text-align: center; }
+/* ═══════════════════════════════════════════
+   RESUMEN DE HORAS — nuevo diseño tipo imagen
+   ═══════════════════════════════════════════ */
+.resumen-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 22px;
+  margin-bottom: 18px;
+  align-items: start;
+}
+
+/* Título de cada columna — centrado, sin icono */
+.resumen-col-title {
+  display: block;
+  text-align: center;
+  font-weight: 700;
+  font-size: .82rem;
+  padding: 8px 18px;
+  border-radius: 30px;
+  margin-bottom: 14px;
+  border: 1.5px solid transparent;
+}
+
+/* Sub-encabezado de columna */
+.resumen-col-subheader {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 4px 8px;
+  font-size: .62rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .7px;
+  color: var(--ink-40);
+}
+.resumen-col-subheader .sub-name  { flex: 1; }
+.resumen-col-subheader .sub-hrs   { width: 96px; text-align: center; }
 .resumen-col-subheader .sub-total { width: 78px; text-align: center; }
-.periodo-card { position: relative; background: white; border: 2px solid transparent; border-radius: 16px; padding: 20px 16px 16px; margin-bottom: 14px; }
+
+/* Tarjeta de período */
+.periodo-card {
+  position: relative;
+  border-radius: 14px;
+  border: 2px solid transparent;
+  padding: 18px 16px 14px;
+  margin-bottom: 12px;
+}
 .periodo-card:last-child { margin-bottom: 0; }
-.periodo-card .periodo-label { position: absolute; top: -12px; left: 14px; background: white; padding: 0 5px; font-size: .7rem; font-weight: 700; font-family: 'DM Mono', monospace; }
-.periodo-card-inner { display: flex; align-items: center; gap: 14px; min-height: 28px; }
-.periodo-card-rows { flex: 1; display: flex; flex-direction: column; gap: 9px; min-width: 0; }
-.periodo-card-row { display: flex; align-items: center; gap: 10px; }
-.periodo-card-row .row-name { flex: 1; font-size: .8rem; font-weight: 600; color: var(--ink-80); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
-.periodo-card-row .row-hrs { width: 96px; flex-shrink: 0; text-align: center; border: 1.5px solid transparent; border-radius: 8px; padding: 4px 0; font-size: .73rem; font-weight: 700; font-family: 'DM Mono', monospace; }
-.periodo-card-total { width: 78px; flex-shrink: 0; display: flex; justify-content: center; }
-.periodo-card-total .num { color: white; border-radius: 30px; padding: 8px 0; width: 100%; text-align: center; font-weight: 700; font-family: 'DM Mono', monospace; font-size: .82rem; }
-.periodo-card-empty { font-size: .76rem; color: var(--ink-40); font-style: italic; padding: 2px 0; }
-.resumen-col-total { display: flex; flex-direction: column; align-items: center; gap: 6px; margin-top: 8px; }
-.doc-theme .resumen-col-title { background: rgba(16,185,129,.08); border-color: #10B981; color: #047857; }
-.doc-theme .periodo-card { border-color: rgba(16,185,129,.55); }
-.doc-theme .periodo-label { color: #047857; }
-.doc-theme .row-hrs { background: rgba(16,185,129,.1); border-color: #10B981; color: #047857; }
-.doc-theme .num { background: #10B981; box-shadow: 0 2px 8px rgba(16,185,129,.32); }
-.act-theme .resumen-col-title { background: rgba(139,92,246,.08); border-color: #8B5CF6; color: #6D28D9; }
-.act-theme .periodo-card { border-color: rgba(139,92,246,.55); }
-.act-theme .periodo-label { color: #6D28D9; }
-.act-theme .row-hrs { background: rgba(139,92,246,.1); border-color: #8B5CF6; color: #6D28D9; }
-.act-theme .num { background: #8B5CF6; box-shadow: 0 2px 8px rgba(139,92,246,.32); }
+
+.periodo-card .periodo-label {
+  position: absolute;
+  top: -11px; left: 14px;
+  padding: 0 6px;
+  font-size: .68rem;
+  font-weight: 700;
+  font-family: 'DM Mono', monospace;
+  border-radius: 20px;
+}
+
+/* Layout interno: filas de materia + total a la derecha */
+.periodo-card-inner {
+  display: flex;
+  align-items: stretch;
+  gap: 12px;
+}
+
+.periodo-card-rows {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  min-width: 0;
+}
+
+/* Cada fila: nombre de materia a la izq, badge hrs a la der */
+.periodo-card-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.periodo-card-row .row-name {
+  flex: 1;
+  font-size: .79rem;
+  font-weight: 600;
+  color: var(--ink-80);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+}
+
+/* Badge de horas — estilo imagen: borde redondeado, fondo tenue */
+.periodo-card-row .row-hrs {
+  flex-shrink: 0;
+  text-align: center;
+  border: 1.5px solid transparent;
+  border-radius: 20px;
+  padding: 4px 14px;
+  font-size: .72rem;
+  font-weight: 700;
+  font-family: 'DM Mono', monospace;
+  white-space: nowrap;
+}
+
+/* Círculo total a la derecha del bloque */
+.periodo-card-total {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.periodo-card-total .num {
+  color: white;
+  border-radius: 50%;
+  width: 56px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-family: 'DM Mono', monospace;
+  font-size: .85rem;
+  white-space: nowrap;
+  flex-direction: column;
+  line-height: 1.1;
+}
+
+.periodo-card-total .num span {
+  font-size: .55rem;
+  font-weight: 600;
+  opacity: .85;
+  margin-top: 1px;
+}
+
+.periodo-card-empty {
+  font-size: .76rem;
+  color: var(--ink-40);
+  font-style: italic;
+  padding: 2px 0;
+}
+
+/* Total de columna (círculo inferior) */
+.resumen-col-total {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+/* ── TEMA DOCENCIA (verde) ── */
+.doc-theme .resumen-col-title {
+  background: rgba(16,185,129,.08);
+  border-color: #10B981;
+  color: #047857;
+}
+.doc-theme .periodo-card {
+  background: white;
+  border-color: rgba(16,185,129,.45);
+}
+.doc-theme .periodo-label {
+  color: #047857;
+  background: white;
+}
+.doc-theme .periodo-card-row .row-hrs {
+  background: rgba(16,185,129,.12);
+  border-color: #10B981;
+  color: #047857;
+}
+.doc-theme .periodo-card-total .num {
+  background: #10B981;
+  box-shadow: 0 3px 10px rgba(16,185,129,.32);
+}
+
+/* ── TEMA ACTIVIDADES (violeta) ── */
+.act-theme .resumen-col-title {
+  background: rgba(139,92,246,.08);
+  border-color: #8B5CF6;
+  color: #6D28D9;
+}
+.act-theme .periodo-card {
+  background: white;
+  border-color: rgba(139,92,246,.45);
+}
+.act-theme .periodo-label {
+  color: #6D28D9;
+  background: white;
+}
+.act-theme .periodo-card-row .row-hrs {
+  background: rgba(139,92,246,.12);
+  border-color: #8B5CF6;
+  color: #6D28D9;
+}
+.act-theme .periodo-card-total .num {
+  background: #8B5CF6;
+  box-shadow: 0 3px 10px rgba(139,92,246,.32);
+}
+
+/* Círculo de totales de columna */
+.total-bubble-circle.doc {
+  border-color: #10B981;
+  color: #047857;
+  background: rgba(16,185,129,.15);
+}
+.total-bubble-circle.act {
+  border-color: #8B5CF6;
+  color: #6D28D9;
+  background: rgba(139,92,246,.15);
+}
 
 /* ─── TOTAL LABORAL ─── */
 .total-laboral-wrap { background: rgba(16,185,129,.06); border-radius: 16px; border: 2px solid #10B981; padding: 20px 24px; display: flex; align-items: center; justify-content: center; gap: 20px; flex-wrap: wrap; }
@@ -510,8 +678,6 @@ body {
 .total-bubble { display: flex; flex-direction: column; align-items: center; gap: 6px; }
 .total-bubble-circle { width: 64px; height: 64px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1.4rem; font-family: 'DM Mono', monospace; border: 2.5px solid; }
 .total-bubble-circle.grand { border-color: #047857; color: white; background: #10B981; width: 72px; height: 72px; font-size: 1.6rem; }
-.total-bubble-circle.doc { border-color: #10B981; color: #047857; background: rgba(16,185,129,.15); }
-.total-bubble-circle.act { border-color: #8B5CF6; color: #6D28D9; background: rgba(139,92,246,.15); }
 .total-bubble-label { font-size: .62rem; font-weight: 700; color: #10B981; text-transform: uppercase; letter-spacing: .5px; text-align: center; }
 .total-plus { font-size: 1.2rem; color: #10B981; font-weight: 700; }
 .total-eq { font-size: 1.2rem; color: #10B981; font-weight: 700; }
@@ -544,10 +710,10 @@ body {
   color: white; border: none; border-radius: 12px; padding: 12px 28px;
   font-size: .85rem; font-weight: 700; cursor: pointer;
   transition: var(--transition); font-family: 'DM Sans', sans-serif;
-  box-shadow: 0 4px 14px rgba(91,110,245,.35);
+  box-shadow: 0 4px 14px rgba(30,58,138,.35);
   letter-spacing: -.1px;
 }
-.btn-guardar-carga:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(91,110,245,.45); }
+.btn-guardar-carga:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(30,58,138,.45); }
 .btn-guardar-carga:active { transform: translateY(0); }
 .btn-guardar-carga i { font-size: 1rem; }
 
@@ -573,7 +739,7 @@ body {
   box-shadow: var(--shadow-md); overflow: hidden;
 }
 .reporte-carrera-header {
-  background: linear-gradient(135deg, #1e3a5f 0%, #2d5a8e 100%);
+  background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
   padding: 18px 28px; display: flex; align-items: center; gap: 16px;
 }
 .reporte-carrera-header .logo-wrap {
@@ -598,9 +764,8 @@ body {
   padding: 0;
   vertical-align: middle;
 }
-/* ─ Header rows ─ */
 .rt-th-group {
-  background: #1e3a5f; color: white;
+  background: #1e3a8a; color: white;
   text-align: center; font-weight: 700;
   font-size: .7rem; text-transform: uppercase; letter-spacing: .6px;
   padding: 8px 10px;
@@ -609,7 +774,7 @@ body {
 .rt-th-group.act-group { background: #3d1a6e; }
 .rt-th-group.total-group { background: #1a3a5c; }
 .rt-th-sub {
-  background: #2d5a8e; color: white;
+  background: #1e40af; color: white;
   text-align: center; font-weight: 600;
   font-size: .67rem; padding: 7px 8px;
   text-transform: uppercase; letter-spacing: .4px;
@@ -618,14 +783,13 @@ body {
 .rt-th-sub.act-sub { background: #5b21b6; }
 .rt-th-sub.total-sub { background: #1e4976; }
 
-/* ─ Data cells ─ */
 .rt-td-prof {
-  background: #f0f5ff; font-weight: 700; font-size: .78rem; color: #1e3a5f;
+  background: #f0f5ff; font-weight: 700; font-size: .78rem; color: #1e3a8a;
   padding: 10px 14px; min-width: 160px; border-right: 2px solid #c8d0dc;
   vertical-align: top;
 }
 .rt-td-prof .tutor-badge {
-  margin-top: 5px; font-size: .62rem; color: #7c3aed; font-weight: 600;
+  margin-top: 5px; font-size: .62rem; color: #0c4a6e; font-weight: 600;
   display: flex; align-items: center; gap: 4px; flex-wrap: wrap;
 }
 .rt-td-prof .tutor-badge i { font-size: .72rem; }
@@ -641,7 +805,7 @@ body {
 .rt-td.doc-cell { background: rgba(16,185,129,.05); color: #047857; font-weight: 600; }
 .rt-td.act-cell { background: rgba(139,92,246,.05); color: #5b21b6; font-weight: 600; }
 .rt-td.total-cell {
-  background: #f0f5ff; color: #1e3a5f; font-weight: 700;
+  background: #f0f5ff; color: #1e3a8a; font-weight: 700;
   font-size: .82rem; font-family: 'DM Mono', monospace;
 }
 .rt-td.range-badge {
@@ -652,7 +816,6 @@ body {
 .rt-td.range-badge.act-range {
   background: rgba(139,92,246,.08); color: #5b21b6;
 }
-/* ─ Stripe & section ─ */
 .prof-section-first td { border-top: 2px solid #a0b4cc !important; }
 .row-even td { background-color: rgba(0,0,0,.012); }
 .row-even td.doc-cell { background: rgba(16,185,129,.07); }
@@ -663,7 +826,6 @@ body {
 .row-even td.rt-td-prof { background: #e8efff; }
 .row-even td.rt-td-materia { background: #fafafa; }
 
-/* Empty msg */
 .rt-empty { padding: 40px; text-align: center; color: var(--ink-40); font-size: .82rem; }
 
 /* ─── RESPONSIVE ─── */
@@ -774,11 +936,11 @@ body {
     <div class="prof-header-outer">
       <div class="prof-header">
         <div class="prof-info">
-          <div class="prof-info-name" id="prof-nombre-detalle">—</div>
           <div class="prof-info-org">
             <i class="bi bi-building"></i>
             <span id="prof-carrera-chip">—</span>
           </div>
+          <div class="prof-info-name" id="prof-nombre-detalle">—</div>
           <div class="prof-info-tutor" id="prof-info-tutor" style="display:none;">
             <i class="bi bi-person-heart"></i>
             <span id="prof-info-tutor-text">—</span>
@@ -804,7 +966,7 @@ body {
           <i class="bi bi-person-heart"></i> <span id="gantt-tutor-info-text">—</span>
         </span>
       </div>
-      <div class="sect-hint"><i class="bi bi-info-circle"></i> Cada barra representa una materia o actividad; pasa el cursor sobre ella para ver el detalle.</div>
+      <div class="sect-hint"><i class="bi bi-info-circle"></i> Cada barra representa una asignatura o actividad.</div>
       <div class="gantt-wrap">
         <table class="gantt-table" id="ganttTable">
           <thead id="ganttHead"></thead>
@@ -868,13 +1030,16 @@ body {
         <i class="bi bi-diagram-3-fill"></i> Resumen de horas
       </div>
       <div class="sect-hint"><i class="bi bi-info-circle"></i> Las horas se agrupan automáticamente por periodo (semanas 1–7, 7–14 y 1–14) según el rango registrado.</div>
+
       <div class="resumen-grid">
+
+        <!-- ── COLUMNA DOCENCIA ── -->
         <div class="resumen-col doc-theme">
-          <div class="resumen-col-title"><i class="bi bi-book-fill"></i> Horas Docencia</div>
+          <div class="resumen-col-title">Horas Docencia</div>
           <div class="resumen-col-subheader">
             <span class="sub-name"></span>
-            <span class="sub-hrs">Horas</span>
-            <span class="sub-total">Total:</span>
+            <span class="sub-hrs">HORAS</span>
+            <span class="sub-total">TOTAL:</span>
           </div>
           <div id="resumen-doc-content"></div>
           <div class="resumen-col-total">
@@ -882,12 +1047,14 @@ body {
             <div class="total-bubble-label">Docencia</div>
           </div>
         </div>
+
+        <!-- ── COLUMNA ACTIVIDADES ── -->
         <div class="resumen-col act-theme">
-          <div class="resumen-col-title"><i class="bi bi-lightning-fill"></i> Otras Actividades</div>
+          <div class="resumen-col-title">Otras Actividades</div>
           <div class="resumen-col-subheader">
             <span class="sub-name"></span>
-            <span class="sub-hrs">Horas</span>
-            <span class="sub-total">Total:</span>
+            <span class="sub-hrs">HORAS</span>
+            <span class="sub-total">TOTAL:</span>
           </div>
           <div id="resumen-act-content"></div>
           <div class="resumen-col-total">
@@ -896,6 +1063,7 @@ body {
           </div>
         </div>
       </div>
+
       <div class="total-laboral-wrap">
         <div class="total-left">
           <div class="total-left-title">Carga Total Laboral</div>
@@ -933,7 +1101,7 @@ body {
 
   </div>
 
-
+  <!-- ════ VISTA: REPORTE ════ -->
   <div class="view" id="view-reporte">
     <div class="reporte-toolbar">
       <button class="btn-report-action btn-back-report" onclick="irVista('profs-carrera')">
@@ -1036,7 +1204,6 @@ function switchTab(tab) {
   document.getElementById('tab-multi-btn').classList.toggle('active', tab==='multi');
 }
 
-
 function getRegistros(){ return JSON.parse(localStorage.getItem('registrosResumenCargas')||'[]'); }
 function getCarreras(){
   const s=new Set(); getRegistros().forEach(r=>{ if(r.carrera) s.add(r.carrera); }); return [...s].sort();
@@ -1086,43 +1253,42 @@ function saveFoto(prof,b64){
   d[prof]=b64; localStorage.setItem('fotasProfesores',JSON.stringify(d));
 }
 
-
 function getTutorGroups(prof, carrera) {
   const grupos = [];
+  if (!prof) return grupos;
+  const profeBuscado = prof.trim().toLowerCase();
   getRegistros().filter(r => !carrera || r.carrera === carrera).forEach(r => {
     if (r.tutores) {
       Object.entries(r.tutores).forEach(([g, t]) => {
-        if (t === prof) grupos.push(g);
+        if (t && typeof t === 'string' && t.trim().toLowerCase() === profeBuscado) {
+            grupos.push(g);
+        }
       });
     }
-    if (r.tutor === prof && r.grupo) grupos.push(r.grupo);
     r.asignaciones?.forEach(a => {
       r.gruposRegistrados?.forEach(g => {
-        if (a.esTutoria && a[g] === prof && !grupos.includes(g)) grupos.push(g);
+        if (a.esTutoria && a[g] && typeof a[g] === 'string' && a[g].trim().toLowerCase() === profeBuscado && !grupos.includes(g)) {
+            grupos.push(g);
+        }
       });
     });
   });
   return [...new Set(grupos)];
 }
 
-
 function guardarCargaProfesor() {
   const prof = state.profesor;
   const carrera = state.carrera;
   if (!prof || !carrera) { toast('No hay profesor seleccionado.','error'); return; }
-
   const asigs = getAsignaciones(carrera, prof);
   const acts  = getActs(prof);
   const totales = calcTotales(asigs, acts);
-
   const registro = { prof, carrera, asigs, acts, totales, fechaGuardado: new Date().toISOString() };
-
   const key = 'cargasGuardadas';
   const todas = JSON.parse(localStorage.getItem(key)||'{}');
   if (!todas[carrera]) todas[carrera] = {};
   todas[carrera][prof] = registro;
   localStorage.setItem(key, JSON.stringify(todas));
-
   toast(`Carga de ${prof} guardada correctamente.`, 'success');
 }
 
@@ -1148,7 +1314,6 @@ function abrirReporte() {
 function renderReporte() {
   const carrera = state.carrera;
   document.getElementById('reporte-carrera-nombre').textContent = carrera || '—';
-
   const profs = getProfsCarrera(carrera);
 
   document.getElementById('reporte-thead').innerHTML = `
@@ -1178,22 +1343,18 @@ function renderReporte() {
   }
 
   let tbodyHtml = '';
-
   profs.forEach((prof, profIdx) => {
-    const asigs  = getAsignaciones(carrera, prof);
-    const acts   = getActs(prof);
+    const asigs   = getAsignaciones(carrera, prof);
+    const acts    = getActs(prof);
     const tutorGs = getTutorGroups(prof, carrera);
-
     const maxRows = Math.max(asigs.length, acts.length, 1);
     let totalDocHrs = asigs.reduce((s,a) => s + (a.horas||0), 0);
     let totalActHrs = acts.reduce((s,a) => s + (a.horas||0), 0);
     let totalLaboral = totalDocHrs + totalActHrs;
-
     const isEven = profIdx % 2 === 1;
     const stripeClass = isEven ? 'row-even' : '';
-
     const tutorHtml = tutorGs.length
-      ? `<div class="tutor-badge"><i class="bi bi-person-heart"></i> Tutor: ${tutorGs.join(', ')}</div>`
+      ? `<div class="tutor-badge"><i class="bi bi-person-heart"></i> Tutor de: ${tutorGs.join(', ')}</div>`
       : '';
 
     for (let r = 0; r < maxRows; r++) {
@@ -1201,27 +1362,23 @@ function renderReporte() {
       const act = acts[r];
       const isFirst = r === 0;
       const sectionClass = isFirst ? 'prof-section-first' : '';
-
       const profCell = isFirst
         ? `<td class="rt-td-prof ${stripeClass}" rowspan="${maxRows}">
              <div>${prof}</div>
              ${tutorHtml}
            </td>`
         : '';
-
       const docMateria = a ? `<td class="rt-td-materia ${stripeClass}">${a.materia}</td>` : `<td class="rt-td-materia ${stripeClass}"></td>`;
       const docGrupo   = a ? `<td class="rt-td rt-td-grupo ${stripeClass}" style="text-align:center;">${a.grupo}</td>` : `<td class="rt-td ${stripeClass}"></td>`;
       const docHrs     = a ? `<td class="rt-td num doc-cell ${stripeClass}">${a.horas}</td>` : `<td class="rt-td doc-cell ${stripeClass}"></td>`;
       const docPeriodo = a ? `<td class="rt-td range-badge ${stripeClass}">${rangeLabel(a.inicio, a.fin)}</td>` : `<td class="rt-td ${stripeClass}"></td>`;
       const docTotal   = isFirst ? `<td class="rt-td num doc-cell ${stripeClass}" rowspan="${maxRows}">${asigs.length ? totalDocHrs : '—'}</td>` : '';
       const programa   = a ? `<td class="rt-td ${stripeClass}" style="text-align:center;font-size:.68rem;">${a.programa||''}</td>` : `<td class="rt-td ${stripeClass}"></td>`;
-
       const actInfo = act ? (ACT_FULL_NAMES[act.tipo]||{nombre:act.tipo}) : null;
       const actNombre  = act ? `<td class="rt-td act-cell ${stripeClass}" style="min-width:160px;text-align:left;padding:6px 10px;">${actInfo.nombre}</td>` : `<td class="rt-td act-cell ${stripeClass}"></td>`;
       const actHrs     = act ? `<td class="rt-td num act-cell ${stripeClass}">${act.horas}</td>` : `<td class="rt-td act-cell ${stripeClass}"></td>`;
       const actPeriodo = act ? `<td class="rt-td range-badge act-range ${stripeClass}">${rangeLabel(act.ini, act.fin)}</td>` : `<td class="rt-td ${stripeClass}"></td>`;
       const actTotal   = isFirst ? `<td class="rt-td num act-cell ${stripeClass}" rowspan="${maxRows}">${acts.length ? totalActHrs : '—'}</td>` : '';
-
       const jornadaCell = isFirst
         ? `<td class="rt-td total-cell ${stripeClass}" rowspan="${maxRows}" style="font-size:.88rem;">${totalLaboral}</td>`
         : '';
@@ -1247,14 +1404,11 @@ function renderReporte() {
   document.getElementById('reporte-tbody').innerHTML = tbodyHtml;
 }
 
-
 function exportarExcel() {
   const carrera = state.carrera || 'Carrera';
   const profs   = getProfsCarrera(carrera);
-
   const wb = XLSX.utils.book_new();
   const wsData = [];
-
   wsData.push([`CARRERA: ${carrera}`]);
   wsData.push([]);
   wsData.push(['PROFESOR','ASIGNATURAS','GRUPO','Hrs/Sem','Período','Total Doc','PROGRAMA','OTRAS ACTIVIDADES','Hrs/Sem','Período','Total Act','HRS JORNADA LABORAL']);
@@ -1266,7 +1420,6 @@ function exportarExcel() {
     const totalDoc = asigs.reduce((s,a)=>s+(a.horas||0),0);
     const totalAct = acts.reduce((s,a)=>s+(a.horas||0),0);
     const totalLaboral = totalDoc + totalAct;
-
     const maxRows = Math.max(asigs.length, acts.length, 1);
     const tutorStr = tutorGs.length ? `Tutor: ${tutorGs.join(', ')}` : '';
     const profLabel = tutorStr ? `${prof}\n${tutorStr}` : prof;
@@ -1296,13 +1449,11 @@ function exportarExcel() {
   ws['!cols'] = [
     {wch:28},{wch:30},{wch:10},{wch:10},{wch:10},{wch:10},{wch:12},{wch:32},{wch:10},{wch:10},{wch:10},{wch:12}
   ];
-
   XLSX.utils.book_append_sheet(wb, ws, 'Carga Académica');
   XLSX.writeFile(wb, `Carga_Academica_${carrera.replace(/\s+/g,'_')}.xlsx`);
   toast('Archivo Excel generado correctamente.','success');
 }
 
-/* ─── RENDER CARRERAS ─── */
 function renderCarreras(){
   const carreras = getCarreras();
   const cont = document.getElementById('grid-carreras');
@@ -1332,15 +1483,12 @@ function selCarrera(c){
   const multi=getProfsMulti(c);
   document.getElementById('tab-propios-count').textContent=profs.length;
   document.getElementById('tab-multi-count').textContent=multi.length;
-
   document.getElementById('lista-profs-carrera').innerHTML=profs.length
     ? renderProfCards(profs)
     : `<div class="empty-state" style="grid-column:1/-1;"><i class="bi bi-person-x"></i><span>Sin profesores en esta carrera</span></div>`;
-
   document.getElementById('lista-profs-multi').innerHTML=multi.length
     ? `<div class="prof-grid">${renderProfCards(multi,true)}</div>`
     : `<div class="empty-state"><i class="bi bi-people"></i><span>Ningún profesor comparte esta carrera con otra</span></div>`;
-
   switchTab('propios'); irVista('profs-carrera');
 }
 
@@ -1348,11 +1496,14 @@ function renderProfCards(profs, isMulti=false){
   return profs.map(p=>{
     const ini=p.split(' ').filter(Boolean).map(w=>w[0]).join('').substring(0,2).toUpperCase();
     const color=avatarColor(p);
+    const tutorGs = getTutorGroups(p, state.carrera);
+    const badgeTutor = tutorGs.length ? `<div class="prof-sub" style="color: #0c4a6e; font-weight: 600; margin-top: 5px;"><i class="bi bi-person-heart"></i> Tutor: ${tutorGs.join(', ')}</div>` : '';
     return `<div class="prof-card" onclick="abrirProfesor('${p.replace(/'/g,"\\'")}')">
       <div class="prof-avatar" style="background:${color};">${ini}</div>
       <div style="flex:1;min-width:0;">
         <div class="prof-name">${p}</div>
-        ${isMulti?`<div class="prof-sub" style="color:var(--violet);"><i class="bi bi-layers-fill"></i> Múltiples carreras</div>`:''}
+        ${badgeTutor}
+        ${isMulti?`<div class="prof-sub" style="color:var(--aqua);"><i class="bi bi-layers-fill"></i> Múltiples carreras</div>`:''}
       </div>
       <i class="bi bi-chevron-right arrow-icon"></i>
     </div>`;
@@ -1361,24 +1512,29 @@ function renderProfCards(profs, isMulti=false){
 
 function abrirProfesor(prof){
   state.profesor=prof;
-  document.getElementById('prof-nombre-detalle').textContent=prof;
+
   const carrerasProf=getCarrerasProfesor(prof);
   document.getElementById('prof-carrera-chip').textContent=carrerasProf.length?carrerasProf.join(' / '):(state.carrera||'');
+  document.getElementById('prof-nombre-detalle').textContent=prof;
+
+  let badgeTutor = document.getElementById('badge-tutor-dinamico');
+  if (!badgeTutor) {
+    badgeTutor = document.createElement('div');
+    badgeTutor.id = 'badge-tutor-dinamico';
+    badgeTutor.style.marginTop = '12px';
+    badgeTutor.style.display = 'flex';
+    badgeTutor.style.justifyContent = 'center';
+    const nombreEl = document.getElementById('prof-nombre-detalle');
+    nombreEl.parentNode.insertBefore(badgeTutor, nombreEl.nextSibling);
+  }
 
   const tutorGs = getTutorGroups(prof, state.carrera);
-  const tutorBoxName  = document.getElementById('prof-info-tutor');
-  const tutorTextName = document.getElementById('prof-info-tutor-text');
-  const tutorBoxGantt  = document.getElementById('gantt-tutor-info');
-  const tutorTextGantt = document.getElementById('gantt-tutor-info-text');
-  if (tutorGs.length) {
-    const txt = `Tutor de: ${tutorGs.join(', ')}`;
-    tutorTextName.textContent = txt;
-    tutorBoxName.style.display = 'inline-flex';
-    tutorTextGantt.textContent = txt;
-    tutorBoxGantt.style.display = 'inline-flex';
+  if (tutorGs.length > 0) {
+    badgeTutor.innerHTML = `<span style="background-color: var(--aqua); color: white; padding: 6px 12px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; box-shadow: 0 2px 4px rgba(0,0,0,0.1);"><i class="bi bi-person-heart" style="margin-right:5px;"></i>Tutor de: ${tutorGs.join(', ')}</span>`;
+    badgeTutor.style.display = 'flex';
   } else {
-    tutorBoxName.style.display = 'none';
-    tutorBoxGantt.style.display = 'none';
+    badgeTutor.style.display = 'none';
+    badgeTutor.innerHTML = '';
   }
 
   const foto=getFoto(prof);
@@ -1386,10 +1542,11 @@ function abrirProfesor(prof){
     document.getElementById('prof-photo-img').src=foto;
     document.getElementById('prof-photo-img').style.display='block';
     document.getElementById('prof-photo-placeholder').style.display='none';
-  } else {
+  }else{
     document.getElementById('prof-photo-img').style.display='none';
     document.getElementById('prof-photo-placeholder').style.display='flex';
   }
+
   irVista('prof');
   renderGantt(prof);
   renderActList(prof);
@@ -1457,7 +1614,6 @@ function renderGantt(prof){
   document.getElementById('ganttBody').innerHTML=html;
 }
 
-
 function getBuckets(item){
   const i = parseInt(item.inicio || item.ini) || 1;
   const f = Math.min(parseInt(item.fin) || 14, 14);
@@ -1468,17 +1624,25 @@ function getBuckets(item){
   return [h, h, 0];
 }
 
-function renderPeriodoCard(label, items, total){
+/* ──────────────────────────────────────────────
+   renderPeriodoCard — nuevo diseño con desglose
+   por materia/actividad y círculo de total
+   ────────────────────────────────────────────── */
+function renderPeriodoCard(label, items, total) {
   const rowsHtml = items.length
-    ? items.map(x=>`
+    ? items.map(x => `
         <div class="periodo-card-row">
           <span class="row-name" title="${x.name}">${x.name}</span>
           <span class="row-hrs">${x.h} hrs/sem</span>
         </div>`).join('')
     : `<div class="periodo-card-empty">Sin asignaciones en este período</div>`;
-  const totalHtml = total>0
-    ? `<div class="periodo-card-total"><div class="num">${total} hrs</div></div>`
+
+  const totalHtml = total > 0
+    ? `<div class="periodo-card-total">
+         <div class="num">${total}<span>hrs</span></div>
+       </div>`
     : '';
+
   return `
     <div class="periodo-card">
       <span class="periodo-label">Semanas ${label}</span>
@@ -1523,7 +1687,6 @@ function renderResumen(prof){
   document.getElementById('gran-total-act').textContent=totalAct;
   document.getElementById('gran-total-laboral').textContent=totalDoc+totalAct;
 }
-
 
 function agregarActividad(){
   const tipo=document.getElementById('act-tipo').value;
@@ -1585,7 +1748,6 @@ function renderActList(prof){
   }).join('');
 }
 
-
 function toast(msg, tipo='success'){
   const old=document.getElementById('_toast'); if(old) old.remove();
   const cfg={ success:{icon:'bi-check-circle-fill',color:'#10B981'}, info:{icon:'bi-info-circle-fill',color:'#F59E0B'}, error:{icon:'bi-x-circle-fill',color:'#F43F5E'} };
@@ -1600,5 +1762,19 @@ window.addEventListener('DOMContentLoaded',()=>irVista('lista-carreras'));
 </script>
 </body>
 </html>
+HTMLEOF
+echo "Done: $(wc -c < /home/claude/carga_academica.html) bytes"
+Salida
+
+Input validation errors occurred:
+description: Field required
+Listo
+
+Se quedó sin mensajes gratuitos hasta 3:10 p.m.
+Claude Fable 5 no está disponible en este momento.
+Más información(opens in new tab)
+
+
+
 
 
